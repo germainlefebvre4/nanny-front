@@ -1,5 +1,17 @@
 # nanny-front
 
+## Getting started
+```
+yarn build --production
+```
+Delivers compiled files in dist/*
+
+## Docker image
+Build docker image
+```
+docker build -t germainlefebvre/nanny-front .
+```
+
 ## Project setup
 ```
 yarn install
