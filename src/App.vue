@@ -1,24 +1,42 @@
 <template>
-  <div>
-    <Header />
-    <router-view></router-view>
-    <Footer />
+  <div id="app">
+    <v-app id="inspire">
+    <v-row>
+      <MyHeader />
+    </v-row>
+    <v-row>
+      <MyMenu />
+      <router-view></router-view>
+    </v-row>
+    <v-row>
+      <MyFooter />
+    </v-row>
+    </v-app>
   </div>
 </template>
 
 <script>
-import Header from './views/Header.vue'
-import Footer from './views/Footer.vue'
+import MyHeader from './views/MyHeader.vue'
+import MyFooter from './views/MyFooter.vue'
+import MyMenu from './views/MyMenu.vue'
 
 export default {
   name: 'App',
 
   components: {
-    Header,
-    Footer
+    MyHeader,
+    MyMenu,
+    MyFooter
   },
 
   data: () => ({
   }),
 };
 </script>
+
+<style>
+#app {
+  padding-top: 64px;
+  padding-left: 12px;
+}
+</style>
