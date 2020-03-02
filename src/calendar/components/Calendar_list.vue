@@ -78,6 +78,47 @@
               </v-card-actions>
             </v-card>
           </v-menu>
+
+          <v-menu
+            v-model="newOpen"
+            :close-on-content-click="false"
+            :activator="newElement"
+            :position-x="newEvent.x"
+            :position-y="newEvent.y"
+            absolute
+            offset-y
+          >
+            <v-card
+              color="grey lighten-4"
+              min-width="350px"
+              flat
+            >
+              <v-toolbar
+                :color="newEvent.color"
+                dark
+              >
+                <v-toolbar-title v-html="newEvent.name"></v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn icon>
+                  <v-icon
+                    @click="newOpen = false"
+                  >mdi-close</v-icon>
+                </v-btn>
+              </v-toolbar>
+              <v-card-text>
+                <span v-html="newEvent.details"></span>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  text
+                  color="secondary"
+                  @click="newOpen = false"
+                >
+                  Cancel
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-menu>
         </v-sheet>
 
       </v-col>
@@ -90,7 +131,7 @@ import axios from 'axios';
 //import CalendarService from '../services/calendar_list.js'
 
 export default {
-  
+
   name: 'calendarList',
 
   data: () => ({
@@ -101,6 +142,14 @@ export default {
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
+    newEvent: {
+      "name": "Ajouter un événement",
+      "x": 0,
+      "y": 0,
+      "color": "green"
+    },
+    newElement: null,
+    newOpen: false,
     events: [],
     colors: {
       "Absence Enfant": "blue",
@@ -147,31 +196,39 @@ export default {
     next () {
       this.$refs.calendar.next()
     },
-    addEvent () {
+    addEvent (event) {
       console.log("addEvent")
+      console.log(event)
+      const open = () => {
+        // this.newEvent = event
+        // this.newEvent.color = "green"
+        // this.newEvent.x = event.clientX
+        // this.newEvent.y = event.clientY
+        setTimeout(() => this.newOpen = true, 10)
+      }
+
+      if (this.newOpen) {
+        this.newOpen = false
+        setTimeout(open, 10)
+      } else {
+        open()
+      }
     },
     delEvent () {
-      console.log("delEvent")
       const dateYear = this.selectedEvent.start.substr(0,4)
       const dateMonth = this.selectedEvent.start.substr(5,2)
       const dateDay = this.selectedEvent.start.substr(8,2)
-      
+
       axios.get('http://localhost:8080/daysoff/search/'+dateYear+'/'+dateMonth+'/'+dateDay
       ).then((data) => {
         if(data.status == 200) {
-          const daysoffId = String(data.data[0].id)
-          axios.delete('http://localhost:8080/daysoff/'+daysoffId,
-            {
-              params: {
-                day: this.selectedEvent,
-                absence: 4,
-            }
-          }).then().catch()
+          const daysoffId = String(data.data.id)
+          axios.delete('http://localhost:8080/daysoff/'+daysoffId).then().catch()
+          this.selectedOpen = false
         }
       })
     },
     showEvent ({ nativeEvent, event }) {
-      console.log("showEvent", event)
       const open = () => {
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
@@ -188,6 +245,7 @@ export default {
       nativeEvent.stopPropagation()
     },
     updateRange ({ start, end }) {
+      console.log(start, end)
       const dateYear = start.year
       const dateMonth = ('0' + start.month).slice(-2)
 
@@ -197,7 +255,7 @@ export default {
           let events = [];
           const items = data.data
 
-          for(const item in items) {            
+          for(const item in items) {
             events.push({
               name: `${items[item]["kind"]}`,
               start: `${items[item]["day"]}`,
@@ -206,7 +264,6 @@ export default {
             // events = [...events, newEvent];
           }
 
-          
           this.start = start
           this.end = end
           this.events = events
