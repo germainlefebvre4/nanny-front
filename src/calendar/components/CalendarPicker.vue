@@ -1,9 +1,6 @@
 <template>
   <div>
-    CalendarList<br />
-    <v-row class="fill-height">
       <v-col>
-
         <v-sheet height="64">
           <v-toolbar flat color="white">
             <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
@@ -28,10 +25,16 @@
             :events="events"
             :event-color="getEventColor"
             :type="type"
+            :weekdays=weekdays
             @click:day="addEvent"
             @click:event="showEvent"
             @change="updateRange"
-          ></v-calendar>
+          >
+
+
+
+
+          </v-calendar>
 
           <v-menu
             v-model="selectedOpen"
@@ -105,58 +108,61 @@
                   >mdi-close</v-icon>
                 </v-btn>
               </v-toolbar>
+              
               <v-card-text>
                 <span v-html="newEvent.details"></span>
+                  <AbsenceChoice :absenceDate="this.selectedDate"/>
               </v-card-text>
-              <v-card-actions>
-                <v-btn
-                  text
-                  color="secondary"
-                  @click="newOpen = false"
-                >
-                  Cancel
-                </v-btn>
-              </v-card-actions>
             </v-card>
           </v-menu>
         </v-sheet>
 
       </v-col>
-    </v-row>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-//import CalendarService from '../services/calendar_list.js'
+import AbsenceChoice from '../components/AbsenceChoice.vue';
+import EventsService from '../services/Events_list.js';
 
 export default {
 
   name: 'calendarList',
+  components: {
+    AbsenceChoice
+  },
 
   data: () => ({
     focus: '',
     type: 'month',
+    weekdays: [1, 2, 3, 4, 5, 6, 0],
     start: null,
     end: null,
     selectedEvent: {},
+    selectedDate: '',
     selectedElement: null,
     selectedOpen: false,
     newEvent: {
       "name": "Ajouter un événement",
-      "x": 0,
+      "x": 100,
       "y": 0,
       "color": "green"
     },
     newElement: null,
     newOpen: false,
     events: [],
-    colors: {
-      "Absence Enfant": "blue",
-      "Maladie Enfant": "purple",
-      "Absence Nounou": "orange",
-      "Maladie Nounou": "red",
-    },
+    event_colors: [
+      "#D3D3D3",
+      "blue",
+      "purple",
+      "orange",
+      "red"
+    ],
+    holidays_date: [],
+    holidays_color: '#1867c0',
+    holidays_category: 'Jour férié',
+
   }),
 
   computed: {
@@ -197,13 +203,9 @@ export default {
       this.$refs.calendar.next()
     },
     addEvent (event) {
-      console.log("addEvent")
-      console.log(event)
+      this.selectedDate = event.date
+
       const open = () => {
-        // this.newEvent = event
-        // this.newEvent.color = "green"
-        // this.newEvent.x = event.clientX
-        // this.newEvent.y = event.clientY
         setTimeout(() => this.newOpen = true, 10)
       }
 
@@ -219,14 +221,17 @@ export default {
       const dateMonth = this.selectedEvent.start.substr(5,2)
       const dateDay = this.selectedEvent.start.substr(8,2)
 
-      axios.get('http://localhost:8080/daysoff/search/'+dateYear+'/'+dateMonth+'/'+dateDay
+      
+      axios.get('http://localhost:8080/api/daysoff/search?year='+dateYear+'&month='+dateMonth+'&day='+dateDay
       ).then((data) => {
         if(data.status == 200) {
           const daysoffId = String(data.data.id)
-          axios.delete('http://localhost:8080/daysoff/'+daysoffId).then().catch()
+          axios.delete('http://localhost:8080/api/daysoff/'+daysoffId).then().catch()
           this.selectedOpen = false
         }
       })
+      
+      this.events = this.events.filter(item => item.start !== this.selectedEvent.start)
     },
     showEvent ({ nativeEvent, event }) {
       const open = () => {
@@ -245,21 +250,25 @@ export default {
       nativeEvent.stopPropagation()
     },
     updateRange ({ start, end }) {
-      console.log(start, end)
       const dateYear = start.year
       const dateMonth = ('0' + start.month).slice(-2)
 
-      axios.get('http://localhost:8080/daysoff/search/'+dateYear+'/'+dateMonth
-      ).then((data) => {
-        if(data.status == 200) {
-          let events = [];
-          const items = data.data
+      this.events = []
+
+      // EventsService.getEvents(dateYear, dateMonth)
+
+
+      axios.get('http://localhost:8080/api/daysoff/search?year='+dateYear+'&month='+dateMonth
+      ).then((response) => {
+        if(response.status == 200) {
+          let events = this.events;
+          const items = response.data
 
           for(const item in items) {
             events.push({
               name: `${items[item]["kind"]}`,
               start: `${items[item]["day"]}`,
-              color: this.colors[`${items[item]["kind"]}`],
+              color: this.event_colors[`${items[item]["absenceid"]}`],
             })
             // events = [...events, newEvent];
           }
@@ -271,6 +280,7 @@ export default {
             console.log("An error occured");
         }
       }).catch()
+       
     },
   },
 
@@ -286,4 +296,7 @@ export default {
 </script>
 
 <style>
+.calendar-slot {
+  margin-top: -44px
+}
 </style>

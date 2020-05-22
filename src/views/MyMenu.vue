@@ -1,7 +1,7 @@
 <template>
     <div>
       <v-navigation-drawer
-        class="indigo"
+        class="light-blue"
         dark
         permanent
         :value="isVisible"
@@ -45,13 +45,11 @@
 
 
 <script>
-import EventBus from '../event-bus';
-
 export default {
   name: 'mymenu',
     data() {
         return {
-            appTitle: 'My-website',
+            appTitle: 'My-Menu',
             drawer: false,
             items: [
                 { title: 'Dashboard', icon: 'dashboard' },
@@ -60,14 +58,7 @@ export default {
             ],
             isVisible: true,
         };
-    },
-    mounted () {
-      EventBus.$on('EVENT_NAME', function () {
-        this.isVisible=!this.isVisible
-        console.log(this.isVisible)
-      });
-    },
-
+    }
 }
 </script>
 

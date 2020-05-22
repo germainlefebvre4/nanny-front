@@ -2,11 +2,9 @@
   <div>
       <v-app-bar
         app
-        color="indigo"
+        color="light-blue"
         dark
       >
-        <v-app-bar-nav-icon @click="emitMethod"></v-app-bar-nav-icon>
-
         <v-toolbar-title>Page title</v-toolbar-title>
 
         <v-spacer></v-spacer>
@@ -40,14 +38,13 @@
           </v-list>
         </v-menu>
       </v-app-bar>
-        MyHeader: {{ this.isVisible }}
+        <!-- MyHeader: {{ this.isVisible }} -->
   </div>
 </template>
 
 
 
 <script>
-import EventBus from '../event-bus';
 
 export default {
     name: 'myheader',
@@ -55,13 +52,7 @@ export default {
         return {
             isVisible: true,
         };
-    },
-    methods: {
-      emitMethod() {
-        var payload = {}
-        EventBus.$emit('EVENT_NAME', payload);
-      },
-    },
+    }
 }
 </script>
 

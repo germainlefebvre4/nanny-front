@@ -1,6 +1,5 @@
 <template>
     <div>
-        Exceptions
         <ExceptionsList />
     </div>
 </template>

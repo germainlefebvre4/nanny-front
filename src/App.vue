@@ -1,32 +1,26 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-    <v-row>
       <MyHeader />
-    </v-row>
-    <v-row>
-      <MyMenu />
-      <router-view></router-view>
-    </v-row>
-    <v-row>
-      <MyFooter />
-    </v-row>
+      <div class="content">
+        <router-view></router-view>
+      </div>
     </v-app>
   </div>
 </template>
 
 <script>
 import MyHeader from './views/MyHeader.vue'
-import MyFooter from './views/MyFooter.vue'
-import MyMenu from './views/MyMenu.vue'
+// import MyFooter from './views/MyFooter.vue'
+// import MyMenu from './views/MyMenu.vue'
 
 export default {
   name: 'App',
 
   components: {
     MyHeader,
-    MyMenu,
-    MyFooter
+    // MyMenu,
+    // MyFooter
   },
 
   data: () => ({

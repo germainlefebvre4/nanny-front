@@ -5,8 +5,10 @@ function setExceptions(absenceDate, absenceType) {
     formData.append('day', absenceDate);
     formData.append('absence', absenceType);
 
+    console.log("Add exception", absenceDate, absenceType)
+
     return axios
-      .post('http://localhost:8080/calendar/exceptions',
+      .post('http://localhost:8080/api/calendar/exceptions',
         formData
       ).then().catch()
 }

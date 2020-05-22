@@ -1,20 +1,18 @@
 <template>
     <div>
-        Calendar
-        <ExceptionsList />
-        <CalendarList />
+        <CalendarPicker />
     </div>
 </template>
 
 <script>
-import ExceptionsList from '../components/Exceptions_list.vue'
-import CalendarList from '../components/Calendar_list.vue'
+import AbsenceChoice from '../components/AbsenceChoice.vue'
+import CalendarPicker from '../components/CalendarPicker.vue'
 
 export default {
   name: 'calendar',
   components: {
-    CalendarList,
-    ExceptionsList
+    CalendarPicker,
+    AbsenceChoice
   },
 }
 </script>
