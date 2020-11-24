@@ -2,6 +2,7 @@ import { mutations } from './mutations';
 import { getters } from './getters';
 import { actions } from './actions';
 import { MainState } from './state';
+import { IUserContract } from '@/interfaces';
 
 const defaultState: MainState = {
   isLoggedIn: null,
@@ -12,6 +13,7 @@ const defaultState: MainState = {
   dashboardShowDrawer: true,
   notifications: [],
   contracts: [],
+  userContract: {},
 };
 
 export const mainModule = {

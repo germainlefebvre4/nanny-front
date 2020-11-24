@@ -22,9 +22,23 @@ export interface IUserProfileCreate {
     is_superuser?: boolean;
 }
 
-export interface IUserContracts {
-    user_id: number;
+export interface IUserContract {
+    user_id?: number;
     nanny_id?: number;
     start?: string;
     end?: string;
+}
+
+export interface IUserContractCreate {
+    weekdays: string;
+    weeks: number;
+    hours: number;
+    price_hour_standard: number;
+    price_hour_extra: number;
+    price_fees: number;
+    price_meals?: number;
+    start?: Date;
+    end?: Date;
+    user_id?: number;
+    nanny_id?: number;
 }

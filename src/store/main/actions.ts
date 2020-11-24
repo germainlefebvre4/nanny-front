@@ -13,22 +13,13 @@ import {
     commitSetToken,
     commitSetUserProfile,
     commitSetContracts,
+    commitSetUserContract,
 } from './mutations';
 import { AppNotification, MainState } from './state';
 
 type MainContext = ActionContext<MainState, State>;
 
 export const actions = {
-    async actionGetContracts(context: MainContext) {
-        try {
-            const response = await api.getContracts(context.state.token);
-            if (response) {
-                commitSetContracts(context, response.data);
-            }
-        } catch (error) {
-            await dispatchCheckApiError(context, error);
-        }
-    },
     async actionLogIn(context: MainContext, payload: { username: string; password: string }) {
         try {
             const response = await api.logInGetToken(payload.username, payload.password);
@@ -165,6 +156,31 @@ export const actions = {
             commitAddNotification(context, { color: 'error', content: 'Error resetting password' });
         }
     },
+    async actionGetContracts(context: MainContext) {
+        try {
+            const response = await api.getContracts(context.state.token);
+            if (response) {
+                commitSetContracts(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionUpdateUserContract(context: MainContext, payload) {
+        try {
+            const loadingNotification = { content: 'saving', showProgress: true };
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.createContract(context.state.token, payload),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            commitSetUserContract(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, { content: 'Contract successfully updated', color: 'success' });
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
 };
 
 const { dispatch } = getStoreAccessors<MainState | any, State>('');
@@ -183,3 +199,4 @@ export const dispatchRemoveNotification = dispatch(actions.removeNotification);
 export const dispatchPasswordRecovery = dispatch(actions.passwordRecovery);
 export const dispatchResetPassword = dispatch(actions.resetPassword);
 export const dispatchGetContracts = dispatch(actions.actionGetContracts);
+export const dispatchUpdateUserContract = dispatch(actions.actionUpdateUserContract);
