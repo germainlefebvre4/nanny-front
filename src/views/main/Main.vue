@@ -38,6 +38,26 @@
           </v-list-tile>
         </v-list>
         <v-divider></v-divider>
+        <v-list subheader>
+          <v-subheader>Contracts</v-subheader>
+          <v-list-tile to="/main/contracts/view">
+            <v-list-tile-action>
+              <v-icon>assignment</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Manage Contracts</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile to="/main/contracts/create">
+            <v-list-tile-action>
+              <v-icon>assignment_ind</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Create Contract</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+        <v-divider></v-divider>
         <v-list subheader v-show="hasAdminAccess">
           <v-subheader>Admin</v-subheader>
           <v-list-tile to="/main/admin/users/all">

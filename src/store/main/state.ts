@@ -1,4 +1,4 @@
-import { IUserProfile } from '@/interfaces';
+import { IUserProfile, IUserContracts } from '@/interfaces';
 
 export interface AppNotification {
     content: string;
@@ -14,4 +14,5 @@ export interface MainState {
     dashboardMiniDrawer: boolean;
     dashboardShowDrawer: boolean;
     notifications: AppNotification[];
+    contracts: IUserContracts[];
 }

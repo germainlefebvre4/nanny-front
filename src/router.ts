@@ -59,6 +59,23 @@ export default new Router({
               ],
             },
             {
+              path: 'contracts',
+              component: RouterComponent,
+              redirect: 'contracts/view',
+              children: [
+                {
+                  path: 'view',
+                  component: () => import(
+                    /* webpackChunkName: "main-contracts" */ './views/main/contracts/UserContracts.vue'),
+                },
+                {
+                  path: 'create',
+                  component: () => import(
+                    /* webpackChunkName: "main-contracts-edit" */ './views/main/contracts/UserContractsCreate.vue'),
+                },
+              ],
+            },
+            {
               path: 'admin',
               component: () => import(/* webpackChunkName: "main-admin" */ './views/main/admin/Admin.vue'),
               redirect: 'admin/users/all',

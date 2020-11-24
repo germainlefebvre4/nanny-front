@@ -23,7 +23,7 @@
             lazy-validation
           >
             <v-text-field
-              label="Full Name"
+              label="Firstname"
               v-model="fullName"
               required
             ></v-text-field>
@@ -126,7 +126,7 @@ export default class EditUser extends Vue {
     this.password2 = '';
     this.$validator.reset();
     if (this.user) {
-      this.fullName = this.user.full_name;
+      this.fullName = this.user.firstname;
       this.email = this.user.email;
       this.isActive = this.user.is_active;
       this.isSuperuser = this.user.is_superuser;
@@ -141,7 +141,7 @@ export default class EditUser extends Vue {
     if (await this.$validator.validateAll()) {
       const updatedProfile: IUserProfileUpdate = {};
       if (this.fullName) {
-        updatedProfile.full_name = this.fullName;
+        updatedProfile.firstname = this.fullName;
       }
       if (this.email) {
         updatedProfile.email = this.email;

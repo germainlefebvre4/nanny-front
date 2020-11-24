@@ -7,7 +7,7 @@
       <v-card-text>
         <template>
           <v-form v-model="valid" ref="form" lazy-validation>
-            <v-text-field label="Full Name" v-model="fullName" required></v-text-field>
+            <v-text-field label="Firstname" v-model="fullName" required></v-text-field>
             <v-text-field label="E-mail" type="email" v-model="email" v-validate="'required|email'" data-vv-name="email" :error-messages="errors.collect('email')" required></v-text-field>
             <div class="subheading secondary--text text--lighten-2">User is superuser <span v-if="isSuperuser">(currently is a superuser)</span><span v-else>(currently is not a superuser)</span></div>
             <v-checkbox label="Is Superuser" v-model="isSuperuser"></v-checkbox>
@@ -81,7 +81,7 @@ export default class CreateUser extends Vue {
         email: this.email,
       };
       if (this.fullName) {
-        updatedProfile.full_name = this.fullName;
+        updatedProfile.firstname = this.fullName;
       }
       if (this.email) {
         updatedProfile.email = this.email;

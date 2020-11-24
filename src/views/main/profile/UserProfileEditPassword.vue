@@ -8,7 +8,7 @@
         <template>
           <div class="my-3">
             <div class="subheading secondary--text text--lighten-2">User</div>
-            <div class="title primary--text text--darken-2" v-if="userProfile.full_name">{{userProfile.full_name}}</div>
+            <div class="title primary--text text--darken-2" v-if="userProfile.firstname">{{userProfile.firstname}}</div>
             <div class="title primary--text text--darken-2" v-else>{{userProfile.email}}</div>
           </div>
           <v-form ref="form">
