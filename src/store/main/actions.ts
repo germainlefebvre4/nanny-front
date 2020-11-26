@@ -13,6 +13,7 @@ import {
     commitSetToken,
     commitSetUserProfile,
     commitSetContracts,
+    commitSetContract,
     commitSetUserContract,
 } from './mutations';
 import { AppNotification, MainState } from './state';
@@ -166,6 +167,16 @@ export const actions = {
             await dispatchCheckApiError(context, error);
         }
     },
+    async actionGetContract(context: MainContext, userId: number) {
+        try {
+            const response = await api.getContract(context.state.token, userId);
+            if (response) {
+                commitSetContract(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
     async actionUpdateUserContract(context: MainContext, payload) {
         try {
             const loadingNotification = { content: 'saving', showProgress: true };
@@ -199,4 +210,5 @@ export const dispatchRemoveNotification = dispatch(actions.removeNotification);
 export const dispatchPasswordRecovery = dispatch(actions.passwordRecovery);
 export const dispatchResetPassword = dispatch(actions.resetPassword);
 export const dispatchGetContracts = dispatch(actions.actionGetContracts);
+export const dispatchGetContract = dispatch(actions.actionGetContract);
 export const dispatchUpdateUserContract = dispatch(actions.actionUpdateUserContract);

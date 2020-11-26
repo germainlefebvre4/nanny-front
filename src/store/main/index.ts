@@ -13,7 +13,32 @@ const defaultState: MainState = {
   dashboardShowDrawer: true,
   notifications: [],
   contracts: [],
-  userContract: {},
+  userContract: {
+    weekdays: '',
+    weeks: 0,
+    hours: 0,
+    price_hour_standard: 0,
+    price_hour_extra: 0,
+    price_fees: 0,
+    price_meals: 0,
+    start: '',
+    end: '',
+    user_id: 0,
+    nanny_id: 0,
+  },
+  contract: {
+    weekdays: '',
+    weeks: 0,
+    hours: 0,
+    price_hour_standard: 0,
+    price_hour_extra: 0,
+    price_fees: 0,
+    price_meals: 0,
+    start: '',
+    end: '',
+    user_id: 0,
+    nanny_id: 0,
+  },
 };
 
 export const mainModule = {

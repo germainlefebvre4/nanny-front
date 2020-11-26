@@ -16,6 +16,7 @@ export const getters = {
     isLoggedIn: (state: MainState) => state.isLoggedIn,
     firstNotification: (state: MainState) => state.notifications.length > 0 && state.notifications[0],
     contracts: (state: MainState) => state.contracts,
+    contract: (state: MainState) => state.contract,
 };
 
 const {read} = getStoreAccessors<MainState, State>('');
@@ -29,3 +30,4 @@ export const readToken = read(getters.token);
 export const readUserProfile = read(getters.userProfile);
 export const readFirstNotification = read(getters.firstNotification);
 export const readContracts = read(getters.contracts);
+export const readContract = read(getters.contract);

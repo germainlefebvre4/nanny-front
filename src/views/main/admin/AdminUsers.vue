@@ -9,9 +9,11 @@
     </v-toolbar>
     <v-data-table :headers="headers" :items="users">
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.name }}</td>
+        <td>{{ props.item.id }}</td>
         <td>{{ props.item.email }}</td>
         <td>{{ props.item.firstname }}</td>
+        <td><v-icon v-if="props.item.is_user">checkmark</v-icon></td>
+        <td><v-icon v-if="props.item.is_nanny">checkmark</v-icon></td>
         <td><v-icon v-if="props.item.is_active">checkmark</v-icon></td>
         <td><v-icon v-if="props.item.is_superuser">checkmark</v-icon></td>
         <td class="justify-center layout px-0">
@@ -38,7 +40,7 @@ import { dispatchGetUsers } from '@/store/admin/actions';
 export default class AdminUsers extends Vue {
   public headers = [
     {
-      text: 'Name',
+      text: 'ID',
       sortable: true,
       value: 'name',
       align: 'left',
@@ -53,6 +55,18 @@ export default class AdminUsers extends Vue {
       text: 'Firstname',
       sortable: true,
       value: 'firstname',
+      align: 'left',
+    },
+    {
+      text: 'Is User',
+      sortable: true,
+      value: 'isUser',
+      align: 'left',
+    },
+    {
+      text: 'Is Nanny',
+      sortable: true,
+      value: 'isNanny',
       align: 'left',
     },
     {

@@ -32,6 +32,9 @@ export const mutations = {
     setContracts(state: MainState, payload: IUserContract[]) {
         state.contracts = payload;
     },
+    setContract(state: MainState, payload: IUserContract) {
+        state.contract = payload;
+    },
     setUserContract(state: MainState, payload: IUserContract) {
         state.userContract = payload;
     },
@@ -49,4 +52,5 @@ export const commitSetUserProfile = commit(mutations.setUserProfile);
 export const commitAddNotification = commit(mutations.addNotification);
 export const commitRemoveNotification = commit(mutations.removeNotification);
 export const commitSetContracts = commit(mutations.setContracts);
+export const commitSetContract = commit(mutations.setContract);
 export const commitSetUserContract = commit(mutations.setUserContract);

@@ -45,13 +45,12 @@ export const api = {
   async getContracts(token: string) {
     return axios.get<IUserContract[]>(`${apiUrl}/api/v1/contracts/`, authHeaders(token));
   },
+  async getContract(token: string, userId: number) {
+    return axios.get<IUserContract>(`${apiUrl}/api/v1/contracts/${userId}`, authHeaders(token));
+  },
   async createContract(token: string, data: IUserContractCreate) {
-    console.log(data)
-    console.log(data.user_id)
-    var userId;
-    var nannyId;
-    userId = data.user_id;
-    nannyId = data.nanny_id;
+    const userId = data.user_id;
+    const nannyId = data.nanny_id;
     delete data.user_id;
     delete data.nanny_id;
     if (!nannyId) {

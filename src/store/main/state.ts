@@ -16,4 +16,5 @@ export interface MainState {
     notifications: AppNotification[];
     contracts: IUserContract[];
     userContract: IUserContract;
+    contract: IUserContract;
 }

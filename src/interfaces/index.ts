@@ -23,10 +23,17 @@ export interface IUserProfileCreate {
 }
 
 export interface IUserContract {
-    user_id?: number;
-    nanny_id?: number;
+    weekdays: string;
+    weeks: number;
+    hours: number;
+    price_hour_standard: number;
+    price_hour_extra: number;
+    price_fees: number;
+    price_meals?: number;
     start?: string;
     end?: string;
+    user_id?: number;
+    nanny_id?: number;
 }
 
 export interface IUserContractCreate {
@@ -37,8 +44,22 @@ export interface IUserContractCreate {
     price_hour_extra: number;
     price_fees: number;
     price_meals?: number;
-    start?: Date;
-    end?: Date;
+    start?: string;
+    end?: string;
+    user_id?: number;
+    nanny_id?: number;
+}
+
+export interface IUserContractUpdate {
+    weekdays: string;
+    weeks: number;
+    hours: number;
+    price_hour_standard: number;
+    price_hour_extra: number;
+    price_fees: number;
+    price_meals?: number;
+    start?: string;
+    end?: string;
     user_id?: number;
     nanny_id?: number;
 }

@@ -73,6 +73,12 @@ export default new Router({
                   component: () => import(
                     /* webpackChunkName: "main-contracts-edit" */ './views/main/contracts/UserContractsCreate.vue'),
                 },
+                {
+                  path: 'edit/:id',
+                  name: 'main-contracts-edit',
+                  component: () => import(
+                    /* webpackChunkName: "main-contract-edit" */ './views/main/contracts/UserContractEdit.vue'),
+                },
               ],
             },
             {
