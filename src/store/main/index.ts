@@ -15,7 +15,11 @@ const defaultState: MainState = {
   contracts: [],
   userContract: null,
   contract: null,
-  searchNanny: null,
+  searchNanny: {
+    id: 0,
+    email: '',
+    firstname: '',
+  },
 };
 
 export const mainModule = {

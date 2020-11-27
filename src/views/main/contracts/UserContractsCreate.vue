@@ -20,6 +20,7 @@
                 <v-text-field
                   v-model="nannyEmail"
                   label="Adresse email"
+                  :color="checkNannyEntity(nanny)?'success':'red'"
                 ></v-text-field>
               </v-flex>
               <v-flex grow>
@@ -27,11 +28,14 @@
                   @click="searchNannyByEmail"
                 >Rechercher</v-btn>
               </v-flex>
+              <v-flex grow>
                 <v-text-field
-                  v-model="nannyFirstname"
-                  label="Prénom"
+                  label="Prénom de la Nounou"
+                  :value="checkNannyEntity(nanny)?nanny.firstname:''"
+                  :color="checkNannyEntity(nanny)?'success':'red'"
                   disabled
                 ></v-text-field>
+              </v-flex>
             </v-layout>
 
             <v-subheader>* Jours de présence semaine</v-subheader>
@@ -295,7 +299,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { IUserContractCreate } from '@/interfaces';
+import { IUserContractCreate, INanny } from '@/interfaces';
 import { readUserProfile, readSearchNanny } from '@/store/main/getters';
 import { dispatchCreateUserContract, dispatchSearchNannyByEmail } from '@/store/main/actions';
 import { Dictionary } from 'vue-router/types/router';
@@ -409,13 +413,15 @@ export default class UserContractCreate extends Vue {
       if (this.dateEnd) {
         updatedContract.end = this.dateEnd;
       }
+      if (this.nanny?.id != 0) {
+        updatedContract.nanny_id = this.nanny?.id;
+      }
       await dispatchCreateUserContract(this.$store, updatedContract);
       this.$router.push('/main/contracts');
     }
   }
 
   public async searchNannyByEmail() {
-    console.log('searchNannyByEmail', this.nannyEmail);
     const nanny = await this.setSearchNanny(this.nannyEmail);
     await this.getSearchNanny();
   }
@@ -424,17 +430,20 @@ export default class UserContractCreate extends Vue {
     return readSearchNanny(this.$store);
   }
 
+  set nanny(nanny: INanny | null) {
+    this.nanny = nanny;
+  }
+
   public getSearchNanny() {
     const nanny = readSearchNanny(this.$store);
-    if (nanny) {
-      this.nannyFirstname = nanny.firstname;
-    } else {
-      this.nannyFirstname = '';
-    }
     return nanny;
   }
   public setSearchNanny(nannyEmail) {
     dispatchSearchNannyByEmail(this.$store, nannyEmail);
+  }
+
+  public checkNannyEntity(n) {
+    return true ? n : false;
   }
 
 }
