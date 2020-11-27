@@ -28,7 +28,7 @@
                 >Rechercher</v-btn>
               </v-flex>
                 <v-text-field
-                  v-model="nanny.firstname"
+                  v-model="nannyFirstname"
                   label="Prénom"
                   disabled
                 ></v-text-field>
@@ -313,6 +313,7 @@ export default class UserContractCreate extends Vue {
     sunday: false,
   };
   public nannyEmail: string = '';
+  public nannyFirstname: string = '';
   // public nanny = {
   //   id: '',
   //   email: '',
@@ -416,9 +417,7 @@ export default class UserContractCreate extends Vue {
   public async searchNannyByEmail() {
     console.log('searchNannyByEmail', this.nannyEmail);
     const nanny = await this.setSearchNanny(this.nannyEmail);
-    if (this.nanny?.email !== '' && this.nanny?.firstname) {
-      await this.getSearchNanny();
-    }
+    await this.getSearchNanny();
   }
 
   get nanny() {
@@ -426,7 +425,13 @@ export default class UserContractCreate extends Vue {
   }
 
   public getSearchNanny() {
-    return readSearchNanny(this.$store);
+    const nanny = readSearchNanny(this.$store);
+    if (nanny) {
+      this.nannyFirstname = nanny.firstname;
+    } else {
+      this.nannyFirstname = '';
+    }
+    return nanny;
   }
   public setSearchNanny(nannyEmail) {
     dispatchSearchNannyByEmail(this.$store, nannyEmail);
