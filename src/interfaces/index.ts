@@ -6,6 +6,12 @@ export interface IUserProfile {
     id: number;
 }
 
+export interface INanny {
+    email: string;
+    firstname: string;
+    id: number;
+}
+
 export interface IUserProfileUpdate {
     email?: string;
     firstname?: string;
@@ -23,6 +29,7 @@ export interface IUserProfileCreate {
 }
 
 export interface IUserContract {
+    id: number;
     weekdays: string;
     weeks: number;
     hours: number;
@@ -51,6 +58,7 @@ export interface IUserContractCreate {
 }
 
 export interface IUserContractUpdate {
+    id: number;
     weekdays: string;
     weeks: number;
     hours: number;

@@ -1,4 +1,4 @@
-import { IUserProfile, IUserContract } from '@/interfaces';
+import { IUserProfile, INanny, IUserContract } from '@/interfaces';
 import { MainState, AppNotification } from './state';
 import { getStoreAccessors } from 'typesafe-vuex';
 import { State } from '../state';
@@ -35,8 +35,8 @@ export const mutations = {
     setContract(state: MainState, payload: IUserContract) {
         state.contract = payload;
     },
-    setUserContract(state: MainState, payload: IUserContract) {
-        state.userContract = payload;
+    setSearchNanny(state: MainState, payload: INanny) {
+        state.searchNanny = payload;
     },
 
 };
@@ -53,4 +53,4 @@ export const commitAddNotification = commit(mutations.addNotification);
 export const commitRemoveNotification = commit(mutations.removeNotification);
 export const commitSetContracts = commit(mutations.setContracts);
 export const commitSetContract = commit(mutations.setContract);
-export const commitSetUserContract = commit(mutations.setUserContract);
+export const commitSetSearchNanny = commit(mutations.setSearchNanny);

@@ -13,60 +13,79 @@
               disabled
             ></v-text-field>
 
+
+            <v-subheader>* Rattacher la nounou avec son adresse email</v-subheader>
+            <v-layout wrap fill-height>
+              <v-flex grow>
+                <v-text-field
+                  v-model="nannyEmail"
+                  label="Adresse email"
+                ></v-text-field>
+              </v-flex>
+              <v-flex grow>
+                <v-btn
+                  @click="searchNannyByEmail"
+                >Rechercher</v-btn>
+              </v-flex>
+                <v-text-field
+                  v-model="nanny.firstname"
+                  label="Prénom"
+                  disabled
+                ></v-text-field>
+            </v-layout>
+
             <v-subheader>* Jours de présence semaine</v-subheader>
-            <v-container>
-                <v-layout wrap fill-height>
-                  <v-flex grow>
-                    <v-checkbox
-                      v-model="weekdays.monday"
-                      type="boolean"
-                      label="Monday"
-                    ></v-checkbox>
-                  </v-flex>
-                  <v-flex grow>
-                    <v-checkbox
-                      v-model="weekdays.tuesday"
-                      type="boolean"
-                      label="Tuesday"
-                    ></v-checkbox>
-                  </v-flex>
-                  <v-flex grow>
-                    <v-checkbox
-                      v-model="weekdays.wednesday"
-                      type="boolean"
-                      label="Wednesday"
-                    ></v-checkbox>
-                  </v-flex>
-                  <v-flex grow>
-                    <v-checkbox
-                      v-model="weekdays.thursday"
-                      type="boolean"
-                      label="Thursday"
-                    ></v-checkbox>
-                  </v-flex>
-                  <v-flex grow>
-                    <v-checkbox
-                      v-model="weekdays.friday"
-                      type="boolean"
-                      label="Friday"
-                    ></v-checkbox>
-                  </v-flex>
-                  <v-flex grow>
-                    <v-checkbox
-                      v-model="weekdays.saturday"
-                      type="boolean"
-                      label="Saturday"
-                    ></v-checkbox>
-                  </v-flex>
-                  <v-flex grow>
-                    <v-checkbox
-                      v-model="weekdays.sunday"
-                      type="boolean"
-                      label="Sunday"
-                    ></v-checkbox>
-                </v-flex>
-              </v-layout>
-            </v-container>
+            <v-layout wrap fill-height>
+              <v-flex grow>
+                <v-checkbox
+                  v-model="weekdays.monday"
+                  type="boolean"
+                  label="Monday"
+                ></v-checkbox>
+              </v-flex>
+              <v-flex grow>
+                <v-checkbox
+                  v-model="weekdays.tuesday"
+                  type="boolean"
+                  label="Tuesday"
+                ></v-checkbox>
+              </v-flex>
+              <v-flex grow>
+                <v-checkbox
+                  v-model="weekdays.wednesday"
+                  type="boolean"
+                  label="Wednesday"
+                ></v-checkbox>
+              </v-flex>
+              <v-flex grow>
+                <v-checkbox
+                  v-model="weekdays.thursday"
+                  type="boolean"
+                  label="Thursday"
+                ></v-checkbox>
+              </v-flex>
+              <v-flex grow>
+                <v-checkbox
+                  v-model="weekdays.friday"
+                  type="boolean"
+                  label="Friday"
+                ></v-checkbox>
+              </v-flex>
+              <v-flex grow>
+                <v-checkbox
+                  v-model="weekdays.saturday"
+                  type="boolean"
+                  label="Saturday"
+                ></v-checkbox>
+              </v-flex>
+              <v-flex grow>
+                <v-checkbox
+                  v-model="weekdays.sunday"
+                  type="boolean"
+                  label="Sunday"
+                ></v-checkbox>
+              </v-flex>
+            </v-layout>
 
             <v-subheader>* Nombre de semaines dans l'année</v-subheader>
             <v-layout wrap fill-height>
@@ -145,7 +164,7 @@
                 min=0
                 max=10
                 step="0.1"
-                :rules="validationPriceHourExtra"
+                :rules="validatePriceHourExtra"
                 required
               ></v-slider>
               </v-flex>
@@ -168,7 +187,7 @@
                   min=0
                   max=10
                   step="0.01"
-                  :rules="validationPriceDayFees"
+                  :rules="validatePriceDayFees"
                   required
                 ></v-slider>
               </v-flex>
@@ -191,7 +210,7 @@
                   min=0
                   max=10
                   step="0.1"
-                  :rules="validationPriceDayMeals"
+                  :rules="validatePriceDayMeals"
                 ></v-slider>
               </v-flex>
               <v-flex shrink class="hidden-sm-and-down" style="width: 60px; margin-left: 15px;">
@@ -277,8 +296,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
 import { IUserContractCreate } from '@/interfaces';
-import { readUserProfile } from '@/store/main/getters';
-import { dispatchUpdateUserContract } from '@/store/main/actions';
+import { readUserProfile, readSearchNanny } from '@/store/main/getters';
+import { dispatchCreateUserContract, dispatchSearchNannyByEmail } from '@/store/main/actions';
 import { Dictionary } from 'vue-router/types/router';
 
 @Component
@@ -293,6 +312,12 @@ export default class UserContractCreate extends Vue {
     saturday: false,
     sunday: false,
   };
+  public nannyEmail: string = '';
+  // public nanny = {
+  //   id: '',
+  //   email: '',
+  //   firstname: '',
+  // }
   public weeks: number = 47;
   public hours: number = 40;
   public priceHourStandard: number = 3.5;
@@ -307,22 +332,24 @@ export default class UserContractCreate extends Vue {
   public menuDateEnd: boolean = false;
 
 
+  private validateNannyEmail = [
+  ];
   private validateHours = [
-    (v) => v <= 60 || 'Ca commence à faire beaucoup !',
   ];
   private validatePriceHourStandard = [
     (v) => v >= 2.85 || 'Le minmum légal est 2,85€',
-    (v) => v <= 5 || 'Ca commence à faire beaucoup !',
+    (v) => v <= 10 || 'Ca commence à faire beaucoup !',
   ];
   private validatePriceHourExtra = [
     (v) => v <= 8 || 'Le minmum légal est 2,85€',
+    (v) => v <= 15 || 'Ca commence à faire beaucoup !',
   ];
   private validatePriceDayFees = [
-    (v) => v <= 2.65 || 'Le minimum légal est 2.65€',
-    (v) => v <= 8 || 'Ca commence à faire beaucoup !',
+    (v) => v >= 2.65 || 'Le minimum légal est 2.65€',
+    (v) => v <= 10 || 'Ca commence à faire beaucoup !',
   ];
   private validatePriceDayMeals = [
-    (v) => v <= 8 || 'Ca commence à faire beaucoup !',
+    (v) => v <= 10 || 'Ca commence à faire beaucoup !',
   ];
   private validateDateStart = [
   ];
@@ -381,9 +408,28 @@ export default class UserContractCreate extends Vue {
       if (this.dateEnd) {
         updatedContract.end = this.dateEnd;
       }
-      await dispatchUpdateUserContract(this.$store, updatedContract);
-      // this.$router.push('/main/contracts');
+      await dispatchCreateUserContract(this.$store, updatedContract);
+      this.$router.push('/main/contracts');
     }
+  }
+
+  public async searchNannyByEmail() {
+    console.log('searchNannyByEmail', this.nannyEmail);
+    const nanny = await this.setSearchNanny(this.nannyEmail);
+    if (this.nanny?.email !== '' && this.nanny?.firstname) {
+      await this.getSearchNanny();
+    }
+  }
+
+  get nanny() {
+    return readSearchNanny(this.$store);
+  }
+
+  public getSearchNanny() {
+    return readSearchNanny(this.$store);
+  }
+  public setSearchNanny(nannyEmail) {
+    dispatchSearchNannyByEmail(this.$store, nannyEmail);
   }
 
 }

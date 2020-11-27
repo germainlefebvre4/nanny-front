@@ -20,9 +20,27 @@
               <v-icon>edit</v-icon>
             </v-btn>
           </v-tooltip>
+          <v-tooltip top>
+            <span>Delete</span>
+            <v-btn slot="activator" flat @click="showDeleteDialog(props.item.id)">
+              <v-icon>delete</v-icon>
+            </v-btn>
+          </v-tooltip>
         </td>
       </template>
     </v-data-table>
+
+    <v-dialog v-model="deleteContractDialog" max-width="500px">
+      <v-card>
+        <v-card-title>Delete</v-card-title>
+        <v-card-text>To delete?</v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" text @click="deleteContractDialog = false">Close</v-btn>
+          <v-btn color="primary" text @click="deleteItem()">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
   </div>
 </template>
 
@@ -30,7 +48,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
 import { readUserProfile, readContracts } from '@/store/main/getters';
-import { dispatchGetContracts } from '@/store/main/actions';
+import { dispatchGetContracts, dispatchRemoveContract } from '@/store/main/actions';
 
 @Component
 export default class UserContracts extends Vue {
@@ -65,12 +83,28 @@ export default class UserContracts extends Vue {
     },
   ];
 
+  public deleteContractId;
+  public deleteContractDialog: boolean = false;
+
+
   get contracts() {
     return readContracts(this.$store);
   }
 
   public async mounted() {
     await dispatchGetContracts(this.$store);
+  }
+
+  public showDeleteDialog(item) {
+      this.deleteContractId = item;
+      this.deleteContractDialog = !this.deleteContractDialog;
+  }
+
+  public async deleteItem() {
+      await dispatchRemoveContract(this.$store, this.deleteContractId);
+      await dispatchGetContracts(this.$store);
+      this.deleteContractDialog = !this.deleteContractDialog;
+      delete this.deleteContractId;
   }
 
 }

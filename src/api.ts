@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { apiUrl } from '@/env';
-import { IUserProfile, IUserProfileUpdate, IUserProfileCreate, IUserContract, IUserContractCreate } from './interfaces';
+import { IUserProfile, IUserProfileUpdate, IUserProfileCreate, INanny, IUserContract, IUserContractCreate } from './interfaces';
 
 function authHeaders(token: string) {
   return {
@@ -61,7 +61,16 @@ export const api = {
         data, authHeaders(token));
     }
   },
-  // async createContract(token: string, data: IUserContractCreate) {
-  //   return axios.post(`${apiUrl}/api/v1/contracts/`, data, authHeaders(token));
-  // },
+  async updateContract(token: string, data: IUserContractCreate, contractId: number) {
+    delete data.user_id;
+    delete data.nanny_id;
+    return axios.put(`${apiUrl}/api/v1/contracts/${contractId}`,
+      data, authHeaders(token));
+  },
+  async removeContract(token: string, contractId: number) {
+    return axios.delete(`${apiUrl}/api/v1/contracts/${contractId}`, authHeaders(token));
+  },
+  async getNannyByEmail(token: string, nannyEmail: string) {
+    return axios.get<INanny>(`${apiUrl}/api/v1/users/nanny/_search?email=${nannyEmail}`, authHeaders(token));
+  },
 };

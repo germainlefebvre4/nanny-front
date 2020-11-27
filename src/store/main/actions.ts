@@ -1,4 +1,5 @@
 import { api } from '@/api';
+import { INanny } from '@/interfaces';
 import router from '@/router';
 import { getLocalToken, removeLocalToken, saveLocalToken } from '@/utils';
 import { AxiosError } from 'axios';
@@ -14,7 +15,7 @@ import {
     commitSetUserProfile,
     commitSetContracts,
     commitSetContract,
-    commitSetUserContract,
+    commitSetSearchNanny,
 } from './mutations';
 import { AppNotification, MainState } from './state';
 
@@ -177,7 +178,7 @@ export const actions = {
             await dispatchCheckApiError(context, error);
         }
     },
-    async actionUpdateUserContract(context: MainContext, payload) {
+    async actionCreateUserContract(context: MainContext, payload) {
         try {
             const loadingNotification = { content: 'saving', showProgress: true };
             commitAddNotification(context, loadingNotification);
@@ -185,9 +186,55 @@ export const actions = {
                 api.createContract(context.state.token, payload),
                 await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
             ]))[0];
-            commitSetUserContract(context, response.data);
             commitRemoveNotification(context, loadingNotification);
             commitAddNotification(context, { content: 'Contract successfully updated', color: 'success' });
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionUpdateUserContract(context: MainContext, payload) {
+        const contractId = payload.id;
+        try {
+            const loadingNotification = { content: 'saving', showProgress: true };
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.updateContract(context.state.token, payload, contractId),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, { content: 'Contract successfully updated', color: 'success' });
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionRemoveContract(context: MainContext, userId: number) {
+        try {
+            const loadingNotification = { content: 'deleting', showProgress: true };
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.removeContract(context.state.token, userId),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            // commitRemoveUserContract(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, { content: 'Contract successfully deleted', color: 'success' });
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionSearchNannyByEmail(context: MainContext, nannyEmail: string) {
+        try {
+            const response = await api.getNannyByEmail(context.state.token, nannyEmail);
+            if (response) {
+                commitSetSearchNanny(context, response.data);
+            } else {
+                const nannyEmpty: INanny = {
+                    id: 0,
+                    firstname: '',
+                    email: '',
+                };
+                commitSetSearchNanny(context, nannyEmpty);
+            }
         } catch (error) {
             await dispatchCheckApiError(context, error);
         }
@@ -211,4 +258,7 @@ export const dispatchPasswordRecovery = dispatch(actions.passwordRecovery);
 export const dispatchResetPassword = dispatch(actions.resetPassword);
 export const dispatchGetContracts = dispatch(actions.actionGetContracts);
 export const dispatchGetContract = dispatch(actions.actionGetContract);
+export const dispatchCreateUserContract = dispatch(actions.actionCreateUserContract);
 export const dispatchUpdateUserContract = dispatch(actions.actionUpdateUserContract);
+export const dispatchRemoveContract = dispatch(actions.actionRemoveContract);
+export const dispatchSearchNannyByEmail = dispatch(actions.actionSearchNannyByEmail);

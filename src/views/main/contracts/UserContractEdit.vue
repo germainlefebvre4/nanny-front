@@ -164,17 +164,18 @@ export default class UserContractEdit extends Vue {
       }
       const updatedWeekdays = updatedWeekdaysList.join(' ');
       const updatedContract: IUserContractUpdate = {
+        id: this.contractId,
         weekdays: updatedWeekdays,
         weeks: this.weeks,
         hours: this.hours,
-        price_hour_standard: this.priceHourStandard,
-        price_hour_extra: this.priceHourExtra,
-        price_fees: this.priceDayFees,
+        price_hour_standard: parseFloat(this.priceHourStandard.toFixed(2)),
+        price_hour_extra: parseFloat(this.priceHourExtra.toFixed(2)),
+        price_fees: parseFloat(this.priceDayFees.toFixed(2)),
         user_id: this.userId,
         nanny_id: this.nannyId,
       };
       if (this.priceDayMeals) {
-        updatedContract.price_meals = this.priceDayMeals;
+        updatedContract.price_meals = parseFloat(this.priceDayMeals.toFixed(2));
       }
       if (this.dateStart) {
         updatedContract.start = this.dateStart;
