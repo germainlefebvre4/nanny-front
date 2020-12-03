@@ -6,7 +6,6 @@
       </v-card-title>
       <v-card-text>
         <h3 ref="selectedMonth">{{ selectedMonthString }} {{ selectedYear }}</h3>
-        <div>{{ workingDays }}</div>
         <v-layout wrap>
         <v-flex
               xs12
@@ -21,9 +20,7 @@
             :type="type"
             :weekdays=weekdays
             :show-week='true'
-            :events="eventsMap"
-            @click:day="addEvent"
-            @click:event="showEvent"
+            :events="workingDaysMap"
             @change="updateRange"
           >
 <!---
@@ -38,54 +35,32 @@
           </template>
 --->
           <template v-slot:day="{ date }">
-            <template v-for="event in workingDaysMap[date]">
-              <v-menu
-                :key="event.day"
-                v-model="event.open"
-                full-width
-                offset-x
-              >
-                <template v-slot>
-                  <div
-                    v-ripple
-                    class="my-event"
-                    v-html="event.day"
-                  ></div>
-                </template>
-                <v-card
-                  color="grey lighten-4"
-                  min-width="350px"
-                  flat
+            <template v-for="(key, event) in workingDaysMap[date]">
+                <v-menu
+                  color="primary"
+                  :key="event.key"
+                  v-model="event.open"
+                  full-width
+                  offset-x
                 >
-                  <v-toolbar
+                  <template v-slot:activator="{ on }">
+                    <div
+                      v-ripple
+                      color="primary"
+                      v-on="on"
+                      v-html="event.day"
+                    ></div>
+                  </template>
+                  <v-card
                     color="primary"
-                    dark
+                    min-width="350px"
+                    flat
                   >
-                    <v-btn icon>
-                      <v-icon>edit</v-icon>
-                    </v-btn>
-                    <v-toolbar-title v-html="event.day"></v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn icon>
-                      <v-icon>favorite</v-icon>
-                    </v-btn>
-                    <v-btn icon>
-                      <v-icon>more_vert</v-icon>
-                    </v-btn>
-                  </v-toolbar>
-                  <v-card-title primary-title>
-                    <span v-html="event.day"></span>
-                  </v-card-title>
-                  <v-card-actions>
-                    <v-btn
-                      flat
-                      color="secondary"
-                    >
-                      Cancel
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-menu>
+                    <v-card-title primary-title>
+                      <span v-html="event.day"></span>
+                    </v-card-title>
+                  </v-card>
+                </v-menu>
             </template>
           </template>
 
@@ -139,103 +114,6 @@
       </v-card-text>
     </v-card>
 
-    <v-menu
-      v-model="selectedOpen"
-      :close-on-content-click="false"
-      :activator="selectedElement"
-      offset-x
-    >
-      <v-card
-        color="primary"
-        min-width="350px"
-        flat
-      >
-        <v-toolbar
-          :color="selectedEvent.color"
-          dark
-        >
-          <v-btn icon>
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-          <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon
-              @click="delEvent"
-            >mdi-delete</v-icon>
-          </v-btn>
-          <v-btn icon>
-            <v-icon
-              @click="selectedOpen = false"
-            >mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-card-text>
-          <span v-html="selectedEvent.details"></span>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            text
-            color="primary"
-            @click="selectedOpen = false"
-          >
-            Cancel
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-menu>
-
-
-    <v-menu
-      v-model="eventMenuOpen"
-      :close-on-content-click="false"
-      :activator="newElement"
-      :position-x="newEvent.x"
-      :position-y="newEvent.y"
-      absolute
-      offset-y
-    >
-      <v-card
-        color="light"
-        min-width="350px"
-        flat
-      >
-        <v-toolbar
-          color="primary"
-        >
-          <v-toolbar-title>Ajouter une journée</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon
-              @click="eventMenuOpen = false"
-            >close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        
-        <v-card-text>
-          <span v-html="newEvent.details"></span>
-            <v-form v-model="valid">
-                Date : {{ this.selectedDate }}
-
-                <v-select
-                  :items="absenceTypeList"
-                  :menu-props="{ top: true, offsetY: true }"
-                  label="Type d'absence"
-                  item-value="id"
-                  item-text="name"
-                  @change="changeAbsenceType"
-                ></v-select>
-
-                <v-btn
-                  @click="submit"
-                  :disabled="!valid"
-                >
-                  Submit
-                </v-btn>
-            </v-form>
-        </v-card-text>
-      </v-card>
-    </v-menu>
 
 
   </v-container>
@@ -425,6 +303,10 @@ export default class UserContractCalendar extends Vue {
 
     console.log(map);
     return map;
+  }
+
+  public open(event) {
+    alert(event.day)
   }
 
 }
