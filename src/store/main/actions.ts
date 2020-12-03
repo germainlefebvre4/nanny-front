@@ -16,6 +16,7 @@ import {
     commitSetContracts,
     commitSetContract,
     commitSetSearchNanny,
+    commitSetWorkingDays,
 } from './mutations';
 import { AppNotification, MainState } from './state';
 
@@ -239,6 +240,19 @@ export const actions = {
             await dispatchCheckApiError(context, error);
         }
     },
+    async actionGetWorkingDays(context: MainContext, payload) {
+        const contractId = payload.contractId;
+        const year = payload.year;
+        const month = payload.month;
+        try {
+            const response = await api.getWorkingDays(context.state.token, contractId, year, month);
+            if (response) {
+                commitSetWorkingDays(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
 };
 
 const { dispatch } = getStoreAccessors<MainState | any, State>('');
@@ -262,3 +276,4 @@ export const dispatchCreateUserContract = dispatch(actions.actionCreateUserContr
 export const dispatchUpdateUserContract = dispatch(actions.actionUpdateUserContract);
 export const dispatchRemoveContract = dispatch(actions.actionRemoveContract);
 export const dispatchSearchNannyByEmail = dispatch(actions.actionSearchNannyByEmail);
+export const dispatchGetWorkingDays = dispatch(actions.actionGetWorkingDays);

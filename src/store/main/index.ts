@@ -20,6 +20,7 @@ const defaultState: MainState = {
     email: '',
     firstname: '',
   },
+  workingDays: [],
 };
 
 export const mainModule = {

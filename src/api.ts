@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { apiUrl } from '@/env';
-import { IUserProfile, IUserProfileUpdate, IUserProfileCreate, INanny, IUserContract, IUserContractCreate } from './interfaces';
+import { IUserProfile, IUserProfileUpdate, IUserProfileCreate, INanny, IUserContract, IUserContractCreate, IWorkingDays } from './interfaces';
 
 function authHeaders(token: string) {
   return {
@@ -45,8 +45,8 @@ export const api = {
   async getContracts(token: string) {
     return axios.get<IUserContract[]>(`${apiUrl}/api/v1/contracts/`, authHeaders(token));
   },
-  async getContract(token: string, userId: number) {
-    return axios.get<IUserContract>(`${apiUrl}/api/v1/contracts/${userId}`, authHeaders(token));
+  async getContract(token: string, contractId: number) {
+    return axios.get<IUserContract>(`${apiUrl}/api/v1/contracts/${contractId}`, authHeaders(token));
   },
   async createContract(token: string, data: IUserContractCreate) {
     const userId = data.user_id;
@@ -72,5 +72,8 @@ export const api = {
   },
   async getNannyByEmail(token: string, nannyEmail: string) {
     return axios.get<INanny>(`${apiUrl}/api/v1/users/nanny/_search?email=${nannyEmail}`, authHeaders(token));
+  },
+  async getWorkingDays(token: string, contractId: number, year: number, month: number) {
+    return axios.get<IWorkingDays>(`${apiUrl}/api/v1/contracts/${contractId}/working_days?year=${year}&month=${month}`, authHeaders(token));
   },
 };

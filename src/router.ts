@@ -79,6 +79,12 @@ export default new Router({
                   component: () => import(
                     /* webpackChunkName: "main-contract-edit" */ './views/main/contracts/UserContractEdit.vue'),
                 },
+                {
+                  path: 'calendar/:id',
+                  name: 'main-contracts-calendar',
+                  component: () => import(
+                    /* webpackChunkName: "main-contract-edit" */ './views/main/contracts/UserContractCalendar.vue'),
+                },
               ],
             },
             {

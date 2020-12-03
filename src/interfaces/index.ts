@@ -71,3 +71,14 @@ export interface IUserContractUpdate {
     user_id?: number;
     nanny_id?: number;
 }
+
+export interface IWorkingDays {
+    id: number;
+    day_type_id: number;
+    contract_id: number;
+    day: string;
+    start?: string;
+    end?: string;
+    created_on: string;
+    updated_on?: string;
+}

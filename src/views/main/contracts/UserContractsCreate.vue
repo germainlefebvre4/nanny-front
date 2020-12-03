@@ -413,7 +413,7 @@ export default class UserContractCreate extends Vue {
       if (this.dateEnd) {
         updatedContract.end = this.dateEnd;
       }
-      if (this.nanny?.id != 0) {
+      if (this.nanny?.id !== 0) {
         updatedContract.nanny_id = this.nanny?.id;
       }
       await dispatchCreateUserContract(this.$store, updatedContract);

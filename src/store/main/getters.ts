@@ -18,6 +18,7 @@ export const getters = {
     contracts: (state: MainState) => state.contracts,
     contract: (state: MainState) => state.contract,
     searchNanny: (state: MainState) => state.searchNanny,
+    workingDays: (state: MainState) => state.workingDays,
 };
 
 const {read} = getStoreAccessors<MainState, State>('');
@@ -33,3 +34,4 @@ export const readFirstNotification = read(getters.firstNotification);
 export const readContracts = read(getters.contracts);
 export const readContract = read(getters.contract);
 export const readSearchNanny = read(getters.searchNanny);
+export const readWorkingDays = read(getters.workingDays);

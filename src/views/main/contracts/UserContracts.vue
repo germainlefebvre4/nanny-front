@@ -18,6 +18,12 @@
         <td>{{ props.item.end }}</td>
         <td class="justify-center layout px-0">
           <v-tooltip top>
+            <span>Calendrier</span>
+            <v-btn slot="activator" flat :to="{name: 'main-contracts-calendar', params: {id: props.item.id}}">
+              <v-icon>calendar_today</v-icon>
+            </v-btn>
+          </v-tooltip>
+          <v-tooltip top>
             <span>Modifier</span>
             <v-btn slot="activator" flat :to="{name: 'main-contracts-edit', params: {id: props.item.id}}">
               <v-icon>edit</v-icon>
@@ -56,7 +62,7 @@ import { dispatchGetContracts, dispatchRemoveContract } from '@/store/main/actio
 @Component
 export default class UserContracts extends Vue {
 
-  public pagination = {'sortBy': 'start', 'descending': true};
+  public pagination = {sortBy: 'start', descending: true};
   public headers = [
     {
       text: 'User ID',
