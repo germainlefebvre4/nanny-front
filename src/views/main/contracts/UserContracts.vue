@@ -12,10 +12,16 @@
       v-bind:pagination.sync="pagination"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.user_id }}</td>
-        <td>{{ props.item.nanny_id }}</td>
-        <td>{{ props.item.start }}</td>
-        <td>{{ props.item.end }}</td>
+        <td>{{ props.item.user.firstname }}</td>
+        <td><span v-if="props.item.nanny">{{ props.item.nanny.firstname }}</span></td>
+        <td class="text-xs-center">{{ props.item.weeks }}</td>
+        <td class="text-xs-center">{{ props.item.weekdays.split(' ').length }}</td>
+        <td class="text-xs-center">{{ props.item.hours }}</td>
+        <td class="text-xs-center">{{ props.item.price_hour_standard }}€</td>
+        <td class="text-xs-center">{{ props.item.price_fees }}€</td>
+        <td class="text-xs-center"><v-checkbox v-model="props.item.price_meals" readonly disabled></v-checkbox></td>
+        <td class="text-xs-center">{{ props.item.start }}</td> 
+        <td class="text-xs-center">{{ props.item.end }}</td>
         <td class="justify-center layout px-0">
           <v-tooltip top>
             <span>Calendrier</span>
@@ -65,15 +71,51 @@ export default class UserContracts extends Vue {
   public pagination = {sortBy: 'start', descending: true};
   public headers = [
     {
-      text: 'User ID',
+      text: 'Parent',
       sortable: true,
-      value: 'user_id',
+      value: 'user.firstname',
       align: 'left',
     },
     {
-      text: 'Nanny ID',
+      text: 'Nanny',
       sortable: true,
-      value: 'nanny_id',
+      value: 'nanny.firstname',
+      align: 'left',
+    },
+    {
+      text: '#Semaines/An',
+      sortable: true,
+      value: 'weeks',
+      align: 'center',
+    },
+    {
+      text: '#Jours/Semaine',
+      sortable: true,
+      value: 'weekdays',
+      align: 'left',
+    },
+    {
+      text: '#Heures/Semaine',
+      sortable: true,
+      value: 'hours',
+      align: 'left',
+    },
+    {
+      text: 'Prix/Heure',
+      sortable: true,
+      value: 'price_hour_standard',
+      align: 'left',
+    },
+    {
+      text: 'Frais/Jour',
+      sortable: true,
+      value: 'price_fees',
+      align: 'left',
+    },
+    {
+      text: 'Repas inclus',
+      sortable: true,
+      value: 'price_meals',
       align: 'left',
     },
     {
@@ -91,6 +133,7 @@ export default class UserContracts extends Vue {
     {
       text: 'Actions',
       value: 'id',
+      align: 'center',
     },
   ];
 
@@ -120,3 +163,9 @@ export default class UserContracts extends Vue {
 
 }
 </script>
+
+<style>
+.v-input--selection-controls:not(.v-input--hide-details) .v-input__slot {
+  margin-bottom: 0px;
+}
+</style>
