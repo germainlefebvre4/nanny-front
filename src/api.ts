@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { apiUrl } from '@/env';
-import { IUserProfile, IUserProfileUpdate, IUserProfileCreate, INanny, IUserContract, IUserContractCreate, IWorkingDays } from './interfaces';
+import { IUserProfile, IUserProfileUpdate, IUserProfileCreate, INanny, IUserContract, IContractSummary, IUserContractCreate, IWorkingDays } from './interfaces';
 
 function authHeaders(token: string) {
   return {
@@ -47,6 +47,9 @@ export const api = {
   },
   async getContract(token: string, contractId: number) {
     return axios.get<IUserContract>(`${apiUrl}/api/v1/contracts/${contractId}`, authHeaders(token));
+  },
+  async getContractSummary(token: string, contractId: number, year: number, month: number) {
+    return axios.get<IContractSummary>(`${apiUrl}/api/v1/contracts/${contractId}/summary?year=${year}&month=${month}`, authHeaders(token));
   },
   async createContract(token: string, data: IUserContractCreate) {
     const userId = data.user_id;

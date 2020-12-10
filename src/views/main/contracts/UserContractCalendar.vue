@@ -115,6 +115,105 @@
     </v-card>
 
 
+    <v-card class="ma-3 pa-3" width="400px">
+      <v-card-title primary-title>
+        <div class="headline primary--text">Résumé du mois</div>
+      </v-card-title>
+      <v-card-text>
+
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>Jours ouvrés</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.business_days }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6><b>Jours d'activité</b></v-flex>
+          <v-flex grow xs4 class="text-xs-right"><b>{{ contractSummary.working_days }}</b></v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left"><b>jours</b></v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+        
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>Présence Enfant</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.presence_child }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>Maladie Enfant</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.absence_child }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>Absence Enfant</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.disease_child }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>CP Enfant</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.disease_nanny }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>Maladie Nounou</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.daysoff_child }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>CP Nounou</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.daysoff_nanny }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+        
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>Heures normales</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.hours_standard }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">€</v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>Heures complémentaires</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.hours_complementary }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">€</v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6>Heures supplémentaires</v-flex>
+          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.hours_extra }}</v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left">€</v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+        
+        <v-layout wrap fill-height>
+          <v-flex grow xs6><b>Heures mensuelles</b></v-flex>
+          <v-flex grow xs4 class="text-xs-right"><b>{{ contractSummary.monthly_hours }}</b></v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left"><b>€</b></v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6><b>Salaire mensuel</b></v-flex>
+          <v-flex grow xs4 class="text-xs-right"><b>{{ contractSummary.monthly_salary }}</b></v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left"><b>€</b></v-flex>
+        </v-layout>
+        <v-layout wrap fill-height>
+          <v-flex grow xs6><b>Frais entretien</b></v-flex>
+          <v-flex grow xs4 class="text-xs-right"><b>{{ contractSummary.monthly_fees }}</b></v-flex>
+          <v-flex grow xs1></v-flex>
+          <v-flex grow xs1 class="text-xs-left"><b>€</b></v-flex>
+        </v-layout>
+
+      </v-card-text>
+    </v-card>
 
   </v-container>
 </template>
@@ -122,9 +221,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { IUserContractUpdate, IWorkingDays } from '@/interfaces';
-import { readUserProfile, readContract, readWorkingDays } from '@/store/main/getters';
-import { dispatchGetContract, dispatchUpdateUserContract, dispatchGetContracts, dispatchGetWorkingDays } from '@/store/main/actions';
+import { IUserContractUpdate, IWorkingDays, IContractSummary } from '@/interfaces';
+import { readUserProfile, readContract, readContractSummary, readWorkingDays } from '@/store/main/getters';
+import { dispatchGetContract, dispatchGetContractSummary, dispatchUpdateUserContract, dispatchGetContracts, dispatchGetWorkingDays } from '@/store/main/actions';
 
 @Component
 export default class UserContractCalendar extends Vue {
@@ -233,12 +332,18 @@ export default class UserContractCalendar extends Vue {
     this.selectedMonthId = new Date().getMonth()+1;
     this.selectedMonthString = this.monthNames[new Date().getMonth()];
     await dispatchGetContract(this.$store, this.contractId);
-    const payload = {
+    const contractSummaryPayload = {
       contractId: this.contractId,
       year: this.selectedYear,
       month: this.selectedMonthId,
     }
-    await dispatchGetWorkingDays(this.$store, payload);
+    await dispatchGetContractSummary(this.$store, contractSummaryPayload);
+    const workingDayspayload = {
+      contractId: this.contractId,
+      year: this.selectedYear,
+      month: this.selectedMonthId,
+    }
+    await dispatchGetWorkingDays(this.$store, workingDayspayload);
     // this.$refs.calendar.updateRange();
     this.reset();
 
@@ -248,6 +353,10 @@ export default class UserContractCalendar extends Vue {
 
   public get workingDays() {
     return readWorkingDays(this.$store);
+  }
+
+  public get contractSummary() {
+    return readContractSummary(this.$store);
   }
 
   public created() {

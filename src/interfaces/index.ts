@@ -82,3 +82,20 @@ export interface IWorkingDays {
     created_on: string;
     updated_on?: string;
 }
+
+export interface IContractSummary {
+    business_days: number;
+    working_days: number;
+    presence_child: number;
+    absence_child: number;
+    disease_child: number;
+    disease_nanny: number;
+    daysoff_child: number;
+    daysoff_nanny: number;
+    hours_standard: number;
+    hours_complementary: number;
+    hours_extra: number;
+    monthly_hours: number;
+    monthly_salary: number;
+    monthly_fees: number;
+}
