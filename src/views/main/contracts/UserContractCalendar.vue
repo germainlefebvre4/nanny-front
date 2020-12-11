@@ -115,101 +115,117 @@
     </v-card>
 
 
-    <v-card class="ma-3 pa-3" width="400px">
+    <v-card class="ma-3 pa-3" fullwidth>
       <v-card-title primary-title>
         <div class="headline primary--text">Résumé du mois</div>
       </v-card-title>
       <v-card-text>
 
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>Jours ouvrés</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.business_days }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6><b>Jours d'activité</b></v-flex>
-          <v-flex grow xs4 class="text-xs-right"><b>{{ contractSummary.working_days }}</b></v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left"><b>jours</b></v-flex>
-        </v-layout>
-        <v-divider></v-divider>
-        
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>Présence Enfant</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.presence_child }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>Maladie Enfant</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.absence_child }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>Absence Enfant</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.disease_child }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>CP Enfant</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.disease_nanny }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>Maladie Nounou</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.daysoff_child }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>CP Nounou</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.daysoff_nanny }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">jours</v-flex>
-        </v-layout>
-        <v-divider></v-divider>
-        
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>Heures normales</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.hours_standard }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">€</v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>Heures complémentaires</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.hours_complementary }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">€</v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6>Heures supplémentaires</v-flex>
-          <v-flex grow xs4 class="text-xs-right">{{ contractSummary.hours_extra }}</v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left">€</v-flex>
-        </v-layout>
-        <v-divider></v-divider>
-        
-        <v-layout wrap fill-height>
-          <v-flex grow xs6><b>Heures mensuelles</b></v-flex>
-          <v-flex grow xs4 class="text-xs-right"><b>{{ contractSummary.monthly_hours }}</b></v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left"><b>€</b></v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6><b>Salaire mensuel</b></v-flex>
-          <v-flex grow xs4 class="text-xs-right"><b>{{ contractSummary.monthly_salary }}</b></v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left"><b>€</b></v-flex>
-        </v-layout>
-        <v-layout wrap fill-height>
-          <v-flex grow xs6><b>Frais entretien</b></v-flex>
-          <v-flex grow xs4 class="text-xs-right"><b>{{ contractSummary.monthly_fees }}</b></v-flex>
-          <v-flex grow xs1></v-flex>
-          <v-flex grow xs1 class="text-xs-left"><b>€</b></v-flex>
+        <v-layout>
+          <v-flex grow xs3>
+            <v-card class="ma-3 pa-3" fullwidth>
+              <v-card-text>
+                <v-layout wrap row>
+                  <v-flex grow xs7>Jours ouvrés</v-flex>
+                  <v-flex grow xs5 class="text-xs-right">{{ contractSummary.business_days }} jours</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs7>Jours d'activité</v-flex>
+                  <v-flex grow xs5 class="text-xs-right">{{ contractSummary.working_days }} jours</v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+
+          <v-flex grow xs3>
+            <v-card class="ma-3 pa-3" fullwidth>
+              <v-card-text>
+                <v-layout wrap row>
+                  <v-flex grow xs7>Présence Enfant</v-flex>
+                  <v-flex grow xs5 class="text-xs-right">{{ contractSummary.presence_child }} jours</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs7>Maladie Enfant</v-flex>
+                  <v-flex grow xs5 class="text-xs-right">{{ contractSummary.absence_child }} jours</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs7>Absence Enfant</v-flex>
+                  <v-flex grow xs5 class="text-xs-right">{{ contractSummary.disease_child }} jours</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs7>CP Enfant</v-flex>
+                  <v-flex grow xs5 class="text-xs-right">{{ contractSummary.disease_nanny }} jours</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs7>Maladie Nounou</v-flex>
+                  <v-flex grow xs5 class="text-xs-right">{{ contractSummary.daysoff_child }} jours</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs7>CP Nounou</v-flex>
+                  <v-flex grow xs5 class="text-xs-right">{{ contractSummary.daysoff_nanny }} jours</v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+
+          <v-flex grow xs3>
+            <v-card class="ma-3 pa-3" fullwidth>
+              <v-card-text>
+                <v-layout wrap row>
+                  <v-flex grow xs8>Heures normales</v-flex>
+                  <v-flex grow xs4 class="text-xs-right">{{ contractSummary.hours_standard }} heures</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs8>Heures complémentaires</v-flex>
+                  <v-flex grow xs4 class="text-xs-right">{{ contractSummary.hours_complementary }} heures</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs8>Heures majorées</v-flex>
+                  <v-flex grow xs4 class="text-xs-right">{{ contractSummary.hours_extra }} heures</v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+
+          <v-flex grow xs3>
+            <v-card class="ma-3 pa-3" fullwidth>
+              <v-card-text>
+
+                <v-layout wrap row>
+                  <v-flex grow xs6>Heures normales</v-flex>
+                  <v-flex grow xs6 class="text-xs-right">{{ contractSummary.monthly_hours }} heures</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs6>Jours d'activité</v-flex>
+                  <v-flex grow xs6 class="text-xs-right">{{ contractSummary.working_days }} jours</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs6>CP Nounou</v-flex>
+                  <v-flex grow xs6 class="text-xs-right">{{ contractSummary.daysoff_nanny }} jours</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs6>Salaire horaire net</v-flex>
+                  <v-flex grow xs6 class="text-xs-right">{{ contractSummary.price_hour_standard }} €</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs6>Heures complémentaires</v-flex>
+                  <v-flex grow xs6 class="text-xs-right">{{ contractSummary.hours_complementary }} heures</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs6>Heures majorées</v-flex>
+                  <v-flex grow xs6 class="text-xs-right">{{ contractSummary.hours_extra }} heures</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs6>Salaire mensuel</v-flex>
+                  <v-flex grow xs6 class="text-xs-right">{{ contractSummary.monthly_salary }} €</v-flex>
+                </v-layout>
+                <v-layout wrap row>
+                  <v-flex grow xs6>Frais entretien</v-flex>
+                  <v-flex grow xs6 class="text-xs-right">{{ contractSummary.monthly_fees }} €</v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-flex>
         </v-layout>
 
       </v-card-text>

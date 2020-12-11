@@ -98,4 +98,5 @@ export interface IContractSummary {
     monthly_hours: number;
     monthly_salary: number;
     monthly_fees: number;
+    price_hour_standard: number;
 }
