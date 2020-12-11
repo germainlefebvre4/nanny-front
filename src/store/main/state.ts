@@ -1,4 +1,4 @@
-import { IUserProfile, INanny, IUserContract, IWorkingDays } from '@/interfaces';
+import { IUserProfile, INanny, IUserContract, IWorkingDays, IContractSummary } from '@/interfaces';
 
 export interface AppNotification {
     content: string;
@@ -19,4 +19,5 @@ export interface MainState {
     contract: IUserContract | null;
     searchNanny: INanny | null;
     workingDays: IWorkingDays | [];
+    contractSummary: IContractSummary | {}
 }
