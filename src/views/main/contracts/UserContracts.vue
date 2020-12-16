@@ -3,6 +3,8 @@
     <v-data-table
       :headers="headers"
       :items="contracts"
+      :sort-by.sync="pagination.sortBy"
+      :sort-desc.sync="pagination.sortDesc"
       class="elevation-1"
     >
       <template v-slot:top>
@@ -77,7 +79,7 @@ import { dispatchGetContracts, dispatchRemoveContract } from '@/store/main/actio
 @Component
 export default class UserContracts extends Vue {
 
-  public pagination = {sortBy: 'start', descending: true};
+  public pagination = {sortBy: 'start', sortDesc: true};
   public headers = [
     {
       text: 'Parent',
