@@ -38,7 +38,7 @@ export const mutations = {
     setSearchNanny(state: MainState, payload: INanny) {
         state.searchNanny = payload;
     },
-    setWorkingDays(state: MainState, payload: IWorkingDays) {
+    setWorkingDays(state: MainState, payload: IWorkingDays[]) {
         state.workingDays = payload;
     },
 

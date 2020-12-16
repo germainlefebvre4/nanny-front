@@ -74,6 +74,6 @@ export const api = {
     return axios.get<INanny>(`${apiUrl}/api/v1/users/nanny/_search?email=${nannyEmail}`, authHeaders(token));
   },
   async getWorkingDays(token: string, contractId: number, year: number, month: number) {
-    return axios.get<IWorkingDays>(`${apiUrl}/api/v1/contracts/${contractId}/working_days?year=${year}&month=${month}`, authHeaders(token));
+    return axios.get<IWorkingDays[]>(`${apiUrl}/api/v1/contracts/${contractId}/working_days?year=${year}&month=${month}`, authHeaders(token));
   },
 };
