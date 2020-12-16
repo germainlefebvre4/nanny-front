@@ -15,6 +15,7 @@ const defaultState: MainState = {
   contracts: [],
   userContract: null,
   contract: null,
+  contractSummary: {},
   searchNanny: {
     id: 0,
     email: '',

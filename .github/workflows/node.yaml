@@ -1,0 +1,28 @@
+name: Node.js application
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - name: Switch Vue.js environment to staging
+        run: sed -i 's/^\(VUE_APP_ENV\)=.*/\1=staging/g' .env
+      - name: Yarn install
+        run: yarn install
+      - name: Yarn Build (dev)
+        run: yarn build --dev
+      - name: Upload package to artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nanny-front-develop
+          path: dist

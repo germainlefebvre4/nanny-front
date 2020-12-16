@@ -15,6 +15,7 @@ import {
     commitSetUserProfile,
     commitSetContracts,
     commitSetContract,
+    commitSetContractSummary,
     commitSetSearchNanny,
     commitSetWorkingDays,
 } from './mutations';
@@ -169,11 +170,24 @@ export const actions = {
             await dispatchCheckApiError(context, error);
         }
     },
-    async actionGetContract(context: MainContext, userId: number) {
+    async actionGetContract(context: MainContext, contractId: number) {
         try {
-            const response = await api.getContract(context.state.token, userId);
+            const response = await api.getContract(context.state.token, contractId);
             if (response) {
                 commitSetContract(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionGetContractSummary(context: MainContext, payload) {
+        const contractId = payload.contractId;
+        const year = payload.year;
+        const month = payload.month;
+        try {
+            const response = await api.getContractSummary(context.state.token, contractId, year, month);
+            if (response) {
+                commitSetContractSummary(context, response.data);
             }
         } catch (error) {
             await dispatchCheckApiError(context, error);
@@ -277,3 +291,4 @@ export const dispatchUpdateUserContract = dispatch(actions.actionUpdateUserContr
 export const dispatchRemoveContract = dispatch(actions.actionRemoveContract);
 export const dispatchSearchNannyByEmail = dispatch(actions.actionSearchNannyByEmail);
 export const dispatchGetWorkingDays = dispatch(actions.actionGetWorkingDays);
+export const dispatchGetContractSummary = dispatch(actions.actionGetContractSummary);

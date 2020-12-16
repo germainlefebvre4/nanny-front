@@ -17,6 +17,7 @@ export const getters = {
     firstNotification: (state: MainState) => state.notifications.length > 0 && state.notifications[0],
     contracts: (state: MainState) => state.contracts,
     contract: (state: MainState) => state.contract,
+    contractSummary: (state: MainState) => state.contractSummary,
     searchNanny: (state: MainState) => state.searchNanny,
     workingDays: (state: MainState) => state.workingDays,
 };
@@ -33,5 +34,6 @@ export const readUserProfile = read(getters.userProfile);
 export const readFirstNotification = read(getters.firstNotification);
 export const readContracts = read(getters.contracts);
 export const readContract = read(getters.contract);
+export const readContractSummary = read(getters.contractSummary);
 export const readSearchNanny = read(getters.searchNanny);
 export const readWorkingDays = read(getters.workingDays);

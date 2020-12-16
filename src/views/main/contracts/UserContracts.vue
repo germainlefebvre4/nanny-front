@@ -39,6 +39,7 @@
         </v-btn>
       </template>
     </v-data-table>
+
     <v-dialog v-model="deleteContractDialog" max-width="500px">
       <v-card>
         <v-card-title>Supprimer</v-card-title>

@@ -7,8 +7,7 @@ if (env === 'production') {
 } else if (env === 'staging') {
   envApiUrl = `https://${process.env.VUE_APP_DOMAIN_STAG}`;
 } else {
-  envApiUrl = `http://germainlefebvre4.ddns.net:8080`;
-  // envApiUrl = `http://${process.env.VUE_APP_DOMAIN_DEV}`;
+  envApiUrl = `http://${process.env.VUE_APP_DOMAIN_DEV}`;
 }
 
 export const apiUrl = envApiUrl;
