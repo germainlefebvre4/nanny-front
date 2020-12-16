@@ -307,16 +307,12 @@ export default class UserContractCalendar extends Vue {
     nativeEvent.stopPropagation();
   }
 
-  public fetchAbsenceType() {
-    return ['Présence enfant', 'Maladie enfant'];
-  }
-
-  public showEvent() {
-    console.log('showEvent');
-  }
-
   public delEvent() {
     console.log('delEvent');
+  }
+
+  public fetchAbsenceType() {
+    return ['Présence enfant', 'Maladie enfant'];
   }
 
   public updateRange({ start, end }) {
