@@ -21,6 +21,21 @@
               </v-btn>
         </v-toolbar>
       </template>
+      <template v-slot:[`item.weekdays`]="{ item }">
+        {{ item.weekdays.split(" ").length }}
+      </template>
+      <template v-slot:[`item.price_hour_standard`]="{ item }">
+        {{ item.price_hour_standard }} €
+      </template>
+      <template v-slot:[`item.price_fees`]="{ item }">
+        {{ item.price_fees }} €
+      </template>
+      <template v-slot:[`item.price_meals`]="{ item }">
+        <v-simple-checkbox
+          v-model="item.price_meals"
+          disabled
+        ></v-simple-checkbox>
+      </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-btn slot="activator" text :to="{name: 'main-contracts-calendar', params: {id: item.id}}">
           <v-icon>
@@ -65,16 +80,52 @@ export default class UserContracts extends Vue {
   public pagination = {sortBy: 'start', descending: true};
   public headers = [
     {
-      text: 'User ID',
+      text: 'Parent',
       sortable: true,
-      value: 'user_id',
+      value: 'user.firstname',
       align: 'left',
     },
     {
-      text: 'Nanny ID',
+      text: 'Nanny',
       sortable: true,
-      value: 'nanny_id',
+      value: 'nanny.firstname',
       align: 'left',
+    },
+    {
+      text: '#Semaines/an',
+      sortable: true,
+      value: 'weeks',
+      align: 'right',
+    },
+    {
+      text: '#Jours/semaine',
+      sortable: true,
+      value: 'weekdays',
+      align: 'right',
+    },
+    {
+      text: '#Heures/semaine',
+      sortable: true,
+      value: 'hours',
+      align: 'right',
+    },
+    {
+      text: 'Prix/Heure',
+      sortable: true,
+      value: 'price_hour_standard',
+      align: 'right',
+    },
+    {
+      text: 'Frais/Jour',
+      sortable: true,
+      value: 'price_fees',
+      align: 'right',
+    },
+    {
+      text: 'Repas',
+      sortable: true,
+      value: 'price_meals',
+      align: 'center',
     },
     {
       text: 'Start',
