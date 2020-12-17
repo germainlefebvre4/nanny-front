@@ -142,7 +142,7 @@ import UserProfile from './profile/UserProfile.vue';
 
 const routeGuardMain = async (to, from, next) => {
   if (to.path === '/main') {
-    next('/main/profil/view');
+    next('/main/profile');
   } else {
     next();
   }
