@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="ma-3 pa-3" max-width="800px" style="margin-left: 0px;">
       <v-card-title primary-title>
-        <div class="headline primary--text">Create new contract</div>
+        <div class="headline primary--text">Créer un nouveau contract</div>
       </v-card-title>
       <v-card-text>
         <template>
@@ -234,17 +234,15 @@
                   v-model="menuDateStart"
                   :close-on-content-click="false"
                   :nudge-right="40"
-                  lazy
                   transition="scale-transition"
                   offset-y
-                  full-width
                   min-width="290px"
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="dateStart"
                       label="Date de début de contrat"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar-cursor"
                       v-on="on"
                       :rule="validateDateStart"
                     ></v-text-field>
@@ -259,17 +257,15 @@
                   v-model="menuDateEnd"
                   :close-on-content-click="false"
                   :nudge-right="40"
-                  lazy
                   transition="scale-transition"
                   offset-y
-                  full-width
                   min-width="290px"
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="dateEnd"
                       label="Date de fin de contrat"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar-cursor"
                       v-on="on"
                       :rule="validateDateEnd"
                     ></v-text-field>

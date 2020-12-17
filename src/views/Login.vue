@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-main>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm8 md4>
@@ -10,8 +10,8 @@
             </v-toolbar>
             <v-card-text>
               <v-form @keyup.enter="submit">
-                <v-text-field @keyup.enter="submit" v-model="email" prepend-icon="person" name="login" label="Login" type="text"></v-text-field>
-                <v-text-field @keyup.enter="submit" v-model="password" prepend-icon="lock" name="password" label="Password" id="password" type="password"></v-text-field>
+                <v-text-field @keyup.enter="submit" v-model="email" prepend-icon="mdi-account" name="login" label="Login" type="text"></v-text-field>
+                <v-text-field @keyup.enter="submit" v-model="password" prepend-icon="mdi-lock" name="password" label="Password" id="password" type="password"></v-text-field>
               </v-form>
               <div v-if="loginError">
                 <v-alert :value="loginError" transition="fade-transition" type="error">
@@ -28,7 +28,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </v-content>
+  </v-main>
 </template>
 
 <script lang="ts">

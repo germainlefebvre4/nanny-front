@@ -1,50 +1,57 @@
 <template>
-  <div>
-    <v-toolbar light>
-      <v-toolbar-title>
-        Gérer mes contrats
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn color="primary" to="/main/contracts/create">Créer un contrat</v-btn>
-    </v-toolbar>
-    <v-data-table :headers="headers" :items="contracts"
-      :rows-per-page-items='[10, 20, 50, {"text":"Tous","value":-1}]'
-      v-bind:pagination.sync="pagination"
+  <v-container fluid>
+    <v-data-table
+      :headers="headers"
+      :items="contracts"
+      :sort-by.sync="pagination.sortBy"
+      :sort-desc.sync="pagination.sortDesc"
+      class="elevation-1"
     >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.user.firstname }}</td>
-        <td><span v-if="props.item.nanny">{{ props.item.nanny.firstname }}</span></td>
-        <td class="text-xs-center">{{ props.item.weeks }}</td>
-        <td class="text-xs-center">{{ props.item.weekdays.split(' ').length }}</td>
-        <td class="text-xs-center">{{ props.item.hours }}</td>
-        <td class="text-xs-center">{{ props.item.price_hour_standard }}€</td>
-        <td class="text-xs-center">{{ props.item.price_fees }}€</td>
-        <td class="text-xs-center"><v-checkbox v-model="props.item.price_meals" readonly disabled></v-checkbox></td>
-        <td class="text-xs-center">{{ props.item.start }}</td> 
-        <td class="text-xs-center">{{ props.item.end }}</td>
-        <td class="justify-center layout px-0">
-          <v-tooltip top>
-            <span>Calendrier</span>
-            <v-btn slot="activator" flat :to="{name: 'main-contracts-calendar', params: {id: props.item.id}}">
-              <v-icon>calendar_today</v-icon>
-            </v-btn>
-          </v-tooltip>
-          <v-tooltip top>
-            <span>Modifier</span>
-            <v-btn slot="activator" flat :to="{name: 'main-contracts-edit', params: {id: props.item.id}}">
-              <v-icon>edit</v-icon>
-            </v-btn>
-          </v-tooltip>
-          <v-tooltip top>
-            <span>Supprimer</span>
-            <v-btn slot="activator" flat @click="showDeleteDialog(props.item.id)">
-              <v-icon>delete</v-icon>
-            </v-btn>
-          </v-tooltip>
-        </td>
+      <template v-slot:top>
+        <v-toolbar
+          flat
+        >
+          <v-toolbar-title>Gérer mes contrats</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                to="/main/contracts/create"
+              >
+                Créer un contrat
+              </v-btn>
+        </v-toolbar>
+      </template>
+
+      <template v-slot:[`item.weekdays`]="{ item }">
+        {{ item.weekdays.split(" ").length }}
+      </template>
+      <template v-slot:[`item.price_hour_standard`]="{ item }">
+        {{ item.price_hour_standard }} €
+      </template>
+      <template v-slot:[`item.price_fees`]="{ item }">
+        {{ item.price_fees }} €
+      </template>
+      <template v-slot:[`item.price_meals`]="{ item }">
+        <v-simple-checkbox
+          v-model="item.price_meals"
+          disabled
+        ></v-simple-checkbox>
+      </template>
+
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-btn slot="activator" text :to="{name: 'main-contracts-calendar', params: {id: item.id}}">
+          <v-icon>mdi-calendar-month</v-icon>
+        </v-btn>
+        <v-btn slot="activator" text :to="{name: 'main-contracts-edit', params: {id: item.id}}">
+          <v-icon>mdi-pen</v-icon>
+        </v-btn>
+        <v-btn slot="activator" text @click="showDeleteDialog(item.id)">
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
       </template>
     </v-data-table>
-
     <v-dialog v-model="deleteContractDialog" max-width="500px">
       <v-card>
         <v-card-title>Supprimer</v-card-title>
@@ -55,8 +62,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -68,72 +74,73 @@ import { dispatchGetContracts, dispatchRemoveContract } from '@/store/main/actio
 @Component
 export default class UserContracts extends Vue {
 
-  public pagination = {sortBy: 'start', descending: true};
+  public test = {enabled: true};
+  public pagination = {sortBy: 'start', sortDesc: true};
   public headers = [
     {
-      text: 'Parent',
+      text: 'Enfant',
       sortable: true,
-      value: 'user.firstname',
-      align: 'left',
+      value: 'child',
+      align: 'center',
     },
     {
       text: 'Nanny',
       sortable: true,
       value: 'nanny.firstname',
-      align: 'left',
+      align: 'center',
     },
     {
-      text: '#Semaines/An',
+      text: '#Sem/An',
       sortable: true,
       value: 'weeks',
       align: 'center',
     },
     {
-      text: '#Jours/Semaine',
+      text: '#Jours/Sem',
       sortable: true,
       value: 'weekdays',
-      align: 'left',
+      align: 'center',
     },
     {
-      text: '#Heures/Semaine',
+      text: '#Heures/Sem',
       sortable: true,
       value: 'hours',
-      align: 'left',
+      align: 'center',
     },
     {
       text: 'Prix/Heure',
       sortable: true,
       value: 'price_hour_standard',
-      align: 'left',
+      align: 'center',
     },
     {
       text: 'Frais/Jour',
       sortable: true,
       value: 'price_fees',
-      align: 'left',
+      align: 'center',
     },
     {
-      text: 'Repas inclus',
+      text: 'Repas',
       sortable: true,
       value: 'price_meals',
-      align: 'left',
+      align: 'center',
     },
     {
       text: 'Start',
       sortable: true,
       value: 'start',
-      align: 'left',
+      align: 'center',
     },
     {
       text: 'End',
       sortable: true,
       value: 'end',
-      align: 'left',
+      align: 'center',
     },
     {
       text: 'Actions',
-      value: 'id',
-      align: 'center',
+      value: 'actions',
+      sortable: false,
     },
   ];
 
@@ -161,11 +168,13 @@ export default class UserContracts extends Vue {
       delete this.deleteContractId;
   }
 
+  public is_meals_enabled(item) {
+    if (item) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }
 </script>
-
-<style>
-.v-input--selection-controls:not(.v-input--hide-details) .v-input__slot {
-  margin-bottom: 0px;
-}
-</style>
