@@ -2,98 +2,90 @@
   <div>
     <v-navigation-drawer persistent :mini-variant="miniDrawer" v-model="showDrawer" fixed app>
       <v-layout column fill-height>
-        <v-list>
-          <v-subheader>Main menu</v-subheader>
-          <v-list-item to="/main/dashboard">
-            <v-list-item-action>
-              <v-icon>web</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Dashboard</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item to="/main/profile/view">
-            <v-list-item-action>
-              <v-icon>person</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Profile</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item to="/main/profile/edit">
-            <v-list-item-action>
-              <v-icon>edit</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Edit Profile</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item to="/main/profile/password">
-            <v-list-item-action>
-              <v-icon>vpn_key</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Change Password</v-list-item-title>
-            </v-list-item-content>
+
+        <v-list subheader>
+          <v-list-item>
+            <v-list-item-title class="title" style="text-align: center;">
+              Bienvenue !
+            </v-list-item-title>
           </v-list-item>
         </v-list>
-        <v-divider></v-divider>
+        <v-list>
+          <v-list-item link to="/main/profile/view">
+            <v-list-item-avatar :size=avatarSize>
+              <v-img :src=userProfile.avatar></v-img>
+            </v-list-item-avatar>
+            <v-list-item-title class="title">
+              {{ userProfile.firstname }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+
         <v-list subheader>
-          <v-subheader>Contracts</v-subheader>
+          <v-subheader>Contrats</v-subheader>
           <v-list-item to="/main/contracts/view">
             <v-list-item-action>
-              <v-icon>assignment</v-icon>
+              <v-icon>mdi-format-list-bulleted</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Manage Contracts</v-list-item-title>
+              <v-list-item-title>Gérer mes contrats</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item to="/main/contracts/create">
             <v-list-item-action>
-              <v-icon>assignment_ind</v-icon>
+              <v-icon>mdi-pen</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Create Contract</v-list-item-title>
+              <v-list-item-title>Créer un contract</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
         <v-divider></v-divider>
         <v-list subheader v-show="hasAdminAccess">
-          <v-subheader>Admin</v-subheader>
+          <v-subheader>Administration</v-subheader>
           <v-list-item to="/main/admin/users/all">
             <v-list-item-action>
-              <v-icon>group</v-icon>
+              <v-icon>mdi-account-multiple</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Manage Users</v-list-item-title>
+              <v-list-item-title>Gérer les utilisateurs</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item to="/main/admin/users/create">
             <v-list-item-action>
-              <v-icon>person_add</v-icon>
+              <v-icon>mdi-account-plus</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Create User</v-list-item-title>
+              <v-list-item-title>Créer un utilisateur</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
         <v-spacer></v-spacer>
         <v-list>
-          <v-list-item @click="logout">
+          <v-list-item to="/main/profile/view">
             <v-list-item-action>
-              <v-icon>close</v-icon>
+              <v-icon>mdi-account</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Logout</v-list-item-title>
+              <v-list-item-title>Mon profil</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-divider></v-divider>
+          <v-list-item @click="logout">
+            <v-list-item-action>
+              <v-icon>mdi-exit-run</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Déconnexion</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-divider></v-divider>
           <v-list-item @click="switchMiniDrawer">
             <v-list-item-action>
-              <v-icon v-html="miniDrawer ? 'chevron_right' : 'chevron_left'"></v-icon>
+              <v-icon v-html="miniDrawer ? 'mdi-chevron-double-right' : 'mdi-chevron-double-left'"></v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Collapse</v-list-item-title>
+              <v-list-item-title>Réduire</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -143,13 +135,14 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 import { appName } from '@/env';
-import { readDashboardMiniDrawer, readDashboardShowDrawer, readHasAdminAccess } from '@/store/main/getters';
+import { readDashboardMiniDrawer, readDashboardShowDrawer, readHasAdminAccess, readUserProfile } from '@/store/main/getters';
 import { commitSetDashboardShowDrawer, commitSetDashboardMiniDrawer } from '@/store/main/mutations';
 import { dispatchUserLogOut } from '@/store/main/actions';
+import UserProfile from './profile/UserProfile.vue';
 
 const routeGuardMain = async (to, from, next) => {
   if (to.path === '/main') {
-    next('/main/dashboard');
+    next('/main/profil/view');
   } else {
     next();
   }
@@ -158,6 +151,7 @@ const routeGuardMain = async (to, from, next) => {
 @Component
 export default class Main extends Vue {
   public appName = appName;
+  public avatarSize = 66;
 
   public beforeRouteEnter(to, from, next) {
     routeGuardMain(to, from, next);
@@ -187,9 +181,19 @@ export default class Main extends Vue {
   }
 
   public switchMiniDrawer() {
+    const isMiniDrawer = readDashboardMiniDrawer(this.$store);
+
+    // Resize Avatar
+    if (isMiniDrawer) {
+      this.avatarSize = 66;
+    } else {
+      this.avatarSize = 32;
+    }
+
+    // Switch MiniDrawer size
     commitSetDashboardMiniDrawer(
       this.$store,
-      !readDashboardMiniDrawer(this.$store),
+      !isMiniDrawer,
     );
   }
 
@@ -200,5 +204,18 @@ export default class Main extends Vue {
   public async logout() {
     await dispatchUserLogOut(this.$store);
   }
+
+  public created() {
+    const userProfile = readUserProfile(this.$store);
+  }
+
+  get userProfile() {
+    const userProfile = readUserProfile(this.$store);
+    if (userProfile && ! userProfile.hasOwnProperty("avatar")) {
+      userProfile["avatar"] = "https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249_960_720.png"
+    }
+    return userProfile;
+  }
+
 }
 </script>

@@ -42,10 +42,10 @@
                   <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                   <v-spacer></v-spacer>
                   <v-btn icon>
-                    <v-icon>create</v-icon>
+                    <v-icon>mdi-create</v-icon>
                   </v-btn>
                   <v-btn icon>
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-toolbar>
                 <v-card-text>
@@ -71,7 +71,7 @@
               dark
               left
             >
-              keyboard_arrow_left
+              mdi-arrow-left
             </v-icon>
             Prev
           </v-btn>
@@ -90,7 +90,7 @@
               right
               dark
             >
-              keyboard_arrow_right
+              mdi-arrow-right
             </v-icon>
           </v-btn>
         </v-flex>

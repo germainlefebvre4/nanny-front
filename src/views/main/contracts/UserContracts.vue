@@ -3,6 +3,8 @@
     <v-data-table
       :headers="headers"
       :items="contracts"
+      :sort-by.sync="pagination.sortBy"
+      :sort-desc.sync="pagination.sortDesc"
       class="elevation-1"
     >
       <template v-slot:top>
@@ -21,21 +23,32 @@
               </v-btn>
         </v-toolbar>
       </template>
+
+      <template v-slot:[`item.weekdays`]="{ item }">
+        {{ item.weekdays.split(" ").length }}
+      </template>
+      <template v-slot:[`item.price_hour_standard`]="{ item }">
+        {{ item.price_hour_standard }} €
+      </template>
+      <template v-slot:[`item.price_fees`]="{ item }">
+        {{ item.price_fees }} €
+      </template>
+      <template v-slot:[`item.price_meals`]="{ item }">
+        <v-simple-checkbox
+          v-model="item.price_meals"
+          disabled
+        ></v-simple-checkbox>
+      </template>
+
       <template v-slot:[`item.actions`]="{ item }">
         <v-btn slot="activator" text :to="{name: 'main-contracts-calendar', params: {id: item.id}}">
-          <v-icon>
-            calendar_today
-          </v-icon>
+          <v-icon>mdi-calendar-month</v-icon>
         </v-btn>
         <v-btn slot="activator" text :to="{name: 'main-contracts-edit', params: {id: item.id}}">
-          <v-icon>
-            edit
-          </v-icon>
+          <v-icon>mdi-pen</v-icon>
         </v-btn>
         <v-btn slot="activator" text @click="showDeleteDialog(item.id)">
-          <v-icon>
-            delete
-          </v-icon>
+          <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
     </v-data-table>
@@ -61,31 +74,68 @@ import { dispatchGetContracts, dispatchRemoveContract } from '@/store/main/actio
 @Component
 export default class UserContracts extends Vue {
 
-  public pagination = {sortBy: 'start', descending: true};
+  public test = {enabled: true};
+  public pagination = {sortBy: 'start', sortDesc: true};
   public headers = [
     {
-      text: 'User ID',
+      text: 'Enfant',
       sortable: true,
-      value: 'user_id',
-      align: 'left',
+      value: 'child',
+      align: 'center',
     },
     {
-      text: 'Nanny ID',
+      text: 'Nanny',
       sortable: true,
-      value: 'nanny_id',
-      align: 'left',
+      value: 'nanny.firstname',
+      align: 'center',
+    },
+    {
+      text: '#Sem/An',
+      sortable: true,
+      value: 'weeks',
+      align: 'center',
+    },
+    {
+      text: '#Jours/Sem',
+      sortable: true,
+      value: 'weekdays',
+      align: 'center',
+    },
+    {
+      text: '#Heures/Sem',
+      sortable: true,
+      value: 'hours',
+      align: 'center',
+    },
+    {
+      text: 'Prix/Heure',
+      sortable: true,
+      value: 'price_hour_standard',
+      align: 'center',
+    },
+    {
+      text: 'Frais/Jour',
+      sortable: true,
+      value: 'price_fees',
+      align: 'center',
+    },
+    {
+      text: 'Repas',
+      sortable: true,
+      value: 'price_meals',
+      align: 'center',
     },
     {
       text: 'Start',
       sortable: true,
       value: 'start',
-      align: 'left',
+      align: 'center',
     },
     {
       text: 'End',
       sortable: true,
       value: 'end',
-      align: 'left',
+      align: 'center',
     },
     {
       text: 'Actions',
@@ -116,6 +166,14 @@ export default class UserContracts extends Vue {
       await dispatchGetContracts(this.$store);
       this.deleteContractDialog = !this.deleteContractDialog;
       delete this.deleteContractId;
+  }
+
+  public is_meals_enabled(item) {
+    if (item) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
