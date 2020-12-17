@@ -18,6 +18,6 @@ export interface MainState {
     userContract: IUserContract | null;
     contract: IUserContract | null;
     searchNanny: INanny | null;
-    workingDays: IWorkingDays | [];
+    workingDays: IWorkingDays[] | [];
     contractSummary: IContractSummary | {}
 }

@@ -4,3 +4,5 @@ import Vuetify from 'vuetify';
 Vue.use(Vuetify, {
   iconfont: 'md',
 });
+
+export default new Vuetify({})

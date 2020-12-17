@@ -1,50 +1,44 @@
 <template>
-  <div>
-    <v-toolbar light>
-      <v-toolbar-title>
-        Gérer mes contrats
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn color="primary" to="/main/contracts/create">Créer un contrat</v-btn>
-    </v-toolbar>
-    <v-data-table :headers="headers" :items="contracts"
-      :rows-per-page-items='[10, 20, 50, {"text":"Tous","value":-1}]'
-      v-bind:pagination.sync="pagination"
+  <v-container fluid>
+    <v-data-table
+      :headers="headers"
+      :items="contracts"
+      class="elevation-1"
     >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.user.firstname }}</td>
-        <td><span v-if="props.item.nanny">{{ props.item.nanny.firstname }}</span></td>
-        <td class="text-xs-center">{{ props.item.weeks }}</td>
-        <td class="text-xs-center">{{ props.item.weekdays.split(' ').length }}</td>
-        <td class="text-xs-center">{{ props.item.hours }}</td>
-        <td class="text-xs-center">{{ props.item.price_hour_standard }}€</td>
-        <td class="text-xs-center">{{ props.item.price_fees }}€</td>
-        <td class="text-xs-center"><v-checkbox v-model="props.item.price_meals" readonly disabled></v-checkbox></td>
-        <td class="text-xs-center">{{ props.item.start }}</td> 
-        <td class="text-xs-center">{{ props.item.end }}</td>
-        <td class="justify-center layout px-0">
-          <v-tooltip top>
-            <span>Calendrier</span>
-            <v-btn slot="activator" flat :to="{name: 'main-contracts-calendar', params: {id: props.item.id}}">
-              <v-icon>calendar_today</v-icon>
-            </v-btn>
-          </v-tooltip>
-          <v-tooltip top>
-            <span>Modifier</span>
-            <v-btn slot="activator" flat :to="{name: 'main-contracts-edit', params: {id: props.item.id}}">
-              <v-icon>edit</v-icon>
-            </v-btn>
-          </v-tooltip>
-          <v-tooltip top>
-            <span>Supprimer</span>
-            <v-btn slot="activator" flat @click="showDeleteDialog(props.item.id)">
-              <v-icon>delete</v-icon>
-            </v-btn>
-          </v-tooltip>
-        </td>
+      <template v-slot:top>
+        <v-toolbar
+          flat
+        >
+          <v-toolbar-title>Gérer mes contrats</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                to="/main/contracts/create"
+              >
+                Créer un contrat
+              </v-btn>
+        </v-toolbar>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-btn slot="activator" text :to="{name: 'main-contracts-calendar', params: {id: item.id}}">
+          <v-icon>
+            calendar_today
+          </v-icon>
+        </v-btn>
+        <v-btn slot="activator" text :to="{name: 'main-contracts-edit', params: {id: item.id}}">
+          <v-icon>
+            edit
+          </v-icon>
+        </v-btn>
+        <v-btn slot="activator" text @click="showDeleteDialog(item.id)">
+          <v-icon>
+            delete
+          </v-icon>
+        </v-btn>
       </template>
     </v-data-table>
-
     <v-dialog v-model="deleteContractDialog" max-width="500px">
       <v-card>
         <v-card-title>Supprimer</v-card-title>
@@ -55,8 +49,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -71,51 +64,15 @@ export default class UserContracts extends Vue {
   public pagination = {sortBy: 'start', descending: true};
   public headers = [
     {
-      text: 'Parent',
+      text: 'User ID',
       sortable: true,
-      value: 'user.firstname',
+      value: 'user_id',
       align: 'left',
     },
     {
-      text: 'Nanny',
+      text: 'Nanny ID',
       sortable: true,
-      value: 'nanny.firstname',
-      align: 'left',
-    },
-    {
-      text: '#Semaines/An',
-      sortable: true,
-      value: 'weeks',
-      align: 'center',
-    },
-    {
-      text: '#Jours/Semaine',
-      sortable: true,
-      value: 'weekdays',
-      align: 'left',
-    },
-    {
-      text: '#Heures/Semaine',
-      sortable: true,
-      value: 'hours',
-      align: 'left',
-    },
-    {
-      text: 'Prix/Heure',
-      sortable: true,
-      value: 'price_hour_standard',
-      align: 'left',
-    },
-    {
-      text: 'Frais/Jour',
-      sortable: true,
-      value: 'price_fees',
-      align: 'left',
-    },
-    {
-      text: 'Repas inclus',
-      sortable: true,
-      value: 'price_meals',
+      value: 'nanny_id',
       align: 'left',
     },
     {
@@ -132,8 +89,8 @@ export default class UserContracts extends Vue {
     },
     {
       text: 'Actions',
-      value: 'id',
-      align: 'center',
+      value: 'actions',
+      sortable: false,
     },
   ];
 
@@ -163,9 +120,3 @@ export default class UserContracts extends Vue {
 
 }
 </script>
-
-<style>
-.v-input--selection-controls:not(.v-input--hide-details) .v-input__slot {
-  margin-bottom: 0px;
-}
-</style>
