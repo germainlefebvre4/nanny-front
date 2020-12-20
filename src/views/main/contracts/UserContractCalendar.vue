@@ -200,7 +200,7 @@ export default class UserContractCalendar extends Vue {
 
   public updateRange({ start, end }) {
     this.selectedYear = start.year;
-    this.selectedMonthString = this.monthNames[start.month];
+    this.selectedMonthString = this.monthNames[start.month-1];
     this.events = this.workingDaysMap();
   }
 
