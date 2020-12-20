@@ -2,12 +2,12 @@
   <v-container fluid>
     <v-card class="ma-3 pa-3">
       <v-card-title primary-title>
-        <div class="headline primary--text">Set Password</div>
+        <div class="headline primary--text">Modifier le mot de passe</div>
       </v-card-title>
       <v-card-text>
         <template>
           <div class="my-3">
-            <div class="subheading secondary--text text--lighten-2">User</div>
+            <div class="subheading secondary--text text--lighten-2">Prénom</div>
             <div class="title primary--text text--darken-2" v-if="userProfile.firstname">{{userProfile.firstname}}</div>
             <div class="title primary--text text--darken-2" v-else>{{userProfile.email}}</div>
           </div>
@@ -15,7 +15,7 @@
             <v-text-field 
               type="password"
               ref="password"
-              label="Password"
+              label="Mot de passe"
               data-vv-name="password"
               data-vv-delay="100"
               data-vv-rules="required"
@@ -25,7 +25,7 @@
             </v-text-field>
             <v-text-field
               type="password"
-              label="Confirm Password"
+              label="Confirmer le mot de passe"
               data-vv-name="password_confirmation"
               data-vv-delay="100"
               data-vv-rules="required|confirmed:$password"
@@ -39,9 +39,9 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="cancel">Cancel</v-btn>
-        <v-btn @click="reset">Reset</v-btn>
-        <v-btn @click="submit" :disabled="!valid">Save</v-btn>
+        <v-btn @click="cancel">Annuler</v-btn>
+        <v-btn @click="reset">Réinitialiser</v-btn>
+        <v-btn @click="submit" :disabled="!valid">Enregistrer</v-btn>
       </v-card-actions>
     </v-card>
   </v-container>

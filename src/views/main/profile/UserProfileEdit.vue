@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-card class="ma-3 pa-3">
       <v-card-title primary-title>
-        <div class="headline primary--text">Edit User Profile</div>
+        <div class="headline primary--text">Modifier le profil utilisateur</div>
       </v-card-title>
       <v-card-text>
         <template>
@@ -30,13 +30,13 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="cancel">Cancel</v-btn>
-        <v-btn @click="reset">Reset</v-btn>
+        <v-btn @click="cancel">Annuler</v-btn>
+        <v-btn @click="reset">Réinitialiser</v-btn>
         <v-btn
           @click="submit"
           :disabled="!valid"
         >
-          Save
+          Enregistrer
         </v-btn>
       </v-card-actions>
     </v-card>
