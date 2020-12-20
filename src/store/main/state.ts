@@ -19,5 +19,5 @@ export interface MainState {
     contract: IUserContract | null;
     searchNanny: INanny | null;
     workingDays: IWorkingDays[] | [];
-    contractSummary: IContractSummary | {}
+    contractSummary: IContractSummary | {};
 }

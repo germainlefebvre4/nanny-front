@@ -5,4 +5,4 @@ Vue.use(Vuetify, {
   iconfont: 'md',
 });
 
-export default new Vuetify({})
+export default new Vuetify({});

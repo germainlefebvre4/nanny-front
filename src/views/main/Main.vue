@@ -211,8 +211,8 @@ export default class Main extends Vue {
 
   get userProfile() {
     const userProfile = readUserProfile(this.$store);
-    if (userProfile && ! userProfile.hasOwnProperty("avatar")) {
-      userProfile["avatar"] = "https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249_960_720.png"
+    if (userProfile && ! userProfile.hasOwnProperty('avatar')) {
+      userProfile.avatar = 'https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249_960_720.png';
     }
     return userProfile;
   }

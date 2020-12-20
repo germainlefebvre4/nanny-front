@@ -4,6 +4,7 @@ export interface IUserProfile {
     is_superuser: boolean;
     firstname: string;
     id: number;
+    avatar?: string;
 }
 
 export interface INanny {
