@@ -36,7 +36,7 @@
               <v-icon>mdi-pen</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Créer un contract</v-list-item-title>
+              <v-list-item-title>Créer un contrat</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>

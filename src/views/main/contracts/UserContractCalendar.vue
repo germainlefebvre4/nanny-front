@@ -73,7 +73,7 @@
             >
               mdi-arrow-left
             </v-icon>
-            Prev
+            Précédent
           </v-btn>
         </v-flex>
         <v-flex sm4 xs12 class="text-xs-center">
@@ -85,7 +85,7 @@
           class="text-sm-right text-xs-center"
         >
           <v-btn @click="$refs.calendar.next()">
-            Next
+            Suivant
             <v-icon
               right
               dark

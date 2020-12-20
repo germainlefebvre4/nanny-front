@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="ma-3 pa-3" max-width="800px" style="margin-left: 0px;">
       <v-card-title primary-title>
-        <div class="headline primary--text">Créer un nouveau contract</div>
+        <div class="headline primary--text">Créer un nouveau contrat</div>
       </v-card-title>
       <v-card-text>
         <template>
@@ -44,49 +44,49 @@
                 <v-checkbox
                   v-model="weekdays.monday"
                   type="boolean"
-                  label="Monday"
+                  label="Lundi"
                 ></v-checkbox>
               </v-flex>
               <v-flex grow>
                 <v-checkbox
                   v-model="weekdays.tuesday"
                   type="boolean"
-                  label="Tuesday"
+                  label="Mardi"
                 ></v-checkbox>
               </v-flex>
               <v-flex grow>
                 <v-checkbox
                   v-model="weekdays.wednesday"
                   type="boolean"
-                  label="Wednesday"
+                  label="Mercredi"
                 ></v-checkbox>
               </v-flex>
               <v-flex grow>
                 <v-checkbox
                   v-model="weekdays.thursday"
                   type="boolean"
-                  label="Thursday"
+                  label="Jeudi"
                 ></v-checkbox>
               </v-flex>
               <v-flex grow>
                 <v-checkbox
                   v-model="weekdays.friday"
                   type="boolean"
-                  label="Friday"
+                  label="Vendredi"
                 ></v-checkbox>
               </v-flex>
               <v-flex grow>
                 <v-checkbox
                   v-model="weekdays.saturday"
                   type="boolean"
-                  label="Saturday"
+                  label="Samedi"
                 ></v-checkbox>
               </v-flex>
               <v-flex grow>
                 <v-checkbox
                   v-model="weekdays.sunday"
                   type="boolean"
-                  label="Sunday"
+                  label="Dimanche"
                 ></v-checkbox>
               </v-flex>
             </v-layout>
@@ -280,12 +280,12 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="cancel">Cancel</v-btn>
+        <v-btn @click="cancel">Annuler</v-btn>
         <v-btn
           @click="submit"
           :disabled="!valid"
         >
-          Save
+          Créer le contrat
         </v-btn>
       </v-card-actions>
     </v-card>

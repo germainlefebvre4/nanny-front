@@ -10,19 +10,19 @@
             </v-toolbar>
             <v-card-text>
               <v-form @keyup.enter="submit">
-                <v-text-field @keyup.enter="submit" v-model="email" prepend-icon="mdi-account" name="login" label="Login" type="text"></v-text-field>
-                <v-text-field @keyup.enter="submit" v-model="password" prepend-icon="mdi-lock" name="password" label="Password" id="password" type="password"></v-text-field>
+                <v-text-field @keyup.enter="submit" v-model="email" prepend-icon="mdi-account" name="login" label="Email" type="text"></v-text-field>
+                <v-text-field @keyup.enter="submit" v-model="password" prepend-icon="mdi-lock" name="password" label="Mot de passe" id="password" type="password"></v-text-field>
               </v-form>
               <div v-if="loginError">
                 <v-alert :value="loginError" transition="fade-transition" type="error">
-                  Incorrect email or password
+                  Email ou mot de passe incorrect
                 </v-alert>
               </div>
-              <v-flex class="caption text-xs-right"><router-link to="/recover-password">Forgot your password?</router-link></v-flex>
+              <v-flex class="caption text-xs-right"><router-link to="/recover-password">Mot de passe oublié ?</router-link></v-flex>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click.prevent="submit">Login</v-btn>
+              <v-btn @click.prevent="submit">Se connecter</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>

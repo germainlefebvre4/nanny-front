@@ -57,8 +57,8 @@
         <v-card-title>Supprimer</v-card-title>
         <v-card-text>Confirmer la suppression</v-card-text>
         <v-card-actions>
-          <v-btn color="primary" text @click="deleteContractDialog = false">Close</v-btn>
-          <v-btn color="primary" text @click="deleteItem()">Delete</v-btn>
+          <v-btn color="primary" text @click="deleteContractDialog = false">Fermer</v-btn>
+          <v-btn color="primary" text @click="deleteItem()">Supprimer</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
