@@ -8,7 +8,9 @@ import {
   IUserContract,
   IContractSummary,
   IWorkingDays,
+  IDayType,
 } from './interfaces';
+import { dispatchAddWorkingDay } from './store/main/actions';
 
 function authHeaders(token: string) {
   return {
@@ -102,7 +104,21 @@ export const api = {
         authHeaders(token),
       );
   },
+  async getDayTypes(token: string) {
+    return axios
+      .get<IDayType[]>(
+        `${apiUrl}/api/v1/day_types`,
+        authHeaders(token),
+      );
+  },
   async register(data) {
     return axios.post(`${apiUrl}/api/v1/users/open`, data);
+  },
+  async addWorkingDay(token: string, payload) {
+    return axios.post(
+      `${apiUrl}/api/v1/contracts/${payload.contractId}/working_days?day_type_id=${payload.dayType}`,
+      payload.data,
+      authHeaders(token),
+    );
   },
 };

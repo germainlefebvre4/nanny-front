@@ -18,6 +18,8 @@ import {
     commitSetContractSummary,
     commitSetSearchNanny,
     commitSetWorkingDays,
+    commitSetDayTypes,
+    commitAddWorkingDaySuccess,
 } from './mutations';
 import { AppNotification, MainState } from './state';
 
@@ -267,6 +269,26 @@ export const actions = {
             await dispatchCheckApiError(context, error);
         }
     },
+    async actionGetDayTypes(context: MainContext) {
+        try {
+            const response = await api.getDayTypes(context.state.token);
+            if (response) {
+                commitSetDayTypes(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionAddWorkingDay(context: MainContext, payload) {
+        try {
+            const response = await api.addWorkingDay(context.state.token, payload);
+            if (response) {
+                commitAddWorkingDaySuccess(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
 };
 
 const { dispatch } = getStoreAccessors<MainState | any, State>('');
@@ -292,3 +314,5 @@ export const dispatchRemoveContract = dispatch(actions.actionRemoveContract);
 export const dispatchSearchNannyByEmail = dispatch(actions.actionSearchNannyByEmail);
 export const dispatchGetWorkingDays = dispatch(actions.actionGetWorkingDays);
 export const dispatchGetContractSummary = dispatch(actions.actionGetContractSummary);
+export const dispatchGetDayTypes = dispatch(actions.actionGetDayTypes);
+export const dispatchAddWorkingDay = dispatch(actions.actionAddWorkingDay);
