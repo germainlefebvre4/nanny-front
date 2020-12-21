@@ -58,7 +58,7 @@
         <v-card-text>Confirmer la suppression</v-card-text>
         <v-card-actions>
           <v-btn color="primary" text @click="deleteContractDialog = false">Fermer</v-btn>
-          <v-btn color="primary" text @click="deleteItem()">Supprimer</v-btn>
+          <v-btn color="primary" text @click="deleteContract()">Supprimer</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -161,7 +161,7 @@ export default class UserContracts extends Vue {
       this.deleteContractDialog = !this.deleteContractDialog;
   }
 
-  public async deleteItem() {
+  public async deleteContract() {
       await dispatchRemoveContract(this.$store, this.deleteContractId);
       await dispatchGetContracts(this.$store);
       this.deleteContractDialog = !this.deleteContractDialog;
