@@ -73,10 +73,16 @@ export interface IUserContractUpdate {
     nanny_id?: number;
 }
 
+export interface IDayType {
+    id: number;
+    name: string;
+}
+
 export interface IWorkingDays {
     id: number;
     day_type_id: number;
     contract_id: number;
+    day_type: IDayType;
     day: string;
     start?: string;
     end?: string;
