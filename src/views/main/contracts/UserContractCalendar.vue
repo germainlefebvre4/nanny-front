@@ -144,6 +144,16 @@ export default class UserContractCalendar extends Vue {
   ];
 
   public events: Event[] = [];
+  public eventColor = [
+    'black',
+    'green',
+    'orange',
+    'yellow',
+    'red',
+    'blue',
+    'purple',
+    'grey',
+  ];
 
   public eventOpen: boolean = true;
   public selectedOpen: boolean = false;
@@ -200,7 +210,7 @@ export default class UserContractCalendar extends Vue {
 
   public updateRange({ start, end }) {
     this.selectedYear = start.year;
-    this.selectedMonthString = this.monthNames[start.month-1];
+    this.selectedMonthString = this.monthNames[start.month - 1];
     this.events = this.workingDaysMap();
   }
 
@@ -254,19 +264,23 @@ export default class UserContractCalendar extends Vue {
   }
 
   public workingDaysMap() {
+    // Start -- Quick fix eventCOlor
+    this.eventColor[50] = 'grey';
+    this.eventColor[51] = 'black';
+    // End
     const map = {};
     const rawEvents = [...this.workingDays];
     let mappedEvents: Event[] = [];
     for (const event of rawEvents) {
       const mappedEvent = {
-        name: event.day_type_id === 50 ? 'Travaillé' : 'Absence',
+        name: event.day_type.name,
         start: `${event.day} ${event.start}`,
         end: `${event.day} ${event.end}`,
         id: event.id,
-        color: event.day_type_id === 50 ? 'blue' : 'orange',
+        color: this.eventColor[event.day_type.id],
         timed: true,
         contractId: event.contract_id,
-        details: event.day_type_id === 50 ? `Journée travaillée de ${event.start} à ${event.end}` : 'Absence justifiée',
+        details: event.day_type.name,
       };
 
       mappedEvents = [...mappedEvents, mappedEvent];
