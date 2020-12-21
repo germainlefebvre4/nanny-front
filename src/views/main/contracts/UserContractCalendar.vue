@@ -208,9 +208,18 @@ export default class UserContractCalendar extends Vue {
     console.log('delEvent');
   }
 
-  public updateRange({ start, end }) {
+  public async updateRange({ start, end }) {
+    this.events = [];
     this.selectedYear = start.year;
+    this.selectedMonthId = start.month;
     this.selectedMonthString = this.monthNames[start.month - 1];
+    const payload = {
+      contractId: this.contractId,
+      year: this.selectedYear,
+      month: this.selectedMonthId,
+    };
+    await dispatchGetWorkingDays(this.$store, payload);
+
     this.events = this.workingDaysMap();
   }
 
@@ -234,7 +243,6 @@ export default class UserContractCalendar extends Vue {
       month: this.selectedMonthId,
     };
     await dispatchGetWorkingDays(this.$store, payload);
-    // this.$refs.calendar.updateRange();
     this.reset();
 
     this.updateRange({start: {year: this.selectedYear, month: this.selectedMonthId}, end: {}});
