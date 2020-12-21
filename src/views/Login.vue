@@ -22,9 +22,17 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click.prevent="submit">Se connecter</v-btn>
+              <v-btn color="primary" block @click.prevent="submit">Se connecter</v-btn>
             </v-card-actions>
           </v-card>
+          <v-container fluid>
+            <v-layout column align-center justify-center>
+              <v-flex class="text-xs-center">Pas encore de compte Nanny...</v-flex>
+              <v-btn text>
+                <router-link to="/register">Créez mon compte</router-link>
+              </v-btn>
+            </v-layout>
+          </v-container>
         </v-flex>
       </v-layout>
     </v-container>

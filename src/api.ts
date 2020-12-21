@@ -100,4 +100,7 @@ export const api = {
         authHeaders(token),
       );
   },
+  async register(data) {
+    return axios.post(`${apiUrl}/api/v1/users/open`, data);
+  },
 };

@@ -116,7 +116,7 @@ export const actions = {
         }
     },
     actionRouteLoggedIn(context: MainContext) {
-        if (router.currentRoute.path === '/login' || router.currentRoute.path === '/') {
+        if (router.currentRoute.path === '/login' || router.currentRoute.path === '/' || router.currentRoute.path === '/register') {
             router.push('/main');
         }
     },
