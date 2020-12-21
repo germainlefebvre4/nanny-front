@@ -75,19 +75,19 @@ export default new Router({
                 {
                   path: 'create',
                   component: () => import(
-                    /* webpackChunkName: "main-contracts-edit" */ './views/main/contracts/UserContractsCreate.vue'),
+                    /* webpackChunkName: "main-contracts" */ './views/main/contracts/UserContractCreateOrEdit.vue'),
                 },
                 {
                   path: 'edit/:id',
                   name: 'main-contracts-edit',
                   component: () => import(
-                    /* webpackChunkName: "main-contract-edit" */ './views/main/contracts/UserContractEdit.vue'),
+                    /* webpackChunkName: "main-contracts" */ './views/main/contracts/UserContractCreateOrEdit.vue'),
                 },
                 {
                   path: 'calendar/:id',
                   name: 'main-contracts-calendar',
                   component: () => import(
-                    /* webpackChunkName: "main-contract-edit" */ './views/main/contracts/UserContractCalendar.vue'),
+                    /* webpackChunkName: "main-contracts" */ './views/main/contracts/UserContractCalendar.vue'),
                 },
               ],
             },

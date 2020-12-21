@@ -7,7 +7,6 @@ import {
   INanny,
   IUserContract,
   IContractSummary,
-  IUserContractCreate,
   IWorkingDays,
 } from './interfaces';
 
@@ -64,7 +63,7 @@ export const api = {
         authHeaders(token),
       );
   },
-  async createContract(token: string, data: IUserContractCreate) {
+  async createContract(token: string, data: IUserContract) {
     const userId = data.user_id;
     const nannyId = data.nanny_id;
     delete data.user_id;
@@ -77,7 +76,7 @@ export const api = {
         data, authHeaders(token));
     }
   },
-  async updateContract(token: string, data: IUserContractCreate, contractId: number) {
+  async updateContract(token: string, data: IUserContract, contractId: number) {
     delete data.user_id;
     delete data.nanny_id;
     return axios.put(`${apiUrl}/api/v1/contracts/${contractId}`,

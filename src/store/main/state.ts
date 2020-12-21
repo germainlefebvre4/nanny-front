@@ -15,8 +15,8 @@ export interface MainState {
     dashboardShowDrawer: boolean;
     notifications: AppNotification[];
     contracts: IUserContract[];
-    userContract: IUserContract | null;
-    contract: IUserContract | null;
+    userContract: IUserContract;
+    contract: IUserContract;
     searchNanny: INanny | null;
     workingDays: IWorkingDays[] | [];
     contractSummary: IContractSummary | {};

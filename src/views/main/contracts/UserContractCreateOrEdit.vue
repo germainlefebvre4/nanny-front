@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="ma-3 pa-3" max-width="800px" style="margin-left: 0px;">
       <v-card-title primary-title>
-        <div class="headline primary--text">Créer un nouveau contrat</div>
+        <div class="headline primary--text">{{ title }}</div>
       </v-card-title>
       <v-card-text>
         <template>
@@ -285,7 +285,7 @@
           @click="submit"
           :disabled="!valid"
         >
-          Créer le contrat
+          {{ editMode ? 'Enregistrer' : 'Créer le contrat'}}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -295,13 +295,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { IUserContractCreate, INanny } from '@/interfaces';
-import { readUserProfile, readSearchNanny } from '@/store/main/getters';
-import { dispatchCreateUserContract, dispatchSearchNannyByEmail } from '@/store/main/actions';
+import { IUserContract, INanny } from '@/interfaces';
+import { readUserProfile, readContract, readSearchNanny } from '@/store/main/getters';
+import { dispatchCreateUserContract, dispatchSearchNannyByEmail, dispatchGetContract, dispatchUpdateUserContract } from '@/store/main/actions';
 import { Dictionary } from 'vue-router/types/router';
 
 @Component
-export default class UserContractCreate extends Vue {
+export default class UserContractCreateOrEdit extends Vue {
+  public title: string = 'Créer un nouveau contrat';
   public valid = true;
   public weekdays = {
     monday: true,
@@ -314,16 +315,12 @@ export default class UserContractCreate extends Vue {
   };
   public nannyEmail: string = '';
   public nannyFirstname: string = '';
-  // public nanny = {
-  //   id: '',
-  //   email: '',
-  //   firstname: '',
-  // }
-  public weeks: number = 47;
-  public hours: number = 40;
-  public priceHourStandard: number = 3.5;
-  public priceHourExtra: number = 3.8;
-  public priceDayFees: number = 3.11;
+
+  public weeks: number = 0;
+  public hours: number = 0;
+  public priceHourStandard: number = 0;
+  public priceHourExtra: number = 0;
+  public priceDayFees: number = 0;
   public priceDayMeals: number = 0;
   public dateStart: string = '';
   public dateEnd: string = '';
@@ -332,6 +329,8 @@ export default class UserContractCreate extends Vue {
   public menuDateStart: boolean = false;
   public menuDateEnd: boolean = false;
 
+  public contractId: number | null = null;
+  private editMode = false;
 
   private validateNannyEmail = [
   ];
@@ -357,15 +356,34 @@ export default class UserContractCreate extends Vue {
   private validateDateEnd = [
   ];
 
-  public created() {
+  public async mounted() {
     const userProfile = readUserProfile(this.$store);
     if (userProfile) {
       this.userId = userProfile.id;
+    }
+    this.editMode = this.$router.currentRoute.name === 'main-contracts-edit' ? true : false;
+    if (this.editMode) {
+      this.title = 'Modifier le contrat';
+      this.contractId = parseInt(this.$router.currentRoute.params.id, 10);
+      await dispatchGetContract(this.$store, this.contractId);
+      this.setFormValues();
     }
   }
 
   get userProfile() {
     return readUserProfile(this.$store);
+  }
+
+  get userContract() {
+    return readContract(this.$store);
+  }
+
+  get nanny() {
+    return readSearchNanny(this.$store);
+  }
+
+  set nanny(nanny: INanny | null) {
+    this.nanny = nanny;
   }
 
   public cancel() {
@@ -390,7 +408,7 @@ export default class UserContractCreate extends Vue {
         }
       }
       const updatedWeekdays = updatedWeekdaysList.join(' ');
-      const updatedContract: IUserContractCreate = {
+      const updatedContract: IUserContract = {
         weekdays: updatedWeekdays,
         weeks: this.weeks,
         hours: this.hours,
@@ -399,10 +417,9 @@ export default class UserContractCreate extends Vue {
         price_fees: this.priceDayFees,
         user_id: this.userId,
         nanny_id: this.nannyId,
+        price_meals: this.priceDayMeals,
       };
-      if (this.priceDayMeals) {
-        updatedContract.price_meals = this.priceDayMeals;
-      }
+
       if (this.dateStart) {
         updatedContract.start = this.dateStart;
       }
@@ -412,7 +429,14 @@ export default class UserContractCreate extends Vue {
       if (this.nanny?.id !== 0) {
         updatedContract.nanny_id = this.nanny?.id;
       }
-      await dispatchCreateUserContract(this.$store, updatedContract);
+
+      if (this.editMode) {
+        updatedContract.id =  this.userContract.id;
+      }
+
+      this.editMode ?
+        await dispatchUpdateUserContract(this.$store, updatedContract) :
+        await dispatchCreateUserContract(this.$store, updatedContract);
       this.$router.push('/main/contracts');
     }
   }
@@ -420,14 +444,6 @@ export default class UserContractCreate extends Vue {
   public async searchNannyByEmail() {
     const nanny = await this.setSearchNanny(this.nannyEmail);
     await this.getSearchNanny();
-  }
-
-  get nanny() {
-    return readSearchNanny(this.$store);
-  }
-
-  set nanny(nanny: INanny | null) {
-    this.nanny = nanny;
   }
 
   public getSearchNanny() {
@@ -440,6 +456,34 @@ export default class UserContractCreate extends Vue {
 
   public checkNannyEntity(n) {
     return true ? n : false;
+  }
+
+  public setWeekDays(values?: string[]) {
+    return {
+      monday: values?.includes('Mon') ? true : false,
+      tuesday: values?.includes('Tue') ? true : false,
+      wednesday: values?.includes('Wed') ? true : false,
+      thursday: values?.includes('Thu') ? true : false,
+      friday: values?.includes('Fri') ? true : false,
+      saturday: values?.includes('Sat') ? true : false,
+      sunday: values?.includes('Sun') ? true : false,
+    };
+  }
+
+  private setFormValues() {
+    const contract: IUserContract = this.userContract;
+    const weekDays = contract.weekdays.split(' ');
+    this.weekdays = this.setWeekDays(weekDays);
+    this.weeks = contract.weeks;
+    this.hours = contract.hours;
+    this.priceHourStandard = contract.price_hour_standard;
+    this.priceHourExtra = contract.price_hour_extra;
+    this.priceDayFees = contract.price_fees;
+    this.priceDayMeals = contract.price_meals || 0;
+    this.dateStart = contract.start || '';
+    this.dateEnd = contract.end || '';
+    this.nannyId = contract.nanny_id || 0;
+    this.userId = contract.user_id || 0;
   }
 
 }
