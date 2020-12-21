@@ -41,6 +41,9 @@ export const api = {
   async createUser(token: string, data: IUserProfileCreate) {
     return axios.post(`${apiUrl}/api/v1/users/`, data, authHeaders(token));
   },
+  async removeUser(token: string, userId: number) {
+    return axios.delete(`${apiUrl}/api/v1/users/${userId}`, authHeaders(token));
+  },
   async passwordRecovery(email: string) {
     return axios.post(`${apiUrl}/api/v1/password-recovery/${email}`);
   },
