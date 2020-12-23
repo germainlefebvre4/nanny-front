@@ -8,24 +8,44 @@
       <v-btn color="primary" to="/main/admin/users/create">Create User</v-btn>
     </v-toolbar>
     <v-data-table :headers="headers" :items="users">
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.id }}</td>
-        <td>{{ props.item.email }}</td>
-        <td>{{ props.item.firstname }}</td>
-        <td><v-icon v-if="props.item.is_user">checkmark</v-icon></td>
-        <td><v-icon v-if="props.item.is_nanny">checkmark</v-icon></td>
-        <td><v-icon v-if="props.item.is_active">checkmark</v-icon></td>
-        <td><v-icon v-if="props.item.is_superuser">checkmark</v-icon></td>
+      <template v-slot:[`item.is_user`]="{ item }">
+        <v-icon v-if="item.is_user">mdi-checkbox-marked-circle-outline</v-icon>
+        <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
+      </template>
+      <template v-slot:[`item.is_nanny`]="{ item }">
+        <v-icon v-if="item.is_nanny">mdi-checkbox-marked-circle-outline</v-icon>
+        <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
+      </template>
+      <template v-slot:[`item.is_active`]="{ item }">
+        <v-icon v-if="item.is_active">mdi-checkbox-marked-circle-outline</v-icon>
+        <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
+      </template>
+      <template v-slot:[`item.is_superuser`]="{ item }">
+        <v-icon v-if="item.is_superuser">mdi-checkbox-marked-circle-outline</v-icon>
+        <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
+      </template>
+
+      <template v-slot:[`item.actions`]="{ item }">
         <td class="justify-center layout px-0">
-          <v-tooltip top>
-            <span>Edit</span>
-            <v-btn slot="activator" text :to="{name: 'main-admin-users-edit', params: {id: props.item.id}}">
-              <v-icon>edit</v-icon>
-            </v-btn>
-          </v-tooltip>
+          <v-btn slot="activator" text :to="{name: 'main-admin-users-edit', params: {id: item.id}}">
+            <v-icon>mdi-pen</v-icon>
+          </v-btn>
+          <v-btn slot="activator" text @click="showDeleteDialog(item.id)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
         </td>
       </template>
     </v-data-table>
+    <v-dialog v-model="deleteUserDialog" max-width="500px">
+      <v-card>
+        <v-card-title>Supprimer (non implémenté)</v-card-title>
+        <v-card-text>Confirmer la suppression</v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" text @click="deleteUserDialog = false">Fermer</v-btn>
+          <!--<v-btn color="primary" text @click="deleteUser()">Supprimer</v-btn>-->
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -34,7 +54,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
 import { IUserProfile } from '@/interfaces';
 import { readAdminUsers } from '@/store/admin/getters';
-import { dispatchGetUsers } from '@/store/admin/actions';
+import { dispatchGetUsers, dispatchRemoveUser } from '@/store/admin/actions';
 
 @Component
 export default class AdminUsers extends Vue {
@@ -42,7 +62,7 @@ export default class AdminUsers extends Vue {
     {
       text: 'ID',
       sortable: true,
-      value: 'name',
+      value: 'id',
       align: 'left',
     },
     {
@@ -60,38 +80,55 @@ export default class AdminUsers extends Vue {
     {
       text: 'Is User',
       sortable: true,
-      value: 'isUser',
+      value: 'is_user',
       align: 'left',
     },
     {
       text: 'Is Nanny',
       sortable: true,
-      value: 'isNanny',
-      align: 'left',
+      value: 'is_nanny',
+      align: 'center',
     },
     {
       text: 'Is Active',
       sortable: true,
-      value: 'isActive',
-      align: 'left',
+      value: 'is_active',
+      align: 'center',
     },
     {
       text: 'Is Superuser',
       sortable: true,
-      value: 'isSuperuser',
-      align: 'left',
+      value: 'is_superuser',
+      align: 'center',
     },
     {
       text: 'Actions',
-      value: 'id',
+      sortable: false,
+      value: 'actions',
+      align: 'center',
     },
   ];
+  public deleteUserId;
+  public deleteUserDialog = false;
+
   get users() {
     return readAdminUsers(this.$store);
   }
 
   public async mounted() {
     await dispatchGetUsers(this.$store);
+  }
+
+  public showDeleteDialog(item) {
+      this.deleteUserId = item;
+      this.deleteUserDialog = !this.deleteUserDialog;
+  }
+
+  public async deleteUser() {
+      await dispatchRemoveUser(this.$store, this.deleteUserId);
+      await dispatchGetUsers(this.$store);
+      this.deleteUserDialog = !this.deleteUserDialog;
+      delete this.deleteUserId;
   }
 }
 </script>

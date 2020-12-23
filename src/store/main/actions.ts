@@ -222,12 +222,12 @@ export const actions = {
             await dispatchCheckApiError(context, error);
         }
     },
-    async actionRemoveContract(context: MainContext, userId: number) {
+    async actionRemoveContract(context: MainContext, contractId: number) {
         try {
             const loadingNotification = { content: 'deleting', showProgress: true };
             commitAddNotification(context, loadingNotification);
             const response = (await Promise.all([
-                api.removeContract(context.state.token, userId),
+                api.removeContract(context.state.token, contractId),
                 await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
             ]))[0];
             // commitRemoveUserContract(context, response.data);

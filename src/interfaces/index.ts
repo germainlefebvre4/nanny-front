@@ -26,6 +26,8 @@ export interface IUserProfileCreate {
     firstname?: string;
     password?: string;
     is_active?: boolean;
+    is_user?: boolean;
+    is_nanny?: boolean;
     is_superuser?: boolean;
 }
 
@@ -43,20 +45,6 @@ export interface IUserContract {
     user_id?: number;
     nanny_id?: number;
 }
-
-// export interface IUserContractCreate {
-//     weekdays: string;
-//     weeks: number;
-//     hours: number;
-//     price_hour_standard: number;
-//     price_hour_extra: number;
-//     price_fees: number;
-//     price_meals?: number;
-//     start?: string;
-//     end?: string;
-//     user_id?: number;
-//     nanny_id?: number;
-// }
 
 export interface IUserContractUpdate {
     id: number;

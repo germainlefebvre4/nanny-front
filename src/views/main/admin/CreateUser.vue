@@ -9,10 +9,10 @@
           <v-form v-model="valid" ref="form" lazy-validation>
             <v-text-field label="Firstname" v-model="fullName" required></v-text-field>
             <v-text-field label="E-mail" type="email" v-model="email" v-validate="'required|email'" data-vv-name="email" :error-messages="errors.collect('email')" required></v-text-field>
-            <div class="subheading secondary--text text--lighten-2">User is superuser <span v-if="isSuperuser">(currently is a superuser)</span><span v-else>(currently is not a superuser)</span></div>
-            <v-checkbox label="Is Superuser" v-model="isSuperuser"></v-checkbox>
-            <div class="subheading secondary--text text--lighten-2">User is active <span v-if="isActive">(currently active)</span><span v-else>(currently not active)</span></div>
             <v-checkbox label="Is Active" v-model="isActive"></v-checkbox>
+            <v-checkbox label="Is User" v-model="isUser"></v-checkbox>
+            <v-checkbox label="Is Nanny" v-model="isNanny"></v-checkbox>
+            <v-checkbox label="Is Superuser" v-model="isSuperuser"></v-checkbox>
             <v-layout align-center>
               <v-flex>
                 <v-text-field type="password" ref="password" label="Set Password" data-vv-name="password" data-vv-delay="100" v-validate="{required: true}" v-model="password1" :error-messages="errors.first('password')">
@@ -51,6 +51,8 @@ export default class CreateUser extends Vue {
   public fullName: string = '';
   public email: string = '';
   public isActive: boolean = true;
+  public isUser: boolean = true;
+  public isNanny: boolean = false;
   public isSuperuser: boolean = false;
   public setPassword = false;
   public password1: string = '';
@@ -67,6 +69,8 @@ export default class CreateUser extends Vue {
     this.fullName = '';
     this.email = '';
     this.isActive = true;
+    this.isUser = true;
+    this.isNanny = false;
     this.isSuperuser = false;
     this.$validator.reset();
   }
@@ -87,6 +91,8 @@ export default class CreateUser extends Vue {
         updatedProfile.email = this.email;
       }
       updatedProfile.is_active = this.isActive;
+      updatedProfile.is_user = this.isUser;
+      updatedProfile.is_nanny = this.isNanny;
       updatedProfile.is_superuser = this.isSuperuser;
       updatedProfile.password = this.password1;
       await dispatchCreateUser(this.$store, updatedProfile);
