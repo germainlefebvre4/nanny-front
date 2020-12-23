@@ -1,103 +1,109 @@
 <template>
   <v-container fluid>
-    <v-card class="ma-3 pa-3">
-      <v-card-title primary-title>
-        <div class="headline primary--text">Modifier le calendrier</div>
-      </v-card-title>
-      <v-card-text>
-        <h3 ref="selectedMonth">{{ selectedMonthString }} {{ selectedYear }}</h3>
-        <v-layout wrap>
-        <v-flex xs12>
-          <v-sheet height="600">
-            <v-calendar
-              ref="calendar"
-              v-model="calendar"
-              color="primary"
-              :value="selectedDate"
-              :event-color="getEventColor"
-              :type="type"
-              :weekdays="weekdays"
-              :show-week='true'
-              :events="events"
-              @change="updateRange"
-              @click:event="showEvent"
-              @click:date="addEvent"
+    <v-row no-gutters>
+      <v-col cols="12" md="12" lg="9" >
+        <v-card class="ma-3 pa-3">
+          <v-card-title primary-title>
+            <div class="headline primary--text">Modifier le calendrier</div>
+          </v-card-title>
+          <v-card-text>
+            <h3 ref="selectedMonth">{{ selectedMonthString }} {{ selectedYear }}</h3>
+            <v-layout wrap>
+            <v-flex xs12>
+              <v-sheet height="600">
+                <v-calendar
+                  ref="calendar"
+                  v-model="calendar"
+                  color="primary"
+                  :value="selectedDate"
+                  :event-color="getEventColor"
+                  :type="type"
+                  :weekdays="weekdays"
+                  :show-week='true'
+                  :events="events"
+                  @change="updateRange"
+                  @click:event="showEvent"
+                  @click:date="addEvent"
+                >
+                </v-calendar>
+                <v-menu
+                  v-model="selectedOpen"
+                  :close-on-content-click="false"
+                  :activator="selectedElement"
+                  offset-x
+                >
+                  <v-card
+                    color="grey lighten-4"
+                    min-width="350px"
+                    flat
+                  >
+                    <v-toolbar
+                      :color="selectedEvent.color"
+                      dark
+                    >
+                      <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                      <v-spacer></v-spacer>
+                      <v-btn icon>
+                        <v-icon>mdi-create</v-icon>
+                      </v-btn>
+                      <v-btn icon>
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </v-toolbar>
+                    <v-card-text>
+                      <span v-html="selectedEvent.details"></span>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn
+                        text
+                        color="secondary"
+                        @click="selectedOpen = false"
+                      >
+                        Fermer
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-menu>
+              </v-sheet>
+            </v-flex>
+
+            <v-flex sm4 xs12 class="pa-3 text-sm-left text-xs-center">
+              <v-btn @click="$refs.calendar.prev()">
+                <v-icon
+                  dark
+                  left
+                >
+                  mdi-arrow-left
+                </v-icon>
+                Précédent
+              </v-btn>
+            </v-flex>
+            <v-flex sm4 xs12 class="pa-3 text-xs-center">
+              <v-select v-model="type" :items="typeOptions" label="Type"></v-select>
+            </v-flex>
+            <v-flex
+              sm4
+              xs12
+              class="pa-3 text-sm-right text-xs-center"
             >
-            </v-calendar>
-            <v-menu
-              v-model="selectedOpen"
-              :close-on-content-click="false"
-              :activator="selectedElement"
-              offset-x
-            >
-              <v-card
-                color="grey lighten-4"
-                min-width="350px"
-                flat
-              >
-                <v-toolbar
-                  :color="selectedEvent.color"
+              <v-btn @click="$refs.calendar.next()">
+                Suivant
+                <v-icon
+                  right
                   dark
                 >
-                  <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                  <v-spacer></v-spacer>
-                  <v-btn icon>
-                    <v-icon>mdi-create</v-icon>
-                  </v-btn>
-                  <v-btn icon>
-                    <v-icon>mdi-delete</v-icon>
-                  </v-btn>
-                </v-toolbar>
-                <v-card-text>
-                  <span v-html="selectedEvent.details"></span>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn
-                    text
-                    color="secondary"
-                    @click="selectedOpen = false"
-                  >
-                    Fermer
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-menu>
-          </v-sheet>
-        </v-flex>
-
-        <v-flex sm4 xs12 class="text-sm-left text-xs-center">
-          <v-btn @click="$refs.calendar.prev()">
-            <v-icon
-              dark
-              left
-            >
-              mdi-arrow-left
-            </v-icon>
-            Précédent
-          </v-btn>
-        </v-flex>
-        <v-flex sm4 xs12 class="text-xs-center">
-          <v-select v-model="type" :items="typeOptions" label="Type"></v-select>
-        </v-flex>
-        <v-flex
-          sm4
-          xs12
-          class="text-sm-right text-xs-center"
-        >
-          <v-btn @click="$refs.calendar.next()">
-            Suivant
-            <v-icon
-              right
-              dark
-            >
-              mdi-arrow-right
-            </v-icon>
-          </v-btn>
-        </v-flex>
-        </v-layout>
-
-      </v-card-text>
-    </v-card>
+                  mdi-arrow-right
+                </v-icon>
+              </v-btn>
+            </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col>
+        <MonthSummary :summary="summary"/>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -105,8 +111,16 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
 import { IUserContractUpdate, IWorkingDays } from '@/interfaces';
-import { readUserProfile, readContract, readWorkingDays } from '@/store/main/getters';
-import { dispatchGetContract, dispatchUpdateUserContract, dispatchGetContracts, dispatchGetWorkingDays } from '@/store/main/actions';
+import { readUserProfile, readContract, readWorkingDays, readContractSummary } from '@/store/main/getters';
+import {
+  dispatchGetContract,
+  dispatchUpdateUserContract,
+  dispatchGetContracts,
+  dispatchGetWorkingDays,
+  dispatchGetContractSummary,
+} from '@/store/main/actions';
+
+import MonthSummary from '@/components/MonthSummary.vue';
 
 interface Event {
   name: string;
@@ -118,11 +132,15 @@ interface Event {
   details: string;
 }
 
-@Component
+@Component({
+  components: {
+    MonthSummary,
+  },
+})
 export default class UserContractCalendar extends Vue {
   public valid = true;
   public userId: number = 0;
-  public contractId: number = 0;
+  public contractId: number | null = null;
   public calendar: string = '';
   public type: string = 'month';
 
@@ -218,7 +236,10 @@ export default class UserContractCalendar extends Vue {
       year: this.selectedYear,
       month: this.selectedMonthId,
     };
-    await dispatchGetWorkingDays(this.$store, payload);
+    if (this.contractId !== null) {
+      await dispatchGetWorkingDays(this.$store, payload);
+      await dispatchGetContractSummary(this.$store, payload);
+    }
 
     this.events = this.workingDaysMap();
   }
@@ -237,12 +258,12 @@ export default class UserContractCalendar extends Vue {
     this.selectedMonthId = new Date().getMonth() + 1;
     this.selectedMonthString = this.monthNames[new Date().getMonth()];
     await dispatchGetContract(this.$store, this.contractId);
+
     const payload = {
       contractId: this.contractId,
       year: this.selectedYear,
       month: this.selectedMonthId,
     };
-    await dispatchGetWorkingDays(this.$store, payload);
     this.reset();
 
     this.updateRange({start: {year: this.selectedYear, month: this.selectedMonthId}, end: {}});
@@ -250,6 +271,10 @@ export default class UserContractCalendar extends Vue {
 
   public get workingDays() {
     return readWorkingDays(this.$store);
+  }
+
+  public get summary() {
+    return readContractSummary(this.$store);
   }
 
   public created() {
