@@ -33,6 +33,7 @@ export interface IUserProfileCreate {
 
 export interface IUserContract {
     id?: number;
+    child: string;
     weekdays: string;
     weeks: number;
     hours: number;
@@ -48,6 +49,7 @@ export interface IUserContract {
 
 export interface IUserContractUpdate {
     id: number;
+    child: string;
     weekdays: string;
     weeks: number;
     hours: number;

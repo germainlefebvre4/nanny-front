@@ -84,12 +84,6 @@ export default class UserContracts extends Vue {
       align: 'center',
     },
     {
-      text: 'Nanny',
-      sortable: true,
-      value: 'nanny.firstname',
-      align: 'center',
-    },
-    {
       text: '#Sem/An',
       sortable: true,
       value: 'weeks',
@@ -140,6 +134,7 @@ export default class UserContracts extends Vue {
     {
       text: 'Actions',
       value: 'actions',
+      align: 'center',
       sortable: false,
     },
   ];
