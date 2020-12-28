@@ -19,10 +19,10 @@ jobs:
         run: sed -i 's/^\(VUE_APP_ENV\)=.*/\1=staging/g' .env
       - name: Yarn install
         run: yarn install
-      - name: Yarn Build (dev)
-        run: yarn build --dev
+      - name: Yarn Build (staging)
+        run: yarn build --mode staging
       - name: Upload package to artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: nanny-front-develop
+          name: nanny-front-develop-staging
           path: dist
