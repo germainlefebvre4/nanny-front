@@ -5,6 +5,7 @@ import { MainState } from './state';
 import { IUserContract } from '@/interfaces';
 
 const defaultContract: IUserContract = {
+  child : '',
   weekdays : '',
   weeks : 47,
   hours : 40,

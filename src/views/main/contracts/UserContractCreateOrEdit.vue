@@ -8,13 +8,11 @@
         <template>
           <v-form v-model="valid" ref="form" lazy-validation>
             <v-text-field
-              label="User ID"
-              v-model.number="userId"
-              disabled
+              v-model.number="childName"
+              label="Nom de l'enfant"
             ></v-text-field>
 
-
-            <v-subheader>* Rattacher la nounou avec son adresse email</v-subheader>
+            <v-subheader>* Rattacher la nounou avec son adresse email (facultatif)</v-subheader>
             <v-layout wrap fill-height>
               <v-flex grow>
                 <v-text-field
@@ -313,6 +311,7 @@ export default class UserContractCreateOrEdit extends Vue {
     saturday: false,
     sunday: false,
   };
+  public childName: string = '';
   public nannyEmail: string = '';
   public nannyFirstname: string = '';
 
@@ -409,6 +408,7 @@ export default class UserContractCreateOrEdit extends Vue {
       }
       const updatedWeekdays = updatedWeekdaysList.join(' ');
       const updatedContract: IUserContract = {
+        child: this.childName,
         weekdays: updatedWeekdays,
         weeks: this.weeks,
         hours: this.hours,
@@ -473,6 +473,7 @@ export default class UserContractCreateOrEdit extends Vue {
   private setFormValues() {
     const contract: IUserContract = this.userContract;
     const weekDays = contract.weekdays.split(' ');
+    this.childName = contract.child;
     this.weekdays = this.setWeekDays(weekDays);
     this.weeks = contract.weeks;
     this.hours = contract.hours;
