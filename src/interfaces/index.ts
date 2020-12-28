@@ -62,8 +62,8 @@ export interface IUserContractUpdate {
 }
 
 export interface IDayType {
-    id: number;
-    name: string;
+    id: number | null;
+    name: string | null;
 }
 
 export interface IWorkingDays {

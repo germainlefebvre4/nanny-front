@@ -9,93 +9,229 @@
           <v-card-text>
             <h3 ref="selectedMonth">{{ selectedMonthString }} {{ selectedYear }}</h3>
             <v-layout wrap>
-            <v-flex xs12>
-              <v-sheet height="600">
-                <v-calendar
-                  ref="calendar"
-                  v-model="calendar"
-                  color="primary"
-                  :value="selectedDate"
-                  :event-color="getEventColor"
-                  :type="type"
-                  :weekdays="weekdays"
-                  :show-week='true'
-                  :events="events"
-                  @change="updateRange"
-                  @click:event="showEvent"
-                  @click:date="addEvent"
-                >
-                </v-calendar>
-                <v-menu
-                  v-model="selectedOpen"
-                  :close-on-content-click="false"
-                  :activator="selectedElement"
-                  offset-x
-                >
-                  <v-card
-                    color="grey lighten-4"
-                    min-width="350px"
-                    flat
+              <v-flex xs12>
+                <v-sheet height="600">
+                  <v-calendar
+                    ref="calendar"
+                    v-model="calendar"
+                    color="primary"
+                    :value="selectedDate"
+                    :event-color="getEventColor"
+                    :type="type"
+                    :weekdays="weekdays"
+                    :show-week='true'
+                    :events="events"
+                    @change="updateRange"
+                    @click:event="showEvent"
+                    @click:day="addEvent"
+                    @click:date="addEvent"
                   >
-                    <v-toolbar
-                      :color="selectedEvent.color"
-                      dark
+                  </v-calendar>
+                  <v-menu
+                    v-model="selectedOpen"
+                    :close-on-content-click="false"
+                    :activator="selectedElement"
+                    offset-x
+                  >
+                    <v-card
+                      color="grey lighten-4"
+                      min-width="350px"
+                      flat
                     >
-                      <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                      <v-spacer></v-spacer>
-                      <v-btn icon>
-                        <v-icon>mdi-create</v-icon>
-                      </v-btn>
-                      <v-btn icon>
-                        <v-icon>mdi-delete</v-icon>
-                      </v-btn>
-                    </v-toolbar>
-                    <v-card-text>
-                      <span v-html="selectedEvent.details"></span>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn
-                        text
-                        color="secondary"
-                        @click="selectedOpen = false"
+                      <v-toolbar
+                        :color="selectedEvent.color"
+                        dark
                       >
-                        Fermer
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-menu>
-              </v-sheet>
-            </v-flex>
+                        <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-btn icon>
+                          <v-icon>mdi-pen</v-icon>
+                        </v-btn>
+                        <v-btn icon>
+                          <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                      </v-toolbar>
+                      <v-card-text>
+                        <span v-html="selectedEvent.details"></span>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-btn
+                          text
+                          color="secondary"
+                          @click="selectedOpen = false"
+                        >
+                          Fermer
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-menu>
 
-            <v-flex sm4 xs12 class="pa-3 text-sm-left text-xs-center">
-              <v-btn @click="$refs.calendar.prev()">
-                <v-icon
-                  dark
-                  left
-                >
-                  mdi-arrow-left
-                </v-icon>
-                Précédent
-              </v-btn>
-            </v-flex>
-            <v-flex sm4 xs12 class="pa-3 text-xs-center">
-              <v-select v-model="type" :items="typeOptions" label="Type"></v-select>
-            </v-flex>
-            <v-flex
-              sm4
-              xs12
-              class="pa-3 text-sm-right text-xs-center"
-            >
-              <v-btn @click="$refs.calendar.next()">
-                Suivant
-                <v-icon
-                  right
-                  dark
-                >
-                  mdi-arrow-right
-                </v-icon>
-              </v-btn>
-            </v-flex>
+                  <v-dialog
+                    v-model="newOpen"
+                    :close-on-content-click="false"
+                    :activator="newElement"
+                    offset-x
+                    min-width="200"
+                    max-width="700"
+                  >
+                    <v-card
+                      color="grey lighten-4"
+                      flat
+                    >
+                      <v-toolbar
+                        dark
+                      >
+                        <v-toolbar-title>Ajouter une journée</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          icon
+                          @click="addEventClose"
+                        >
+                          <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                      </v-toolbar>
+                      <v-card-text>
+                        <p></p>
+                        <div class="text--primary">
+                          <v-row align="center">
+                            <v-col cols="6">
+                              <v-subheader>
+                                Date
+                              </v-subheader>
+                            </v-col>
+
+                            <v-col cols="6">
+                              {{ newEvent.date }}
+                            </v-col>
+                          </v-row>
+                          <v-row align="center">
+                            <v-col cols="6">
+                              <v-subheader>
+                                Type de la journée
+                              </v-subheader>
+                            </v-col>
+
+                            <v-col cols="6">
+                              <v-select
+                                v-model="newEvent.dayType"
+                                :items="dayTypes"
+                                item-text="name"
+                                item-value="name"
+                                label="Type"
+                                persistent-hint
+                                return-object
+                                single-line
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                          <v-row align="center">
+                            <v-col cols="6">
+                              <v-subheader>
+                                Heure de début
+                              </v-subheader>
+                            </v-col>
+
+                            <v-col cols="2">
+                              <v-select
+                                v-model="newEvent.hours.start.hour"
+                                :items="hoursList"
+                                label="Heure"
+                                persistent-hint
+                                return-object
+                                single-line
+                              ></v-select>
+                            </v-col>
+                            <v-col cols="2">
+                              <v-select
+                                v-model="newEvent.hours.start.minutes"
+                                :items="minutesList"
+                                label="Minute"
+                                persistent-hint
+                                return-object
+                                single-line
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                          <v-row align="center">
+                            <v-col cols="6">
+                              <v-subheader>
+                                Heure de fin
+                              </v-subheader>
+                            </v-col>
+
+                            <v-col cols="2">
+                              <v-select
+                                v-model="newEvent.hours.end.hour"
+                                :items="hoursList"
+                                label="Heure"
+                                persistent-hint
+                                return-object
+                                single-line
+                              ></v-select>
+                            </v-col>
+                            <v-col cols="2">
+                              <v-select
+                                v-model="newEvent.hours.end.minutes"
+                                :items="minutesList"
+                                label="Minute"
+                                persistent-hint
+                                return-object
+                                single-line
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </div>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-btn
+                          text
+                          color="secondary"
+                          @click="addCalendarEvent"
+                        >
+                          Ajouter
+                        </v-btn>
+                        <v-btn
+                          text
+                          color="secondary"
+                          @click="addEventClose"
+                        >
+                          Fermer
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-sheet>
+              </v-flex>
+
+              <v-flex sm4 xs12 class="text-sm-left text-xs-center">
+                <v-btn @click="$refs.calendar.prev()">
+                  <v-icon
+                    dark
+                    left
+                  >
+                    mdi-arrow-left
+                  </v-icon>
+                  Précédent
+                </v-btn>
+              </v-flex>
+              <v-flex sm4 xs12 class="text-xs-center">
+                <v-select v-model="type" :items="typeOptions" label="Type"></v-select>
+              </v-flex>
+              <v-flex
+                sm4
+                xs12
+                class="text-sm-right text-xs-center"
+              >
+                <v-btn @click="$refs.calendar.next()">
+                  Suivant
+                  <v-icon
+                    right
+                    dark
+                  >
+                    mdi-arrow-right
+                  </v-icon>
+                </v-btn>
+              </v-flex>
             </v-layout>
           </v-card-text>
         </v-card>
@@ -110,17 +246,25 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { IUserContractUpdate, IWorkingDays } from '@/interfaces';
-import { readUserProfile, readContract, readWorkingDays, readContractSummary } from '@/store/main/getters';
+import { IDayType, IUserContractUpdate, IWorkingDays } from '@/interfaces';
+import {
+  readUserProfile,
+  readContract,
+  readWorkingDays,
+  readDayTypes,
+  readContractSummary,
+} from '@/store/main/getters';
 import {
   dispatchGetContract,
   dispatchUpdateUserContract,
   dispatchGetContracts,
   dispatchGetWorkingDays,
   dispatchGetContractSummary,
+  dispatchGetDayTypes,
+  dispatchAddWorkingDay,
 } from '@/store/main/actions';
-
 import MonthSummary from '@/components/MonthSummary.vue';
+import moment from 'moment';
 
 interface Event {
   name: string;
@@ -130,6 +274,7 @@ interface Event {
   timed: boolean;
   contractId: number;
   details: string;
+  id?: number;
 }
 
 @Component({
@@ -147,6 +292,11 @@ export default class UserContractCalendar extends Vue {
   public weekdays: number[] = [1, 2, 3, 4, 5, 6, 0];
   public absenceTypeList: string[] = ['Mock', 'Présence enfant'];
   public absenceType: string = '';
+
+  public hoursList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+    '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+  public minutesList = ['0', '5', '10', '15', '20',
+    '25', '30', '35', '40', '45', '50', '55', '60'];
 
   public monthNames = [
     'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -173,30 +323,44 @@ export default class UserContractCalendar extends Vue {
     'grey',
   ];
 
-  public eventOpen: boolean = true;
   public selectedOpen: boolean = false;
-  public selectedEvent = {};
   public selectedDate = '';
+  public selectedEvent = {};
   public selectedElement = null;
-  public eventMenuOpen: boolean = false;
+
+  public newOpen: boolean = false;
+  public newDate = '';
+  public dayType: IDayType = {
+    id: null,
+    name: null,
+  };
   public newEvent = {
-    // name: 'Ajouter un événement',
-    x: 100,
-    y: 0,
-    color: 'green',
+    dayType: this.dayType,
+    date: null,
+    year: null,
+    month: null,
+    day: null,
+    hours: {
+      start: {
+        hour: null,
+        minutes: null,
+      },
+      end: {
+        hour: null,
+        minutes: null,
+      },
+    },
   };
   public newElement = null;
 
-  public addEvent(event) {
-    console.log('addEvent');
-    if (this.eventMenuOpen) {
-      this.eventMenuOpen = false;
-      setTimeout(() => this.selectedDate = event.date, 100);
-      setTimeout(() => this.eventMenuOpen = true, 100);
-    } else {
-      this.selectedDate = event.date;
-      setTimeout(() => this.eventMenuOpen = true, 10);
-    }
+  public addEvent({date, year, month, day}) {
+    this.newEvent = {...this.newEvent, date, year, month, day};
+    this.newOpen = true;
+  }
+
+  public addEventClose() {
+    this.newOpen = false;
+    this.newDate = '';
   }
 
   public showEvent({ nativeEvent, event }) {
@@ -216,10 +380,6 @@ export default class UserContractCalendar extends Vue {
     }
 
     nativeEvent.stopPropagation();
-  }
-
-  public fetchAbsenceType() {
-    return ['Présence enfant', 'Maladie enfant'];
   }
 
   public delEvent() {
@@ -258,7 +418,7 @@ export default class UserContractCalendar extends Vue {
     this.selectedMonthId = new Date().getMonth() + 1;
     this.selectedMonthString = this.monthNames[new Date().getMonth()];
     await dispatchGetContract(this.$store, this.contractId);
-
+    await dispatchGetDayTypes(this.$store);
     const payload = {
       contractId: this.contractId,
       year: this.selectedYear,
@@ -271,6 +431,9 @@ export default class UserContractCalendar extends Vue {
 
   public get workingDays() {
     return readWorkingDays(this.$store);
+  }
+  public get dayTypes() {
+    return readDayTypes(this.$store);
   }
 
   public get summary() {
@@ -305,15 +468,15 @@ export default class UserContractCalendar extends Vue {
     const rawEvents = [...this.workingDays];
     let mappedEvents: Event[] = [];
     for (const event of rawEvents) {
-      const mappedEvent = {
-        name: event.day_type.name,
+      const mappedEvent: Event = {
+        name: event.day_type.name || '',
         start: `${event.day} ${event.start}`,
         end: `${event.day} ${event.end}`,
         id: event.id,
-        color: this.eventColor[event.day_type.id],
+        color: this.eventColor[event.day_type.id || 50],
         timed: true,
         contractId: event.contract_id,
-        details: event.day_type.name,
+        details: event.day_type.name || '',
       };
 
       mappedEvents = [...mappedEvents, mappedEvent];
@@ -324,6 +487,22 @@ export default class UserContractCalendar extends Vue {
 
   public open(event) {
     alert(event.day);
+  }
+
+  public async addCalendarEvent() {
+    const newWorkingDay = {
+      contractId: this.contractId,
+      dayType: this.newEvent.dayType.id,
+      data: {
+        day: this.newEvent.date,
+        start: `${this.newEvent.hours.start.hour}:${this.newEvent.hours.start.minutes}:00`,
+        end: `${this.newEvent.hours.end.hour}:${this.newEvent.hours.end.minutes}:00`,
+      },
+    };
+    await dispatchAddWorkingDay(this.$store, newWorkingDay);
+    this.newOpen = false;
+    // TODO: add directly the new event in workingDays inside store instead of call API
+    this.updateRange({start: {year: this.selectedYear, month: this.selectedMonthId}, end: {}});
   }
 
 }

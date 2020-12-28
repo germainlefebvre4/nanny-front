@@ -36,6 +36,8 @@ const defaultState: MainState = {
     firstname: '',
   },
   workingDays: [],
+  dayTypes: [],
+  addWorkingDaySuccess: null,
 };
 
 export const mainModule = {
