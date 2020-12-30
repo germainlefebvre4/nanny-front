@@ -107,7 +107,7 @@ export const api = {
   async getDayTypes(token: string) {
     return axios
       .get<IDayType[]>(
-        `${apiUrl}/api/v1/day_types`,
+        `${apiUrl}/api/v1/day_types/`,
         authHeaders(token),
       );
   },
