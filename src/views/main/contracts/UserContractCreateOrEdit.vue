@@ -628,28 +628,11 @@ export default class UserContractCreateOrEdit extends Vue {
     };
   }
 
-  private setFormValues() {
-    const contract: IUserContract = this.userContract;
-    const weekDays = contract.weekdays.split(' ');
-    this.childName = contract.child;
-    this.weekdays = this.setWeekDays(weekDays);
-    this.weeks = contract.weeks;
-    this.hours = contract.hours;
-    this.priceHourStandard = contract.price_hour_standard;
-    this.priceHourExtra = contract.price_hour_extra;
-    this.priceDayFees = contract.price_fees;
-    this.priceDayMeals = contract.price_meals || 0;
-    this.dateStart = contract.start || '';
-    this.dateEnd = contract.end || '';
-    this.nannyId = contract.nanny_id || 0;
-    this.userId = contract.user_id || 0;
-  }
-
   public hoursModeDailyEnabledLabel() {
     if (this.hoursModeDailyEnabled) {
-      return "Déclaration Journalière";
+      return 'Déclaration Journalière';
     } else {
-      return "Déclaration Hebdomadaire";
+      return 'Déclaration Hebdomadaire';
     }
   }
 
@@ -668,6 +651,23 @@ export default class UserContractCreateOrEdit extends Vue {
       }
       this.hours = 0;
     }
+  }
+
+  private setFormValues() {
+    const contract: IUserContract = this.userContract;
+    const weekDays = contract.weekdays.split(' ');
+    this.childName = contract.child;
+    this.weekdays = this.setWeekDays(weekDays);
+    this.weeks = contract.weeks;
+    this.hours = contract.hours;
+    this.priceHourStandard = contract.price_hour_standard;
+    this.priceHourExtra = contract.price_hour_extra;
+    this.priceDayFees = contract.price_fees;
+    this.priceDayMeals = contract.price_meals || 0;
+    this.dateStart = contract.start || '';
+    this.dateEnd = contract.end || '';
+    this.nannyId = contract.nanny_id || 0;
+    this.userId = contract.user_id || 0;
   }
 }
 
