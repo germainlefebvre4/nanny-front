@@ -25,7 +25,7 @@
       </template>
 
       <template v-slot:[`item.weekdays`]="{ item }">
-        {{ item.weekdays.split(" ").length }}
+        {{ mapWeekdaysToPretty(item.weekdays) }}
       </template>
       <template v-slot:[`item.price_hour_standard`]="{ item }">
         {{ item.price_hour_standard }} €
@@ -169,6 +169,25 @@ export default class UserContracts extends Vue {
     } else {
       return false;
     }
+  }
+
+  public mapWeekdaysToPretty(items) {
+    Vue.delete(items, 'enabled');
+    console.log(items);
+    const weekdaysMapping = {
+      Mon: 'Lundi',
+      Tue: 'Mardi',
+      Wed: 'Mercredi',
+      Thu: 'Jeudi',
+      Fri: 'Vendredi',
+      Sat: 'Samedi',
+      Sun: 'Dimanche',
+    };
+    const weekdays: string[] = [];
+    for (const [key, value] of Object.entries(items)) {
+      weekdays.push(weekdaysMapping[key]);
+    }
+    return weekdays.length;
   }
 
 }

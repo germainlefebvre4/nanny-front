@@ -419,7 +419,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { IUserContract, INanny } from '@/interfaces';
+import { IUserContract, INanny, IWeekdays } from '@/interfaces';
 import { readUserProfile, readContract, readSearchNanny } from '@/store/main/getters';
 import { dispatchCreateUserContract, dispatchSearchNannyByEmail, dispatchGetContract, dispatchUpdateUserContract } from '@/store/main/actions';
 import { Dictionary } from 'vue-router/types/router';
@@ -558,13 +558,15 @@ export default class UserContractCreateOrEdit extends Vue {
         saturday: 'Sat',
         sunday: 'Sun',
       };
-      const updatedWeekdaysList: string[] = [];
-      for (const [key, value] of Object.entries(this.weekdays)) {
-        if (value) {
-          updatedWeekdaysList.push(weekdaysMapping[key]);
+      const updatedWeekdays: IWeekdays = {
+        enabled: this.hoursModeDailyEnabled,
+      };
+      for (const [key, value] of Object.entries(this.hoursModeDaily)) {
+        if (value && value.enabled && value.hours > 0) {
+          updatedWeekdays[weekdaysMapping[key]] = value;
+          weekdaysMapping[key] = this.weekdays[key];
         }
       }
-      const updatedWeekdays = updatedWeekdaysList.join(' ');
       const updatedContract: IUserContract = {
         child: this.childName,
         weekdays: updatedWeekdays,
@@ -655,9 +657,9 @@ export default class UserContractCreateOrEdit extends Vue {
 
   private setFormValues() {
     const contract: IUserContract = this.userContract;
-    const weekDays = contract.weekdays.split(' ');
+    const weekDays = contract.weekdays;
     this.childName = contract.child;
-    this.weekdays = this.setWeekDays(weekDays);
+    // this.hoursModeDaily = this.setWeekDays(weekDays);
     this.weeks = contract.weeks;
     this.hours = contract.hours;
     this.priceHourStandard = contract.price_hour_standard;
