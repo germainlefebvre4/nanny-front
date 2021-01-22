@@ -524,6 +524,15 @@ export default class UserContractCreateOrEdit extends Vue {
       this.contractId = parseInt(this.$router.currentRoute.params.id, 10);
       await dispatchGetContract(this.$store, this.contractId);
       this.setFormValues();
+
+      // for (const day in ["Mon", "Tue"]) {
+      //   if (Object.keys(Boolean(this.userContract.weekdays[day])).includes("enabled")) {
+      //     if(Boolean(this.userContract.weekdays[day]["enabled"])) {
+      //       this.hoursModeDaily.monday.enabled = Boolean(this.userContract.weekdays[day]["hours"]) || false;
+      //       this.hoursModeDaily.monday.hours = this.userContract.weekdays[day]["hours"] || 0;
+      //     }
+      //   }
+      // }
     }
   }
 
@@ -597,6 +606,7 @@ export default class UserContractCreateOrEdit extends Vue {
       this.editMode ?
         await dispatchUpdateUserContract(this.$store, updatedContract) :
         await dispatchCreateUserContract(this.$store, updatedContract);
+
       this.$router.push('/main/contracts');
     }
   }
