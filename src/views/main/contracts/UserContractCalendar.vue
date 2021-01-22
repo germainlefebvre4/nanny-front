@@ -22,7 +22,7 @@
                     :show-week='true'
                     :events="events"
                     @change="updateRange"
-                    @click:event="showEvent"
+                    @click:event="addEvent"
                     @click:day="addEvent"
                     @click:date="addEvent"
                   >
@@ -60,7 +60,7 @@
                           color="secondary"
                           @click="selectedOpen = false"
                         >
-                          Fermer
+                          Fermer2
                         </v-btn>
                       </v-card-actions>
                     </v-card>
@@ -315,12 +315,13 @@ export default class UserContractCalendar extends Vue {
   public eventColor = [
     'black',
     'green',
-    'orange',
+    'amber',
     'yellow',
     'red',
     'blue',
     'purple',
     'grey',
+    'blue-grey',
   ];
 
   public selectedOpen: boolean = false;
@@ -461,8 +462,8 @@ export default class UserContractCalendar extends Vue {
 
   public workingDaysMap() {
     // Start -- Quick fix eventCOlor
-    this.eventColor[50] = 'grey';
-    this.eventColor[51] = 'black';
+    // this.eventColor[50] = 'grey';
+    // this.eventColor[51] = 'black';
     // End
     const map = {};
     const rawEvents = [...this.workingDays];
