@@ -1,121 +1,132 @@
 <template>
-  <v-card class="ma-3 pa-3">  
-    <v-card-title primary-title>
-      <div class="headline primary--text">Résumé</div>
-    </v-card-title>
+  <v-container class="ma-0 pa-0">
+    <v-card class="ma-3 pa-3">
+      <v-card-title primary-title>
+        <div class="headline primary--text">Résumé</div>
+      </v-card-title>
 
-    <v-card-text>
-      <v-list
-        dense
-      >
-        <v-list-item-group
-          color="primary"
+      <v-card-text>
+        <v-list
+          dense
         >
-          <v-list-item
-            v-for="(day, i) in days"
-            :key="i"
+          <v-list-item-group
+            color="primary"
           >
-            <v-list-item-icon>
-              <v-icon v-text="day.icon"></v-icon>
-            </v-list-item-icon>
+            <v-list-item
+              v-for="(day, i) in days"
+              :key="i"
+            >
+              <v-list-item-icon>
+                <v-icon v-text="day.icon"></v-icon>
+              </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title v-text="day.text"></v-list-item-title>
-            </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-title v-text="day.text"></v-list-item-title>
+              </v-list-item-content>
 
-            <v-list-item-icon>
-              {{ day.value }}
-            </v-list-item-icon>
-            
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+              <v-list-item-icon>
+                {{ day.value }}
+              </v-list-item-icon>
+              
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
 
-      <v-list
-        dense
-      >
-        <v-subheader>Recapitulatif des jours</v-subheader>
-        <v-list-item-group
-          color="primary"
+        <v-list
+          dense
         >
-          <v-list-item
-            v-for="(day, i) in daysRecap"
-            :key="i"
+          <v-subheader>Recapitulatif des jours</v-subheader>
+          <v-list-item-group
+            color="primary"
           >
-            <v-list-item-icon>
-              <v-icon v-text="day.icon"></v-icon>
-            </v-list-item-icon>
+            <v-list-item
+              v-for="(day, i) in daysRecap"
+              :key="i"
+            >
+              <v-list-item-icon>
+                <v-icon v-text="day.icon"></v-icon>
+              </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title v-text="day.text"></v-list-item-title>
-            </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-title v-text="day.text"></v-list-item-title>
+              </v-list-item-content>
 
-            <v-list-item-icon>
-              {{ day.value }}
-            </v-list-item-icon>
-            
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+              <v-list-item-icon>
+                {{ day.value }}
+              </v-list-item-icon>
+              
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
 
-      <v-list
-        dense
-      >
-        <v-subheader>Recapitulatif des heures</v-subheader>
-        <v-list-item-group
-          color="primary"
+        <v-list
+          dense
         >
-          <v-list-item
-            v-for="(hour, i) in hoursRecap"
-            :key="i"
+          <v-subheader>Recapitulatif des heures</v-subheader>
+          <v-list-item-group
+            color="primary"
           >
-            <v-list-item-icon>
-              <v-icon v-text="hour.icon"></v-icon>
-            </v-list-item-icon>
+            <v-list-item
+              v-for="(hour, i) in hoursRecap"
+              :key="i"
+            >
+              <v-list-item-icon>
+                <v-icon v-text="hour.icon"></v-icon>
+              </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title v-text="hour.text"></v-list-item-title>
-            </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-title v-text="hour.text"></v-list-item-title>
+              </v-list-item-content>
 
-            <v-list-item-icon>
-              {{ hour.value }}
-            </v-list-item-icon>
-            
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+              <v-list-item-icon>
+                {{ hour.value }}
+              </v-list-item-icon>
+              
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
 
-      <v-list
-        dense
-      >
-        <v-subheader>Pajemploi</v-subheader>
-        <v-list-item-group
-          color="primary"
+      </v-card-text>
+
+    </v-card>
+
+
+    <v-card class="ma-3 pa-3">  
+      <v-card-title primary-title>
+        <div class="headline primary--text">Pajemploi</div>
+      </v-card-title>
+
+      <v-card-text>
+        <v-list
+          dense
         >
-          <v-list-item
-            v-for="(item, i) in pajeEmploi"
-            :key="i"
+          <v-list-item-group
+            color="primary"
           >
-            <v-list-item-icon>
-              <v-icon v-text="item.icon"></v-icon>
-            </v-list-item-icon>
+            <v-list-item
+              v-for="(item, i) in pajeEmploi"
+              :key="i"
+            >
+              <v-list-item-icon>
+                <v-icon v-text="item.icon"></v-icon>
+              </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
 
-            <v-list-item-icon>
-              {{ item.value }}
-            </v-list-item-icon>
-            
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+              <v-list-item-icon>
+                {{ item.value }}
+              </v-list-item-icon>
+              
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-card-text>
+    </v-card>
 
-    </v-card-text>
+  </v-container>
 
-
-  </v-card>
 </template>
 
 <script lang="ts">
