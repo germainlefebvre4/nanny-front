@@ -453,13 +453,19 @@ export default class UserContractCalendar extends Vue {
   }
 
   public async addCalendarEvent() {
+    let start = '00:00:00';
+    let end = '00:00:00';
+    if (this.newEvent.dayType.id === 3) {
+      start = `${this.newEvent.hours.start.hour}:${this.newEvent.hours.start.minutes}:00`;
+      end = `${this.newEvent.hours.end.hour}:${this.newEvent.hours.end.minutes}:00`;
+    }
     const newWorkingDay = {
       contractId: this.contractId,
       dayType: this.newEvent.dayType.id,
       data: {
         day: this.newEvent.date,
-        start: `${this.newEvent.hours.start.hour}:${this.newEvent.hours.start.minutes}:00`,
-        end: `${this.newEvent.hours.end.hour}:${this.newEvent.hours.end.minutes}:00`,
+        start: start,
+        end: end,
       },
     };
     await dispatchAddWorkingDay(this.$store, newWorkingDay);
