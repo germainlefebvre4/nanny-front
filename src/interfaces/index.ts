@@ -34,6 +34,7 @@ export interface IUserProfileCreate {
 export interface IUserContract {
     id?: number;
     child: string;
+    duration_mode: string;
     weekdays: IWeekdays;
     weeks: number;
     hours: number;
@@ -50,6 +51,7 @@ export interface IUserContract {
 export interface IUserContractUpdate {
     id: number;
     child: string;
+    duration_mode: string;
     weekdays: IWeekdays;
     weeks: number;
     hours: number;
@@ -103,7 +105,6 @@ export interface IWeekdayHour {
 }
 
 export interface IWeekdays {
-    enabled: boolean;
     monday?: IWeekdayHour;
     tuesday?: IWeekdayHour;
     wednesdayonday?: IWeekdayHour;

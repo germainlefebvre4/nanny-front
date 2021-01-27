@@ -10,6 +10,7 @@
             <v-text-field
               v-model.number="childName"
               label="Nom de l'enfant"
+              :rules="validateChildName"
             ></v-text-field>
 
             <v-subheader>* Rattacher la nounou avec son adresse email (facultatif)</v-subheader>
@@ -37,20 +38,47 @@
             </v-layout>
 
             <v-subheader>* Déclaration des heures</v-subheader>
-            <v-switch
-              v-model="hoursModeDailyEnabled"
-              :label="`${hoursModeDailyEnabledLabel()}`"
-              @change="hoursModeDailyUpdateMonthHours"
-            ></v-switch>
+            <v-layout column>
+              <v-flex>
+                <v-radio-group
+                  v-model="durationMode"
+                  mandatory
+                  @change="durationModeChange"
+                >
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-radio
+                        label="Déclaration libre"
+                        value="free"
+                        v-on="on"
+                        v-bind="attrs"
+                      ></v-radio>
+                    </template>
+                    <span>Le calendrier des gestion des heures sera vide. Vous pourrez remplir chaque jour réalisé.</span>
+                  </v-tooltip>
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-radio
+                        label="Déclaraion journalière"
+                        value="daily"
+                            v-on="on"
+                            v-bind="attrs"
+                      ></v-radio>
+                    </template>
+                    <span>Le calendrier sera automatiquement pré-rempli avec les jours et heures définis dans le contrat.</span>
+                  </v-tooltip>
+                </v-radio-group>
+              </v-flex>
+            </v-layout>
 
-            <v-subheader v-if="hoursModeDailyEnabled">* Jours de présence semaine et nombre d'heures</v-subheader>
-            <v-container v-if="hoursModeDailyEnabled">
+            <v-subheader v-if="durationMode == 'daily'">* Jours de présence semaine et nombre d'heures</v-subheader>
+            <v-container v-if="durationMode == 'daily'">
               <v-row cols=7>
                 <v-col sm="1">
                   Lundi
                   <v-checkbox
-                    v-model="hoursModeDaily.monday.enabled"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.monday.enabled"
+                    @change="durationModeChange"
                     type="boolean"
                     dense
                   ></v-checkbox>
@@ -58,8 +86,8 @@
                 <v-col sm="1">
                   Mardi
                   <v-checkbox
-                    v-model="hoursModeDaily.tuesday.enabled"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.tuesday.enabled"
+                    @change="durationModeChange"
                     type="boolean"
                     dense
                   ></v-checkbox>
@@ -67,8 +95,8 @@
                 <v-col sm="1">
                   Mercredi
                   <v-checkbox
-                    v-model="hoursModeDaily.wednesday.enabled"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.wednesday.enabled"
+                    @change="durationModeChange"
                     type="boolean"
                     dense
                   ></v-checkbox>
@@ -76,8 +104,8 @@
                 <v-col sm="1">
                   Jeudi
                   <v-checkbox
-                    v-model="hoursModeDaily.thursday.enabled"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.thursday.enabled"
+                    @change="durationModeChange"
                     type="boolean"
                     dense
                   ></v-checkbox>
@@ -85,8 +113,8 @@
                 <v-col sm="1">
                   Vendredi
                   <v-checkbox
-                    v-model="hoursModeDaily.friday.enabled"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.friday.enabled"
+                    @change="durationModeChange"
                     type="boolean"
                     dense
                   ></v-checkbox>
@@ -94,8 +122,8 @@
                 <v-col sm="1">
                   Samedi
                   <v-checkbox
-                    v-model="hoursModeDaily.saturday.enabled"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.saturday.enabled"
+                    @change="durationModeChange"
                     type="boolean"
                     dense
                   ></v-checkbox>
@@ -103,8 +131,8 @@
                 <v-col sm="1">
                   Dimanche
                   <v-checkbox
-                    v-model="hoursModeDaily.sunday.enabled"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.sunday.enabled"
+                    @change="durationModeChange"
                     type="boolean"
                     dense
                   ></v-checkbox>
@@ -113,8 +141,8 @@
               <v-row>
                 <v-col cols="7" sm="1">
                   <v-slider
-                    v-model="hoursModeDaily.monday.hours"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.monday.hours"
+                    @change="durationModeChange"
                     class="align-center"
                     max="13"
                     min="0"
@@ -122,13 +150,13 @@
                     dense
                     vertical
                     :thumb-label="true"
-                    :disabled="!hoursModeDaily.monday.enabled"
+                    :disabled="!durationModeDailyHours.monday.enabled"
                   ></v-slider>
                 </v-col>
                 <v-col cols="7" sm="1">
                   <v-slider
-                    v-model="hoursModeDaily.tuesday.hours"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.tuesday.hours"
+                    @change="durationModeChange"
                     class="align-center"
                     max="13"
                     min="0"
@@ -136,13 +164,13 @@
                     dense
                     vertical
                     :thumb-label="true"
-                    :disabled="!hoursModeDaily.tuesday.enabled"
+                    :disabled="!durationModeDailyHours.tuesday.enabled"
                   ></v-slider>
                 </v-col>
                 <v-col cols="7" sm="1">
                   <v-slider
-                    v-model="hoursModeDaily.wednesday.hours"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.wednesday.hours"
+                    @change="durationModeChange"
                     class="align-center"
                     max="13"
                     min="0"
@@ -150,13 +178,13 @@
                     dense
                     vertical
                     :thumb-label="true"
-                    :disabled="!hoursModeDaily.wednesday.enabled"
+                    :disabled="!durationModeDailyHours.wednesday.enabled"
                   ></v-slider>
                 </v-col>
                 <v-col cols="7" sm="1">
                   <v-slider
-                    v-model="hoursModeDaily.thursday.hours"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.thursday.hours"
+                    @change="durationModeChange"
                     class="align-center"
                     max="13"
                     min="0"
@@ -164,13 +192,13 @@
                     dense
                     vertical
                     :thumb-label="true"
-                    :disabled="!hoursModeDaily.thursday.enabled"
+                    :disabled="!durationModeDailyHours.thursday.enabled"
                   ></v-slider>
                 </v-col>
                 <v-col cols="7" sm="1">
                   <v-slider
-                    v-model="hoursModeDaily.friday.hours"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.friday.hours"
+                    @change="durationModeChange"
                     class="align-center"
                     max="13"
                     min="0"
@@ -178,13 +206,13 @@
                     dense
                     vertical
                     :thumb-label="true"
-                    :disabled="!hoursModeDaily.friday.enabled"
+                    :disabled="!durationModeDailyHours.friday.enabled"
                   ></v-slider>
                 </v-col>
                 <v-col cols="7" sm="1">
                   <v-slider
-                    v-model="hoursModeDaily.saturday.hours"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.saturday.hours"
+                    @change="durationModeChange"
                     class="align-center"
                     max="13"
                     min="0"
@@ -192,13 +220,13 @@
                     dense
                     vertical
                     :thumb-label="true"
-                    :disabled="!hoursModeDaily.saturday.enabled"
+                    :disabled="!durationModeDailyHours.saturday.enabled"
                   ></v-slider>
                 </v-col>
                 <v-col cols="7" sm="1">
                   <v-slider
-                    v-model="hoursModeDaily.sunday.hours"
-                    @change="hoursModeDailyUpdateMonthHours"
+                    v-model="durationModeDailyHours.sunday.hours"
+                    @change="durationModeChange"
                     class="align-center"
                     max="13"
                     min="0"
@@ -206,7 +234,7 @@
                     dense
                     vertical
                     :thumb-label="true"
-                    :disabled="!hoursModeDaily.sunday.enabled"
+                    :disabled="!durationModeDailyHours.sunday.enabled"
                   ></v-slider>
                 </v-col>
               </v-row>
@@ -230,7 +258,6 @@
                   type="number"
                   hide-details
                   single-line
-                  :disabled="hoursModeDailyEnabled"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -244,9 +271,9 @@
                   min=0
                   max=70
                   step="1"
-                  :rules="validateHours"
+                  :rules="validateWeeklyHours"
                   required
-                  :disabled="hoursModeDailyEnabled"
+                  :disabled="durationMode == 'daily'"
                 ></v-slider>
               </v-flex>
               <v-flex shrink class="hidden-sm-and-down" style="width: 60px; margin-left: 15px;">
@@ -255,7 +282,7 @@
                   type="number"
                   hide-details
                   single-line
-                  :disabled="hoursModeDailyEnabled"
+                  :disabled="durationMode == 'daily'"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -441,8 +468,8 @@ export default class UserContractCreateOrEdit extends Vue {
   public nannyEmail: string = '';
   public nannyFirstname: string = '';
 
-  public hoursModeDailyEnabled: boolean = true;
-  public hoursModeDaily = {
+  public durationMode = 'free';
+  public durationModeDailyHours = {
     monday: {
       enabled: true,
       hours: 0,
@@ -489,20 +516,24 @@ export default class UserContractCreateOrEdit extends Vue {
   public contractId: number | null = null;
   private editMode = false;
 
+  private validateChildName = [
+    (v) => v.length > 0 || 'Rensignez le nom de votre enfant',
+  ];
   private validateNannyEmail = [
   ];
-  private validateHours = [
+  private validateWeeklyHours = [
   ];
   private validatePriceHourStandard = [
-    (v) => v >= 2.85 || 'Le minmum légal est 2,85€',
+    (v) => v >= 2.85 || 'Le minimum légal d\'une heure normale est 2,85€',
     (v) => v <= 10 || 'Ca commence à faire beaucoup !',
   ];
   private validatePriceHourExtra = [
-    (v) => v <= 8 || 'Le minmum légal est 2,85€',
+    (v) => v >= 2.85 || 'Le minimum légal d\'une heure supplémentaire est 2,85€',
+    (v) => v >= this.priceHourStandard || 'Le taux horaire des heures supplémentaires doit être supérieur ou égale au taux horaire des heures normales',
     (v) => v <= 15 || 'Ca commence à faire beaucoup !',
   ];
   private validatePriceDayFees = [
-    (v) => v >= 2.65 || 'Le minimum légal est 2.65€',
+    // (v) => v >= 2.65 || 'Le minimum légal est 2.65€',
     (v) => v <= 10 || 'Ca commence à faire beaucoup !',
   ];
   private validatePriceDayMeals = [
@@ -528,8 +559,8 @@ export default class UserContractCreateOrEdit extends Vue {
       // for (const day in ["Mon", "Tue"]) {
       //   if (Object.keys(Boolean(this.userContract.weekdays[day])).includes("enabled")) {
       //     if(Boolean(this.userContract.weekdays[day]["enabled"])) {
-      //       this.hoursModeDaily.monday.enabled = Boolean(this.userContract.weekdays[day]["hours"]) || false;
-      //       this.hoursModeDaily.monday.hours = this.userContract.weekdays[day]["hours"] || 0;
+      //       this.durationModeDailyHours.monday.enabled = Boolean(this.userContract.weekdays[day]["hours"]) || false;
+      //       this.durationModeDailyHours.monday.hours = this.userContract.weekdays[day]["hours"] || 0;
       //     }
       //   }
       // }
@@ -567,10 +598,8 @@ export default class UserContractCreateOrEdit extends Vue {
         saturday: 'Sat',
         sunday: 'Sun',
       };
-      const updatedWeekdays: IWeekdays = {
-        enabled: this.hoursModeDailyEnabled,
-      };
-      for (const [key, value] of Object.entries(this.hoursModeDaily)) {
+      const updatedWeekdays: IWeekdays = {};
+      for (const [key, value] of Object.entries(this.durationModeDailyHours)) {
         if (value && value.enabled && value.hours > 0) {
           updatedWeekdays[weekdaysMapping[key]] = value;
           weekdaysMapping[key] = this.weekdays[key];
@@ -578,6 +607,7 @@ export default class UserContractCreateOrEdit extends Vue {
       }
       const updatedContract: IUserContract = {
         child: this.childName,
+        duration_mode: this.durationMode,
         weekdays: updatedWeekdays,
         weeks: this.weeks,
         hours: this.hours,
@@ -640,28 +670,21 @@ export default class UserContractCreateOrEdit extends Vue {
     };
   }
 
-  public hoursModeDailyEnabledLabel() {
-    if (this.hoursModeDailyEnabled) {
-      return 'Déclaration Journalière';
-    } else {
-      return 'Déclaration Hebdomadaire';
-    }
-  }
-
-  public hoursModeDailyUpdateMonthHours() {
-    if (this.hoursModeDailyEnabled) {
+  public durationModeChange() {
+    console.log(this.durationMode);
+    if (this.durationMode == "free") {
+      for (const [day, value] of Object.entries(this.durationModeDailyHours)) {
+        value.hours = 0;
+      }
+      // this.hours = 0;
+    } else if (this.durationMode == "daily") {
       let hours = 0;
-      for (const [day, value] of Object.entries(this.hoursModeDaily)) {
+      for (const [day, value] of Object.entries(this.durationModeDailyHours)) {
         if (value.enabled) {
           hours = hours + value.hours;
         }
       }
       this.hours = hours;
-    } else {
-      for (const [day, value] of Object.entries(this.hoursModeDaily)) {
-        value.hours = 0;
-      }
-      this.hours = 0;
     }
   }
 
@@ -669,7 +692,7 @@ export default class UserContractCreateOrEdit extends Vue {
     const contract: IUserContract = this.userContract;
     const weekDays = contract.weekdays;
     this.childName = contract.child;
-    // this.hoursModeDaily = this.setWeekDays(weekDays);
+    this.durationMode = contract.duration_mode;
     this.weeks = contract.weeks;
     this.hours = contract.hours;
     this.priceHourStandard = contract.price_hour_standard;
