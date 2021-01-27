@@ -101,6 +101,7 @@ export interface IContractSummary {
 }
 
 export interface IWeekdayHour {
+    enabled: boolean;
     hour: number;
 }
 

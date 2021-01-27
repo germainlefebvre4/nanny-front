@@ -556,11 +556,11 @@ export default class UserContractCreateOrEdit extends Vue {
       await dispatchGetContract(this.$store, this.contractId);
       this.setFormValues();
 
-      // for (const day in ["Mon", "Tue"]) {
+      // for (const day in ['Mon', 'Tue']) {
       //   if (Object.keys(Boolean(this.userContract.weekdays[day])).includes("enabled")) {
       //     if(Boolean(this.userContract.weekdays[day]["enabled"])) {
-      //       this.durationModeDailyHours.monday.enabled = Boolean(this.userContract.weekdays[day]["hours"]) || false;
-      //       this.durationModeDailyHours.monday.hours = this.userContract.weekdays[day]["hours"] || 0;
+      //       this.durationModeDailyHours.monday.enabled = Boolean(this.userContract.weekdays[day]['hours']) || false;
+      //       this.durationModeDailyHours.monday.hours = this.userContract.weekdays[day]['hours'] || 0;
       //     }
       //   }
       // }
@@ -671,13 +671,12 @@ export default class UserContractCreateOrEdit extends Vue {
   }
 
   public durationModeChange() {
-    console.log(this.durationMode);
-    if (this.durationMode == "free") {
+    if (this.durationMode === 'free') {
       for (const [day, value] of Object.entries(this.durationModeDailyHours)) {
         value.hours = 0;
       }
       // this.hours = 0;
-    } else if (this.durationMode == "daily") {
+    } else if (this.durationMode === 'daily') {
       let hours = 0;
       for (const [day, value] of Object.entries(this.durationModeDailyHours)) {
         if (value.enabled) {
@@ -703,6 +702,27 @@ export default class UserContractCreateOrEdit extends Vue {
     this.dateEnd = contract.end || '';
     this.nannyId = contract.nanny_id || 0;
     this.userId = contract.user_id || 0;
+    if (this.durationMode === 'daily') {
+      const weekdaysMapping = {
+        monday: 'Mon',
+        tuesday: 'Tue',
+        wednesday: 'Wed',
+        thursday: 'Thu',
+        friday: 'Fri',
+        saturday: 'Sat',
+        sunday: 'Sun',
+      };
+      for (const weekday of ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].values()) {
+        if (contract.weekdays[weekdaysMapping[weekday]]) {
+          this.durationModeDailyHours[weekday].enabled = contract.weekdays[weekdaysMapping[weekday]].enabled;
+          this.durationModeDailyHours[weekday].hours = contract.weekdays[weekdaysMapping[weekday]].hours;
+        } else {
+          this.durationModeDailyHours[weekday].enabled = false;
+          this.durationModeDailyHours[weekday].hours = 0;
+        }
+      }
+      this.durationModeChange();
+    }
   }
 }
 

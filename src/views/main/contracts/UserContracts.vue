@@ -194,9 +194,9 @@ export default class UserContracts extends Vue {
   }
 
   public durationModeLabel(item) {
-    if(item == 'free') {
+    if (item === 'free') {
       return 'Libre';
-    } else if (item == 'daily') {
+    } else if (item === 'daily') {
       return 'Journalière';
     }
   }
