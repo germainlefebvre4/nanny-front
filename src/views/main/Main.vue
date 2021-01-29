@@ -3,13 +3,6 @@
     <v-navigation-drawer persistent :mini-variant="miniDrawer" v-model="showDrawer" fixed app>
       <v-layout column fill-height>
 
-        <v-list subheader>
-          <v-list-item>
-            <v-list-item-title class="title" style="text-align: center;">
-              Bienvenue !
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
         <v-list>
           <v-list-item link to="/main/profile/view">
             <v-list-item-avatar :size=avatarSize>
@@ -23,7 +16,18 @@
 
         <v-divider></v-divider>
         <v-list subheader>
-          
+          <v-list-item to="/main/dashboard">
+            <v-list-item-action>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Tableau de bord</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+        <v-list subheader>
+
           <v-list-item>
             <v-list-item-action>
               <v-divider></v-divider>
@@ -149,7 +153,7 @@ import UserProfile from './profile/UserProfile.vue';
 
 const routeGuardMain = async (to, from, next) => {
   if (to.path === '/main') {
-    next('/main/profile');
+    next('/main/dashboard');
   } else {
     next();
   }
