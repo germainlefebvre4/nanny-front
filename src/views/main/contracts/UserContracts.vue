@@ -25,7 +25,10 @@
       </template>
 
       <template v-slot:[`item.weekdays`]="{ item }">
-        {{ item.weekdays.split(" ").length }}
+        {{ mapWeekdaysToPretty(item.weekdays) }}
+      </template>
+      <template v-slot:[`item.duration_mode`]="{ item }">
+        {{ durationModeLabel(item.duration_mode) }}
       </template>
       <template v-slot:[`item.price_hour_standard`]="{ item }">
         {{ item.price_hour_standard }} €
@@ -90,12 +93,6 @@ export default class UserContracts extends Vue {
       align: 'center',
     },
     {
-      text: '#Jours/Sem',
-      sortable: true,
-      value: 'weekdays',
-      align: 'center',
-    },
-    {
       text: '#Heures/Sem',
       sortable: true,
       value: 'hours',
@@ -129,6 +126,12 @@ export default class UserContracts extends Vue {
       text: 'End',
       sortable: true,
       value: 'end',
+      align: 'center',
+    },
+    {
+      text: 'Déclaration',
+      sortable: true,
+      value: 'duration_mode',
       align: 'center',
     },
     {
@@ -168,6 +171,33 @@ export default class UserContracts extends Vue {
       return true;
     } else {
       return false;
+    }
+  }
+
+  public mapWeekdaysToPretty(items) {
+    Vue.delete(items, 'enabled');
+    console.log(items);
+    const weekdaysMapping = {
+      Mon: 'Lundi',
+      Tue: 'Mardi',
+      Wed: 'Mercredi',
+      Thu: 'Jeudi',
+      Fri: 'Vendredi',
+      Sat: 'Samedi',
+      Sun: 'Dimanche',
+    };
+    const weekdays: string[] = [];
+    for (const [key, value] of Object.entries(items)) {
+      weekdays.push(weekdaysMapping[key]);
+    }
+    return weekdays.length;
+  }
+
+  public durationModeLabel(item) {
+    if (item === 'free') {
+      return 'Libre';
+    } else if (item === 'daily') {
+      return 'Journalière';
     }
   }
 

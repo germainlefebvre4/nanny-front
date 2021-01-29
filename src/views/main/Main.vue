@@ -21,8 +21,17 @@
           </v-list-item>
         </v-list>
 
+        <v-divider></v-divider>
         <v-list subheader>
-          <v-subheader>Contrats</v-subheader>
+          
+          <v-list-item>
+            <v-list-item-action>
+              <v-divider></v-divider>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title><v-subheader>Contrats</v-subheader></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item to="/main/contracts/view">
             <v-list-item-action>
               <v-icon>mdi-format-list-bulleted</v-icon>
@@ -149,7 +158,7 @@ const routeGuardMain = async (to, from, next) => {
 @Component
 export default class Main extends Vue {
   public appName = appName;
-  public avatarSize = 66;
+  public avatarSize = 0;
 
   public beforeRouteEnter(to, from, next) {
     routeGuardMain(to, from, next);
@@ -183,9 +192,9 @@ export default class Main extends Vue {
 
     // Resize Avatar
     if (isMiniDrawer) {
-      this.avatarSize = 66;
+      this.avatarSize = 60;
     } else {
-      this.avatarSize = 32;
+      this.avatarSize = 28;
     }
 
     // Switch MiniDrawer size
@@ -205,6 +214,7 @@ export default class Main extends Vue {
 
   public created() {
     const userProfile = readUserProfile(this.$store);
+    this.avatarSize = 60;
   }
 
   get userProfile() {

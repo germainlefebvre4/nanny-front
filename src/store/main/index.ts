@@ -6,7 +6,8 @@ import { IUserContract } from '@/interfaces';
 
 const defaultContract: IUserContract = {
   child : '',
-  weekdays : '',
+  duration_mode : '',
+  weekdays : {},
   weeks : 47,
   hours : 40,
   price_hour_standard : 3.5,

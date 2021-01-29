@@ -2,10 +2,10 @@
   <div id="app">
     <v-app>
       <v-main v-if="loggedIn===null">
-        <v-container fill-height>
+        <v-container fill-height fluid>
           <v-layout align-center justify-center>
             <v-flex>
-              <div class="text-xs-center">
+              <div class="text-xs-center" style="text-align:center;">
                 <div class="headline my-5">Chargement...</div>
                 <v-progress-circular size="100" indeterminate color="primary"></v-progress-circular>
               </div>

@@ -34,7 +34,8 @@ export interface IUserProfileCreate {
 export interface IUserContract {
     id?: number;
     child: string;
-    weekdays: string;
+    duration_mode: string;
+    weekdays: IWeekdays;
     weeks: number;
     hours: number;
     price_hour_standard: number;
@@ -50,7 +51,8 @@ export interface IUserContract {
 export interface IUserContractUpdate {
     id: number;
     child: string;
-    weekdays: string;
+    duration_mode: string;
+    weekdays: IWeekdays;
     weeks: number;
     hours: number;
     price_hour_standard: number;
@@ -96,4 +98,19 @@ export interface IContractSummary {
     monthly_salary: number;
     monthly_fees: number;
     price_hour_standard: number;
+}
+
+export interface IWeekdayHour {
+    enabled: boolean;
+    hour: number;
+}
+
+export interface IWeekdays {
+    monday?: IWeekdayHour;
+    tuesday?: IWeekdayHour;
+    wednesdayonday?: IWeekdayHour;
+    thursday?: IWeekdayHour;
+    friday?: IWeekdayHour;
+    saturday?: IWeekdayHour;
+    sunday?: IWeekdayHour;
 }
