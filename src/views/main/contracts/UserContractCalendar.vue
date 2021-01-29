@@ -1,206 +1,218 @@
 <template>
   <v-container fluid>
     <v-row no-gutters>
-      <v-col cols="12" md="12" lg="9" >
-        <v-card class="ma-3 pa-3">
-          <v-card-title primary-title>
-            <div class="headline primary--text">Modifier le calendrier</div>
-          </v-card-title>
-          <v-card-text>
-            <h3 ref="selectedMonth">{{ selectedMonthString }} {{ selectedYear }}</h3>
-            <v-layout wrap>
-              <v-flex xs12>
-                <v-sheet height="600">
-                  <v-calendar
-                    ref="calendar"
-                    v-model="calendar"
-                    color="primary"
-                    :value="selectedDate"
-                    :event-color="getEventColor"
-                    :type="type"
-                    :weekdays="weekdays"
-                    :show-week='true'
-                    :events="events"
-                    @change="updateRange"
-                    @click:event="addEvent"
-                    @click:day="addEvent"
-                    @click:date="addEvent"
-                  >
-                  </v-calendar>
+      <v-tabs
+        grow
+      >
+        <v-tab>
+          Calendrier
+        </v-tab>
+        <v-tab>
+          Récapitulatif du mois
+        </v-tab>
 
-                  <v-dialog
-                    v-model="newOpen"
-                    :close-on-content-click="false"
-                    :activator="newElement"
-                    offset-x
-                    min-width="200"
-                    max-width="700"
-                  >
-                    <v-card
-                      color="grey lighten-4"
-                      flat
+        <v-tab-item>
+          <v-card
+            flat
+          >
+            <v-card-title primary-title>
+              <div class="headline primary--text">{{ selectedMonthString }} {{ selectedYear }}</div>
+            </v-card-title>
+            <v-card-text>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-sheet height="600">
+                    <v-calendar
+                      ref="calendar"
+                      v-model="calendar"
+                      color="primary"
+                      :value="selectedDate"
+                      :event-color="getEventColor"
+                      :type="type"
+                      :weekdays="weekdays"
+                      :show-week='true'
+                      :events="events"
+                      @change="updateRange"
+                      @click:event="addEvent"
+                      @click:day="addEvent"
+                      @click:date="addEvent"
                     >
-                      <v-toolbar
-                        dark
+                    </v-calendar>
+
+                    <v-dialog
+                      v-model="newOpen"
+                      :close-on-content-click="false"
+                      :activator="newElement"
+                      offset-x
+                      min-width="200"
+                      max-width="700"
+                    >
+                      <v-card
+                        color="grey lighten-4"
+                        flat
                       >
-                        <v-toolbar-title>Ajouter une journée</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          icon
-                          @click="addEventClose"
+                        <v-toolbar
+                          dark
                         >
-                          <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                      </v-toolbar>
-                      <v-card-text>
-                        <p></p>
-                        <div class="text--primary">
-                          <v-row align="center">
-                            <v-col cols="6">
-                              <v-subheader>
-                                Date
-                              </v-subheader>
-                            </v-col>
+                          <v-toolbar-title>Ajouter une journée</v-toolbar-title>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            icon
+                            @click="addEventClose"
+                          >
+                            <v-icon>mdi-close</v-icon>
+                          </v-btn>
+                        </v-toolbar>
+                        <v-card-text>
+                          <p></p>
+                          <div class="text--primary">
+                            <v-row align="center">
+                              <v-col cols="6">
+                                <v-subheader>
+                                  Date
+                                </v-subheader>
+                              </v-col>
 
-                            <v-col cols="6">
-                              {{ newEvent.date }}
-                            </v-col>
-                          </v-row>
-                          <v-row align="center">
-                            <v-col cols="6">
-                              <v-subheader>
-                                Type de la journée
-                              </v-subheader>
-                            </v-col>
+                              <v-col cols="6">
+                                {{ newEvent.date }}
+                              </v-col>
+                            </v-row>
+                            <v-row align="center">
+                              <v-col cols="6">
+                                <v-subheader>
+                                  Type de la journée
+                                </v-subheader>
+                              </v-col>
 
-                            <v-col cols="6">
-                              <v-select
-                                v-model="newEvent.dayType"
-                                :items="dayTypes.slice(2)"
-                                item-text="name"
-                                item-value="name"
-                                label="Choisissez..."
-                                persistent-hint
-                                return-object
-                                single-line
-                              ></v-select>
-                            </v-col>
-                          </v-row>
-                          <v-row align="center" v-if="[3].includes(newEvent.dayType.id)">
-                            <v-col cols="6">
-                              <v-subheader>
-                                Heure de début
-                              </v-subheader>
-                            </v-col>
+                              <v-col cols="6">
+                                <v-select
+                                  v-model="newEvent.dayType"
+                                  :items="dayTypes.slice(2)"
+                                  item-text="name"
+                                  item-value="name"
+                                  label="Choisissez..."
+                                  persistent-hint
+                                  return-object
+                                  single-line
+                                ></v-select>
+                              </v-col>
+                            </v-row>
+                            <v-row align="center" v-if="[3].includes(newEvent.dayType.id)">
+                              <v-col cols="6">
+                                <v-subheader>
+                                  Heure de début
+                                </v-subheader>
+                              </v-col>
 
-                            <v-col cols="2">
-                              <v-select
-                                v-model="newEvent.hours.start.hour"
-                                :items="hoursList"
-                                label="Heure"
-                                persistent-hint
-                                return-object
-                                single-line
-                              ></v-select>
-                            </v-col>
-                            <v-col cols="2">
-                              <v-select
-                                v-model="newEvent.hours.start.minutes"
-                                :items="minutesList"
-                                label="Minute"
-                                persistent-hint
-                                return-object
-                                single-line
-                              ></v-select>
-                            </v-col>
-                          </v-row>
-                          <v-row align="center" v-if="[3].includes(newEvent.dayType.id)">
-                            <v-col cols="6">
-                              <v-subheader>
-                                Heure de fin
-                              </v-subheader>
-                            </v-col>
+                              <v-col cols="2">
+                                <v-select
+                                  v-model="newEvent.hours.start.hour"
+                                  :items="hoursList"
+                                  label="Heure"
+                                  persistent-hint
+                                  return-object
+                                  single-line
+                                ></v-select>
+                              </v-col>
+                              <v-col cols="2">
+                                <v-select
+                                  v-model="newEvent.hours.start.minutes"
+                                  :items="minutesList"
+                                  label="Minute"
+                                  persistent-hint
+                                  return-object
+                                  single-line
+                                ></v-select>
+                              </v-col>
+                            </v-row>
+                            <v-row align="center" v-if="[3].includes(newEvent.dayType.id)">
+                              <v-col cols="6">
+                                <v-subheader>
+                                  Heure de fin
+                                </v-subheader>
+                              </v-col>
 
-                            <v-col cols="2">
-                              <v-select
-                                v-model="newEvent.hours.end.hour"
-                                :items="hoursList"
-                                label="Heure"
-                                persistent-hint
-                                return-object
-                                single-line
-                              ></v-select>
-                            </v-col>
-                            <v-col cols="2">
-                              <v-select
-                                v-model="newEvent.hours.end.minutes"
-                                :items="minutesList"
-                                label="Minute"
-                                persistent-hint
-                                return-object
-                                single-line
-                              ></v-select>
-                            </v-col>
-                          </v-row>
-                        </div>
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-btn
-                          text
-                          color="secondary"
-                          @click="addCalendarEvent"
-                        >
-                          Ajouter
-                        </v-btn>
-                        <v-btn
-                          text
-                          color="secondary"
-                          @click="addEventClose"
-                        >
-                          Fermer
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-sheet>
-              </v-flex>
+                              <v-col cols="2">
+                                <v-select
+                                  v-model="newEvent.hours.end.hour"
+                                  :items="hoursList"
+                                  label="Heure"
+                                  persistent-hint
+                                  return-object
+                                  single-line
+                                ></v-select>
+                              </v-col>
+                              <v-col cols="2">
+                                <v-select
+                                  v-model="newEvent.hours.end.minutes"
+                                  :items="minutesList"
+                                  label="Minute"
+                                  persistent-hint
+                                  return-object
+                                  single-line
+                                ></v-select>
+                              </v-col>
+                            </v-row>
+                          </div>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-btn
+                            text
+                            color="secondary"
+                            @click="addCalendarEvent"
+                          >
+                            Ajouter
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="secondary"
+                            @click="addEventClose"
+                          >
+                            Fermer
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-sheet>
+                </v-flex>
 
-              <v-flex sm4 xs12 class="text-sm-left text-xs-center">
-                <v-btn @click="$refs.calendar.prev()">
-                  <v-icon
-                    dark
-                    left
-                  >
-                    mdi-arrow-left
-                  </v-icon>
-                  Précédent
-                </v-btn>
-              </v-flex>
-              <v-flex sm4 xs12 class="text-xs-center">
-                <v-select v-model="type" :items="typeOptions" label="Type"></v-select>
-              </v-flex>
-              <v-flex
-                sm4
-                xs12
-                class="text-sm-right text-xs-center"
-              >
-                <v-btn @click="$refs.calendar.next()">
-                  Suivant
-                  <v-icon
-                    right
-                    dark
-                  >
-                    mdi-arrow-right
-                  </v-icon>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col>
-        <MonthSummary :summary="summary"/>
-      </v-col>
+                <v-flex sm4 xs12 class="text-sm-left text-xs-center">
+                  <v-btn @click="$refs.calendar.prev()">
+                    <v-icon
+                      dark
+                      left
+                    >
+                      mdi-arrow-left
+                    </v-icon>
+                    Précédent
+                  </v-btn>
+                </v-flex>
+                <v-flex sm4 xs12 class="text-xs-center">
+                  <v-select v-model="type" :items="typeOptions" label="Type"></v-select>
+                </v-flex>
+                <v-flex
+                  sm4
+                  xs12
+                  class="text-sm-right text-xs-center"
+                >
+                  <v-btn @click="$refs.calendar.next()">
+                    Suivant
+                    <v-icon
+                      right
+                      dark
+                    >
+                      mdi-arrow-right
+                    </v-icon>
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <MonthSummary :summary="summary" />
+        </v-tab-item>
+      </v-tabs>
     </v-row>
   </v-container>
 </template>
@@ -245,6 +257,11 @@ interface Event {
   },
 })
 export default class UserContractCalendar extends Vue {
+  public tabs = {
+    sections: ['Calendrier', 'Récapitulatif'],
+    current: null,
+  };
+
   public valid = true;
   public userId: number = 0;
   public contractId: number | null = null;
